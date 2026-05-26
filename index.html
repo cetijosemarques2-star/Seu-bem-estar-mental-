@@ -1,0 +1,119 @@
+export default function BemEstarApp() { const cards = [ { title: "Painel de Bem-Estar", emoji: "🌿", desc: "Acompanhe seu humor e seu progresso emocional diariamente." }, { title: "Ferramentas Emocionais", emoji: "🧘", desc: "Respiração guiada, relaxamento e diário emocional." }, { title: "Jornada Pessoal", emoji: "📈", desc: "Crie metas e acompanhe sua evolução emocional." }, { title: "Centro de Aprendizagem", emoji: "📚", desc: "Aprenda sobre ansiedade, autoestima e saúde mental." }, { title: "Ajuda e Emergência", emoji: "🚨", desc: "Acesso rápido a apoio emocional e recursos importantes." } ];
+
+const tips = [ "Respire profundamente por 30 segundos 🌬️", "Beba água e faça uma pequena pausa 💧", "Você já superou dias difíceis antes 💪", "Ouça uma música calma 🎵", "Escreva como você está se sentindo ✍️" ];
+
+return ( <div className="min-h-screen bg-gradient-to-br from-emerald-100 via-cyan-100 to-white p-6 flex justify-center items-center"> <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden border border-emerald-100">
+
+{/* HEADER */}
+    <div className="bg-emerald-500 text-white p-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">Bem-Estar Mental</h1>
+          <p className="text-sm opacity-90">
+            Cuide da sua mente todos os dias
+          </p>
+        </div>
+
+        <div className="text-4xl">🌿</div>
+      </div>
+    </div>
+
+    {/* HUMOR */}
+    <div className="p-5 border-b">
+      <h2 className="font-semibold text-lg mb-3 text-gray-800">
+        Como você está hoje?
+      </h2>
+
+      <div className="grid grid-cols-5 gap-2 text-center">
+        {[
+          "😔",
+          "😟",
+          "😐",
+          "😊",
+          "😁"
+        ].map((emoji, i) => (
+          <button
+            key={i}
+            className="bg-emerald-50 hover:bg-emerald-100 transition rounded-2xl p-3 text-2xl"
+          >
+            {emoji}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    {/* CARDS */}
+    <div className="p-5 space-y-4">
+      {cards.map((card, index) => (
+        <div
+          key={index}
+          className="bg-gray-50 hover:bg-emerald-50 transition border rounded-2xl p-4 cursor-pointer shadow-sm"
+        >
+          <div className="flex items-start gap-4">
+            <div className="text-3xl">{card.emoji}</div>
+
+            <div>
+              <h3 className="font-bold text-gray-800">
+                {card.title}
+              </h3>
+
+              <p className="text-sm text-gray-600 mt-1">
+                {card.desc}
+              </p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {/* DICA */}
+    <div className="px-5 pb-4">
+      <div className="bg-emerald-100 rounded-2xl p-4 text-sm text-emerald-900">
+        <h3 className="font-bold mb-2">💡 Dica do Dia</h3>
+
+        <ul className="space-y-1">
+          {tips.map((tip, i) => (
+            <li key={i}>• {tip}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    {/* BOTÃO */}
+    <div className="p-5 pt-0">
+      <button className="w-full bg-emerald-500 hover:bg-emerald-600 transition text-white font-semibold py-4 rounded-2xl shadow-lg">
+        Iniciar Jornada de Bem-Estar
+      </button>
+    </div>
+
+    {/* MENU */}
+    <div className="border-t bg-white grid grid-cols-5 text-center text-xs py-3 text-gray-600">
+      <div>
+        <div className="text-xl">🏠</div>
+        <span>Início</span>
+      </div>
+
+      <div>
+        <div className="text-xl">🌿</div>
+        <span>Ferramentas</span>
+      </div>
+
+      <div>
+        <div className="text-xl">📈</div>
+        <span>Jornada</span>
+      </div>
+
+      <div>
+        <div className="text-xl">📚</div>
+        <span>Aprender</span>
+      </div>
+
+      <div>
+        <div className="text-xl">🚨</div>
+        <span>Ajuda</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+); }
