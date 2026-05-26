@@ -1,119 +1,249 @@
-export default function BemEstarApp() { const cards = [ { title: "Painel de Bem-Estar", emoji: "🌿", desc: "Acompanhe seu humor e seu progresso emocional diariamente." }, { title: "Ferramentas Emocionais", emoji: "🧘", desc: "Respiração guiada, relaxamento e diário emocional." }, { title: "Jornada Pessoal", emoji: "📈", desc: "Crie metas e acompanhe sua evolução emocional." }, { title: "Centro de Aprendizagem", emoji: "📚", desc: "Aprenda sobre ansiedade, autoestima e saúde mental." }, { title: "Ajuda e Emergência", emoji: "🚨", desc: "Acesso rápido a apoio emocional e recursos importantes." } ];
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MenteLeve - Seu Bem-estar</title>
+    
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
 
-const tips = [ "Respire profundamente por 30 segundos 🌬️", "Beba água e faça uma pequena pausa 💧", "Você já superou dias difíceis antes 💪", "Ouça uma música calma 🎵", "Escreva como você está se sentindo ✍️" ];
+    <style>
+        /* CSS - O DESIGN DO APP */
+        :root {
+            --bg: #f0f4f8;
+            --primary: #6c63ff;
+            --white: #ffffff;
+            --text: #2d3436;
+            --accent: #a29bfe;
+            --danger: #ff7675;
+        }
 
-return ( <div className="min-h-screen bg-gradient-to-br from-[#06141B] via-[#11212D] to-[#253745] p-6 flex justify-center items-center"> <div className="w-full max-w-md bg-white/10 backdrop-blur-2xl rounded-[34px] shadow-2xl overflow-hidden border border-white/10 text-white">
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
 
-{/* HEADER */}
-    <div className="relative overflow-hidden bg-gradient-to-r from-emerald-400 via-cyan-400 to-teal-500 p-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Bem-Estar Mental</h1>
-          <p className="text-sm opacity-90">
-            Cuide da sua mente todos os dias
-          </p>
-        </div>
+        body { 
+            background-color: #dfe6e9; 
+            display: flex; 
+            justify-content: center; 
+            min-height: 100vh;
+        }
 
-        <div className="text-4xl">🌿</div>
-      </div>
-    </div>
+        /* Container do "Celular" */
+        #app {
+            width: 100%;
+            max-width: 450px;
+            background: var(--bg);
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding-bottom: 80px;
+            overflow-x: hidden;
+        }
 
-    {/* HUMOR */}
-    <div className="p-5 border-b">
-      <h2 className="font-semibold text-lg mb-3 text-gray-800">
-        Como você está hoje?
-      </h2>
+        /* Cabeçalho */
+        header {
+            padding: 40px 20px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            margin-bottom: 20px;
+        }
 
-      <div className="grid grid-cols-5 gap-2 text-center">
-        {[
-          "😔",
-          "😟",
-          "😐",
-          "😊",
-          "😁"
-        ].map((emoji, i) => (
-          <button
-            key={i}
-            className="bg-emerald-50 hover:bg-emerald-100 transition rounded-2xl p-3 text-2xl"
-          >
-            {emoji}
-          </button>
-        ))}
-      </div>
-    </div>
+        /* Seções (Telas) */
+        .page { display: none; padding: 20px; animation: slideIn 0.3s ease; }
+        .page.active { display: block; }
 
-    {/* CARDS */}
-    <div className="p-5 space-y-4">
-      {cards.map((card, index) => (
-        <div
-          key={index}
-          className="bg-[#11212D] hover:bg-[#1A2C38] transition-all duration-300 border border-white/10 rounded-3xl p-4 cursor-pointer shadow-xl"
-        >
-          <div className="flex items-start gap-4">
-            <div className="text-3xl">{card.emoji}</div>
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
 
-            <div>
-              <h3 className="font-bold text-gray-800">
-                {card.title}
-              </h3>
+        /* Cards de Humor */
+        .mood-card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
 
-              <p className="text-sm text-gray-600 mt-1">
-                {card.desc}
-              </p>
+        .mood-btns {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .mood-btns button {
+            font-size: 1.8rem;
+            border: none;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .mood-btns button:hover { transform: scale(1.2); background: var(--accent); }
+
+        /* Grade de Botões do Menu */
+        .grid-menu {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .card i { font-size: 2rem; color: var(--primary); margin-bottom: 10px; }
+        .card span { font-weight: 600; font-size: 0.9rem; }
+
+        /* Barra de Navegação Inferior */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 450px;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .nav-btn {
+            border: none;
+            background: none;
+            color: #b2bec3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .nav-btn.active { color: var(--primary); }
+
+        /* Emergência */
+        .emergency-btn {
+            background: var(--danger);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app">
+        <header>
+            <h1 id="greeting">Olá!</h1>
+            <p>"Sua jornada começa com um pequeno passo."</p>
+        </header>
+
+        <section id="dashboard" class="page active">
+            <div class="mood-card">
+                <h3>Como você se sente?</h3>
+                <div class="mood-btns">
+                    <button onclick="registrar('Bem')">😊</button>
+                    <button onclick="registrar('Calmo')">😌</button>
+                    <button onclick="registrar('Triste')">😔</button>
+                    <button onclick="registrar('Ansioso')">😟</button>
+                </div>
             </div>
-          </div>
-        </div>
-      ))}
+
+            <div class="grid-menu">
+                <div class="card" onclick="navegar('kit')">
+                    <i class="ph ph-heart-break"></i>
+                    <span>Kit Emocional</span>
+                </div>
+                <div class="card" onclick="navegar('ajuda')">
+                    <i class="ph ph-phone-call"></i>
+                    <span>Emergência</span>
+                </div>
+                <div class="card" onclick="navegar('ensino')">
+                    <i class="ph ph-book-open"></i>
+                    <span>Aprender</span>
+                </div>
+                <div class="card" onclick="navegar('comunidade')">
+                    <i class="ph ph-users"></i>
+                    <span>Comunidade</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="kit" class="page">
+            <h2>Kit Emocional</h2>
+            <p>Exercício de respiração:</p>
+            <div class="card" style="margin-top:20px; width:100%">
+                <p>Inspire profundamente... 4 segundos</p>
+                <p>Segure... 4 segundos</p>
+                <p>Solte... 4 segundos</p>
+            </div>
+            <button onclick="navegar('dashboard')" style="margin-top:20px; border:none; color:var(--primary); background:none; cursor:pointer;">← Voltar</button>
+        </section>
+
+        <section id="ajuda" class="page">
+            <h2>Canais de Ajuda</h2>
+            <p>Você não está sozinho.</p>
+            <a href="tel:188" class="emergency-btn">Ligar para o CVV (188)</a>
+        </section>
+
+        <nav class="bottom-nav">
+            <button class="nav-btn active" onclick="navegar('dashboard')">
+                <i class="ph ph-house"></i>
+                <span>Início</span>
+            </button>
+            <button class="nav-btn" onclick="navegar('kit')">
+                <i class="ph ph-heart"></i>
+                <span>Kit</span>
+            </button>
+            <button class="nav-btn" onclick="navegar('ajuda')">
+                <i class="ph ph-first-aid"></i>
+                <span>Ajuda</span>
+            </button>
+        </nav>
     </div>
 
-    {/* DICA */}
-    <div className="px-5 pb-4">
-      <div className="bg-gradient-to-r from-emerald-400 to-cyan-500 rounded-3xl p-5 text-sm text-white shadow-xl">
-        <h3 className="font-bold mb-2">💡 Dica do Dia</h3>
+    <script>
+        // JAVASCRIPT - A LÓGICA
+        
+        // 1. Saudação Automática
+        const hora = new Date().getHours();
+        const saudacao = document.getElementById('greeting');
+        if (hora < 12) saudacao.innerText = "Bom dia!";
+        else if (hora < 18) saudacao.innerText = "Boa tarde!";
+        else saudacao.innerText = "Boa noite!";
 
-        <ul className="space-y-1">
-          {tips.map((tip, i) => (
-            <li key={i}>• {tip}</li>
-          ))}
-        </ul>
-      </div>
-    </div>
+        // 2. Sistema de Troca de Páginas
+        function navegar(id) {
+            // Esconde todas as páginas
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            // Remove 'active' dos botões da nav
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
 
-    {/* BOTÃO */}
-    <div className="p-5 pt-0">
-      <button className="w-full bg-gradient-to-r from-emerald-400 to-cyan-500 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 text-white font-bold py-5 rounded-3xl shadow-2xl text-lg">
-        Iniciar Jornada de Bem-Estar
-      </button>
-    </div>
+            // Mostra a página pedida
+            document.getElementById(id).classList.add('active');
+        }
 
-    {/* MENU */}
-    <div className="border-t bg-white grid grid-cols-5 text-center text-xs py-3 text-gray-600">
-      <div>
-        <div className="text-xl">🏠</div>
-        <span>Início</span>
-      </div>
-
-      <div>
-        <div className="text-xl">🌿</div>
-        <span>Ferramentas</span>
-      </div>
-
-      <div>
-        <div className="text-xl">📈</div>
-        <span>Jornada</span>
-      </div>
-
-      <div>
-        <div className="text-xl">📚</div>
-        <span>Aprender</span>
-      </div>
-
-      <div>
-        <div className="text-xl">🚨</div>
-        <span>Ajuda</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-); }
+        // 3. Registro de Humor
+        function registrar(humor) {
+            alert("Humor registrado: " + humor + ". Continue cuidando de você!");
+        }
+    </script>
+</body>
+</html>
