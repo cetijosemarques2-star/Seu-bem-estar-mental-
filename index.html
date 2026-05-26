@@ -3,148 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MenteLeve - Seu Bem-estar</title>
+    <title>MenteLeve - App de Bem-estar</title>
     
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* CSS - O DESIGN DO APP */
         :root {
-            --bg: #f0f4f8;
+            --bg: #f8faff;
             --primary: #6c63ff;
+            --secondary: #4834d4;
             --white: #ffffff;
             --text: #2d3436;
             --accent: #a29bfe;
             --danger: #ff7675;
+            --success: #00b894;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
 
-        body { 
-            background-color: #dfe6e9; 
-            display: flex; 
-            justify-content: center; 
-            min-height: 100vh;
-        }
+        body { background-color: #e0e6ed; display: flex; justify-content: center; min-height: 100vh; }
 
-        /* Container do "Celular" */
         #app {
-            width: 100%;
-            max-width: 450px;
-            background: var(--bg);
-            min-height: 100vh;
-            position: relative;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-            padding-bottom: 80px;
-            overflow-x: hidden;
+            width: 100%; max-width: 450px; background: var(--bg);
+            min-height: 100vh; position: relative; padding-bottom: 90px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1); overflow-y: auto;
         }
 
-        /* Cabeçalho */
+        /* Header */
         header {
-            padding: 40px 20px;
+            padding: 40px 25px;
             background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: white;
-            border-bottom-left-radius: 30px;
-            border-bottom-right-radius: 30px;
-            margin-bottom: 20px;
+            color: white; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px;
         }
 
-        /* Seções (Telas) */
-        .page { display: none; padding: 20px; animation: slideIn 0.3s ease; }
+        /* Seções */
+        .page { display: none; padding: 20px; animation: fadeIn 0.4s ease; }
         .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        /* Cards de Humor */
-        .mood-card {
-            background: var(--white);
-            padding: 20px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-
-        .mood-btns {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 15px;
-        }
-
-        .mood-btns button {
-            font-size: 1.8rem;
-            border: none;
-            background: #f8f9fa;
-            padding: 10px;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .mood-btns button:hover { transform: scale(1.2); background: var(--accent); }
-
-        /* Grade de Botões do Menu */
-        .grid-menu {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
+        /* Painel de Humor e Diário */
         .card {
-            background: var(--white);
-            padding: 20px;
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            transition: 0.3s;
+            background: var(--white); padding: 20px; border-radius: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.04); margin-bottom: 20px;
         }
 
-        .card i { font-size: 2rem; color: var(--primary); margin-bottom: 10px; }
-        .card span { font-weight: 600; font-size: 0.9rem; }
+        .mood-grid { display: flex; justify-content: space-between; margin: 15px 0; }
+        .mood-btn { 
+            border: none; background: #f0f2f5; font-size: 1.8rem; 
+            padding: 10px; border-radius: 15px; cursor: pointer; transition: 0.2s;
+        }
+        .mood-btn:active { transform: scale(0.9); background: var(--primary); }
 
-        /* Barra de Navegação Inferior */
+        textarea {
+            width: 100%; height: 80px; border: 1px solid #eee; border-radius: 15px;
+            padding: 12px; font-size: 0.9rem; resize: none; margin-top: 10px; outline: none;
+        }
+
+        .btn-save {
+            width: 100%; background: var(--primary); color: white; border: none;
+            padding: 12px; border-radius: 12px; margin-top: 10px; font-weight: 600; cursor: pointer;
+        }
+
+        /* Círculo de Respiração */
+        .breathing-container {
+            display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 0;
+        }
+
+        .circle-outer {
+            width: 200px; height: 200px; border-radius: 50%;
+            border: 5px solid var(--primary-light); display: flex;
+            align-items: center; justify-content: center; position: relative;
+            transition: all 4s linear;
+        }
+
+        .circle-inner {
+            width: 100px; height: 100px; background: var(--primary);
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; color: white; font-weight: bold;
+            transition: all 4s linear;
+        }
+
+        /* Estados da Respiração */
+        .inhale { transform: scale(1.8); background: var(--success); }
+        .exhale { transform: scale(1.0); background: var(--primary); }
+
+        /* Grid de Aprendizado */
+        .tip-card {
+            background: var(--white); padding: 15px; border-radius: 15px;
+            margin-bottom: 15px; border-left: 5px solid var(--primary);
+        }
+
+        /* Nav Inferior */
         .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            max-width: 450px;
-            background: white;
-            display: flex;
-            justify-content: space-around;
-            padding: 15px;
-            border-top: 1px solid #eee;
+            position: fixed; bottom: 0; width: 100%; max-width: 450px;
+            background: white; display: flex; justify-content: space-around;
+            padding: 15px; box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
         }
 
         .nav-btn {
-            border: none;
-            background: none;
-            color: #b2bec3;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
+            border: none; background: none; color: #b2bec3;
+            display: flex; flex-direction: column; align-items: center; cursor: pointer;
         }
 
         .nav-btn.active { color: var(--primary); }
-
-        /* Emergência */
-        .emergency-btn {
-            background: var(--danger);
-            color: white;
-            padding: 15px;
-            border-radius: 15px;
-            text-align: center;
-            text-decoration: none;
-            display: block;
-            margin-top: 20px;
-            font-weight: bold;
-        }
     </style>
 </head>
 <body>
@@ -152,98 +114,56 @@
     <div id="app">
         <header>
             <h1 id="greeting">Olá!</h1>
-            <p>"Sua jornada começa com um pequeno passo."</p>
+            <p id="phrase">"Respire fundo. Você é mais forte do que imagina."</p>
         </header>
 
         <section id="dashboard" class="page active">
-            <div class="mood-card">
-                <h3>Como você se sente?</h3>
-                <div class="mood-btns">
-                    <button onclick="registrar('Bem')">😊</button>
-                    <button onclick="registrar('Calmo')">😌</button>
-                    <button onclick="registrar('Triste')">😔</button>
-                    <button onclick="registrar('Ansioso')">😟</button>
+            <div class="card">
+                <h3>Como você está agora?</h3>
+                <div class="mood-grid">
+                    <button class="mood-btn" onclick="setMood('Feliz')">😊</button>
+                    <button class="mood-btn" onclick="setMood('Calmo')">😌</button>
+                    <button class="mood-btn" onclick="setMood('Ansioso')">😟</button>
+                    <button class="mood-btn" onclick="setMood('Exausto')">😴</button>
                 </div>
+                <textarea id="moodNote" placeholder="O que está passando pela sua cabeça?"></textarea>
+                <button class="btn-save" onclick="saveEntry()">Salvar no Diário</button>
             </div>
 
-            <div class="grid-menu">
-                <div class="card" onclick="navegar('kit')">
-                    <i class="ph ph-heart-break"></i>
-                    <span>Kit Emocional</span>
-                </div>
-                <div class="card" onclick="navegar('ajuda')">
-                    <i class="ph ph-phone-call"></i>
-                    <span>Emergência</span>
-                </div>
-                <div class="card" onclick="navegar('ensino')">
-                    <i class="ph ph-book-open"></i>
-                    <span>Aprender</span>
-                </div>
-                <div class="card" onclick="navegar('comunidade')">
-                    <i class="ph ph-users"></i>
-                    <span>Comunidade</span>
+            <div class="card" onclick="navegar('kit')" style="cursor: pointer; display: flex; align-items: center; gap: 15px;">
+                <i class="ph ph-wind" style="font-size: 2rem; color: var(--primary);"></i>
+                <div>
+                    <strong>Praticar Respiração</strong>
+                    <p style="font-size: 0.8rem; color: #666;">Alívio rápido para ansiedade</p>
                 </div>
             </div>
         </section>
 
         <section id="kit" class="page">
-            <h2>Kit Emocional</h2>
-            <p>Exercício de respiração:</p>
-            <div class="card" style="margin-top:20px; width:100%">
-                <p>Inspire profundamente... 4 segundos</p>
-                <p>Segure... 4 segundos</p>
-                <p>Solte... 4 segundos</p>
+            <h2 style="text-align: center;">Respiração Guiada</h2>
+            <div class="breathing-container">
+                <div class="circle-outer">
+                    <div id="breatheCircle" class="circle-inner">Início</div>
+                </div>
+                <h3 id="breatheText" style="margin-top: 30px; color: var(--primary);">Toque para começar</h3>
+                <button class="btn-save" onclick="startBreathing()" id="btnBreathe">Começar Exercício</button>
             </div>
-            <button onclick="navegar('dashboard')" style="margin-top:20px; border:none; color:var(--primary); background:none; cursor:pointer;">← Voltar</button>
+            <div class="card">
+                <h4>Por que funciona?</h4>
+                <p style="font-size: 0.9rem; margin-top: 10px;">A respiração controlada sinaliza ao sistema nervoso que você está seguro, reduzindo o cortisol quase instantaneamente.</p>
+            </div>
         </section>
 
-        <section id="ajuda" class="page">
-            <h2>Canais de Ajuda</h2>
-            <p>Você não está sozinho.</p>
-            <a href="tel:188" class="emergency-btn">Ligar para o CVV (188)</a>
-        </section>
-
-        <nav class="bottom-nav">
-            <button class="nav-btn active" onclick="navegar('dashboard')">
-                <i class="ph ph-house"></i>
-                <span>Início</span>
-            </button>
-            <button class="nav-btn" onclick="navegar('kit')">
-                <i class="ph ph-heart"></i>
-                <span>Kit</span>
-            </button>
-            <button class="nav-btn" onclick="navegar('ajuda')">
-                <i class="ph ph-first-aid"></i>
-                <span>Ajuda</span>
-            </button>
-        </nav>
-    </div>
-
-    <script>
-        // JAVASCRIPT - A LÓGICA
-        
-        // 1. Saudação Automática
-        const hora = new Date().getHours();
-        const saudacao = document.getElementById('greeting');
-        if (hora < 12) saudacao.innerText = "Bom dia!";
-        else if (hora < 18) saudacao.innerText = "Boa tarde!";
-        else saudacao.innerText = "Boa noite!";
-
-        // 2. Sistema de Troca de Páginas
-        function navegar(id) {
-            // Esconde todas as páginas
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            // Remove 'active' dos botões da nav
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-
-            // Mostra a página pedida
-            document.getElementById(id).classList.add('active');
-        }
-
-        // 3. Registro de Humor
-        function registrar(humor) {
-            alert("Humor registrado: " + humor + ". Continue cuidando de você!");
-        }
-    </script>
-</body>
-</html>
+        <section id="ensino" class="page">
+            <h2>Dicas e Estratégias</h2>
+            <div class="tip-card">
+                <h4>Identifique Gatilhos</h4>
+                <p>Anote o que aconteceu logo antes da ansiedade surgir. Foi um e-mail? Um pensamento?</p>
+            </div>
+            <div class="tip-card">
+                <h4>Regra 5-4-3-2-1</h4>
+                <p>Para crises: Identifique 5 coisas que vê, 4 que toca, 3 que ouve, 2 que cheira e 1 que sente o gosto.</p>
+            </div>
+            <div class="tip-card">
+                <h4>Lidando com a Aut
+                    
