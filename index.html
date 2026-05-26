@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MenteLeve - Seu Refúgio Mental</title>
+    <title>MenteLeve - Seu Refúgio</title>
     
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
@@ -12,7 +12,6 @@
         :root {
             --bg: #f8faff;
             --primary: #6c63ff;
-            --secondary: #4834d4;
             --white: #ffffff;
             --text: #2d3436;
             --accent: #a29bfe;
@@ -25,44 +24,76 @@
 
         #app {
             width: 100%; max-width: 450px; background: var(--bg);
-            min-height: 100vh; position: relative; padding-bottom: 100px;
-            box-shadow: 0 0 30px rgba(0,0,0,0.1); overflow-x: hidden;
+            min-height: 100vh; position: relative; padding-bottom: 90px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
         }
 
+        /* Interface Original Reinstalada */
         header {
-            padding: 30px 25px;
+            padding: 40px 25px;
             background: linear-gradient(135deg, var(--primary), var(--accent));
             color: white; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px;
         }
 
-        /* CARROSSEL */
-        .carousel-container { margin: -25px 20px 20px 20px; background: var(--white); padding: 15px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.08); text-align: center; min-height: 80px; display: flex; align-items: center; justify-content: center; }
-        .phrase-content { font-size: 0.9rem; font-style: italic; animation: fadeIn 1s; }
+        .carousel-container {
+            margin: -25px 20px 20px 20px;
+            background: var(--white);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            min-height: 100px;
+            display: flex; align-items: center; justify-content: center;
+        }
 
-        /* PÁGINAS */
-        .page { display: none; padding: 20px; animation: pageIn 0.3s ease; }
+        .page { display: none; padding: 20px; animation: fadeIn 0.4s ease; }
         .page.active { display: block; }
-        @keyframes pageIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .card { background: var(--white); padding: 20px; border-radius: 25px; box-shadow: 0 8px 20px rgba(0,0,0,0.04); margin-bottom: 20px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* IA PSICÓLOGA - CHATBOX */
-        .chat-container { display: flex; flex-direction: column; gap: 10px; max-height: 300px; overflow-y: auto; margin-bottom: 15px; padding: 5px; }
-        .bubble { padding: 12px 16px; border-radius: 15px; font-size: 0.9rem; max-width: 85%; line-height: 1.4; }
-        .bot { background: var(--accent); color: white; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .card {
+            background: var(--white); padding: 20px; border-radius: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.04); margin-bottom: 20px;
+        }
+
+        /* Grid de Cards Original */
+        .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; }
+        .menu-item {
+            background: var(--white); padding: 20px; border-radius: 20px;
+            display: flex; flex-direction: column; align-items: center;
+            cursor: pointer; transition: 0.3s; text-align: center;
+        }
+        .menu-item i { font-size: 2rem; color: var(--primary); margin-bottom: 8px; }
+        .menu-item span { font-weight: 600; font-size: 0.85rem; }
+
+        /* IA Chat Estilizado */
+        .chat-box { height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+        .bubble { padding: 10px 15px; border-radius: 18px; font-size: 0.85rem; max-width: 80%; line-height: 1.4; }
+        .bot { background: var(--primary); color: white; align-self: flex-start; border-bottom-left-radius: 2px; }
         .user { background: #eee; color: var(--text); align-self: flex-end; border-bottom-right-radius: 2px; }
 
-        /* RESPIRAÇÃO */
-        .breathing-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 250px; }
-        .circle-visual { width: 120px; height: 120px; background: var(--primary); border-radius: 50%; transition: 4s ease-in-out; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; }
-        .inhale-act { transform: scale(1.7); background: var(--success); }
+        /* Respiração Círculo */
+        .breathing-container { display: flex; flex-direction: column; align-items: center; padding: 20px 0; }
+        .circle-visual {
+            width: 130px; height: 130px; background: var(--primary);
+            border-radius: 50%; transition: 4s ease-in-out;
+            display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;
+        }
+        .inhale-act { transform: scale(1.6); background: var(--success); }
 
-        /* BOTÕES E INPUTS */
-        .btn-action { width: 100%; background: var(--primary); color: white; border: none; padding: 15px; border-radius: 15px; font-weight: 600; cursor: pointer; margin-top: 5px; }
-        input[type="text"] { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #ddd; outline: none; }
+        /* Inputs e Botões */
+        .mood-btns { display: flex; justify-content: space-between; margin: 15px 0; }
+        .mood-btn { border: none; background: #f0f2f5; font-size: 1.6rem; padding: 10px; border-radius: 12px; cursor: pointer; }
+        .mood-btn.selected { background: var(--accent); }
+        textarea, .chat-input { width: 100%; border: 1px solid #eee; border-radius: 12px; padding: 10px; outline: none; }
+        .btn-action { width: 100%; background: var(--primary); color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; margin-top: 10px; }
 
-        /* NAV */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 450px; background: white; display: flex; justify-content: space-around; padding: 15px; border-top: 1px solid #eee; }
+        /* Barra Inferior */
+        .bottom-nav {
+            position: fixed; bottom: 0; width: 100%; max-width: 450px;
+            background: white; display: flex; justify-content: space-around;
+            padding: 15px; border-top: 1px solid #eee;
+        }
         .nav-btn { border: none; background: none; color: #b2bec3; display: flex; flex-direction: column; align-items: center; cursor: pointer; font-size: 0.7rem; }
         .nav-btn.active { color: var(--primary); }
     </style>
@@ -72,44 +103,76 @@
     <div id="app">
         <header>
             <h1 id="greeting">Olá!</h1>
-            <p>Seu refúgio de paz hoje.</p>
+            <p>Seu espaço de autocuidado.</p>
         </header>
 
         <div class="carousel-container">
-            <p id="phrase-display" class="phrase-content">"O Senhor é o meu pastor, nada me faltará."</p>
+            <p id="phrase-display" style="font-style: italic; font-size: 0.9rem;">"O Senhor é o meu pastor, nada me faltará."</p>
         </div>
 
         <section id="dashboard" class="page active">
-            <div class="card" onclick="navegar('ia')" style="cursor: pointer; border-left: 5px solid var(--accent);">
-                <strong><i class="ph ph-chat-centered-dots"></i> Conversar com a IA</strong>
-                <p style="font-size: 0.8rem; color: #666;">Desabafe e receba orientações agora.</p>
+            <div class="card">
+                <h3>Como você está?</h3>
+                <div class="mood-btns">
+                    <button class="mood-btn" onclick="selectMood(this, 'Feliz')">😊</button>
+                    <button class="mood-btn" onclick="selectMood(this, 'Em paz')">😌</button>
+                    <button class="mood-btn" onclick="selectMood(this, 'Ansioso')">😟</button>
+                    <button class="mood-btn" onclick="selectMood(this, 'Triste')">😔</button>
+                </div>
+                <textarea id="moodNote" placeholder="O que está sentindo agora?"></textarea>
+                <button class="btn-action" onclick="saveEntry()">Salvar no Diário</button>
             </div>
-            <div class="card" onclick="navegar('kit')" style="cursor: pointer; border-left: 5px solid var(--primary);">
-                <strong><i class="ph ph-wind"></i> Exercício de Respiração</strong>
-                <p style="font-size: 0.8rem; color: #666;">Acalme seu corpo em 1 minuto.</p>
+
+            <div class="grid-menu">
+                <div class="menu-item" onclick="navegar('ia')">
+                    <i class="ph ph-chat-centered-dots"></i>
+                    <span>IA Amiga</span>
+                </div>
+                <div class="menu-item" onclick="navegar('kit')">
+                    <i class="ph ph-wind"></i>
+                    <span>Respirar</span>
+                </div>
+                <div class="menu-item" onclick="navegar('ensino')">
+                    <i class="ph ph-book-open"></i>
+                    <span>Dicas</span>
+                </div>
+                <div class="menu-item" onclick="window.location.href='tel:188'">
+                    <i class="ph ph-phone-call" style="color: var(--danger);"></i>
+                    <span>Ajuda 188</span>
+                </div>
             </div>
         </section>
 
         <section id="ia" class="page">
-            <h3>IA Amiga 🌿</h3>
-            <p style="font-size: 0.7rem; color: gray; margin-bottom: 10px;">Apoio educacional. Em caso de crise, ligue 188.</p>
+            <h2 style="margin-bottom: 15px;">Conversar com a IA</h2>
             <div class="card">
-                <div class="chat-container" id="chatBox">
-                    <div class="bubble bot">Olá! Eu sou sua assistente de bem-estar. Como você está se sentindo hoje? Pode me contar o que quiser.</div>
+                <div class="chat-box" id="chatBox">
+                    <div class="bubble bot">Olá! Sou sua assistente virtual. No que posso te ajudar hoje?</div>
                 </div>
-                <div style="display: flex; gap: 5px;">
-                    <input type="text" id="userInput" placeholder="Digite aqui...">
-                    <button class="btn-action" style="width: 50px; margin: 0;" onclick="askIA()"><i class="ph ph-paper-plane-right"></i></button>
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="userInput" class="chat-input" placeholder="Pergunte algo...">
+                    <button class="btn-action" style="width: 50px; margin: 0;" onclick="askIA()">
+                        <i class="ph ph-paper-plane-right"></i>
+                    </button>
                 </div>
             </div>
+            <p style="font-size: 0.7rem; color: #999; text-align: center;">IA Educacional. Para crises, ligue 188.</p>
         </section>
 
         <section id="kit" class="page">
-            <h2 style="text-align: center;">Respire</h2>
+            <h2 style="text-align: center; margin-bottom: 20px;">Respiração Guiada</h2>
             <div class="breathing-container">
                 <div id="visualCircle" class="circle-visual">Iniciar</div>
-                <h3 id="breatheText" style="margin-top: 30px; color: var(--primary);">Toque no botão</h3>
-                <button class="btn-action" onclick="toggleBreathing()" id="btnStartStop">Começar</button>
+                <h3 id="breatheText" style="margin-top: 30px; color: var(--primary);">Pronto?</h3>
+                <button class="btn-action" onclick="toggleBreathing()" id="btnStartStop">Começar Exercício</button>
+            </div>
+        </section>
+
+        <section id="ensino" class="page">
+            <h2>Dicas de Bem-estar</h2>
+            <div class="card">
+                <h4>Regra 5-4-3-2-1</h4>
+                <p style="font-size: 0.85rem; margin-top: 5px;">Tente focar em: 5 coisas que vê, 4 que toca, 3 que ouve, 2 que cheira e 1 sabor.</p>
             </div>
         </section>
 
@@ -117,18 +180,19 @@
             <button class="nav-btn active" onclick="navegar('dashboard')"><i class="ph ph-house"></i><span>Início</span></button>
             <button class="nav-btn" onclick="navegar('ia')"><i class="ph ph-robot"></i><span>IA Amiga</span></button>
             <button class="nav-btn" onclick="navegar('kit')"><i class="ph ph-wind"></i><span>Respirar</span></button>
+            <button class="nav-btn" onclick="navegar('ensino')"><i class="ph ph-lightbulb"></i><span>Dicas</span></button>
         </nav>
     </div>
 
     <script>
-        // 1. CARROSSEL
+        // 1. CARROSSEL DE FRASES
         const frases = [
             '"O Senhor é o meu pastor, nada me faltará." (Salmo 23:1)',
             '"Vinde a mim, todos os que estais cansados." (Mateus 11:28)',
-            '"A jornada de mil milhas começa com um passo."',
-            '"Respirar é um superpoder."',
-            '"Você não é seus pensamentos."',
-            '"O choro dura uma noite, a alegria vem pela manhã."'
+            '"Respirar fundo é o primeiro passo para a calma."',
+            '"Cada dia é uma nova oportunidade de recomeçar."',
+            '"Seja gentil com a sua mente."',
+            '"O choro pode durar uma noite, a alegria vem pela manhã."'
         ];
         let fIdx = 0;
         setInterval(() => {
@@ -141,20 +205,22 @@
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            event.currentTarget.classList.add('active');
+            // Ativa o botão da nav corretamente
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if(btn.onclick.toString().includes(id)) btn.classList.add('active');
+            });
             if(id !== 'kit') stopBreathing();
         }
 
-        // 3. IA PSICÓLOGA (Lógica de Respostas)
+        // 3. IA PSICÓLOGA (Base de Conhecimento)
         const respostas = {
-            "ansiedade": "A ansiedade é como um alarme que toca sem perigo real. Vamos focar na sua respiração agora? Use nossa aba 'Respirar'.",
-            "triste": "Sinto muito que esteja passando por isso. É importante validar o que sente. Você já tentou escrever o que causou essa tristeza?",
-            "medo": "O medo tenta nos proteger, mas às vezes ele exagera. O que de pior poderia acontecer? E como você lidaria com isso?",
-            "dormir": "Para dormir melhor, evite telas 30 minutos antes e tente a técnica de relaxamento muscular progressivo.",
-            "deus": "Deus está perto dos que têm o coração quebrantado. Ele ouve a sua voz mesmo no silêncio.",
-            "sozinho": "Você não está sozinho. Eu estou aqui para te ouvir e existem muitas pessoas que se importam com você. Já pensou em ligar para um amigo hoje?",
-            "ajuda": "Pedir ajuda é um sinal de extrema força. Se as coisas estiverem muito pesadas, recomendo conversar com um terapeuta ou ligar para o CVV no 188.",
-            "default": "Entendo. Conte-me mais sobre isso. Como isso faz você se sentir fisicamente?"
+            "ansiedade": "A ansiedade é uma reação natural, mas você pode controlá-la. Vamos tentar o exercício de respiração na aba ao lado?",
+            "triste": "Sinto muito que esteja triste. Chorar e expressar sentimentos faz parte da cura. Escreva no nosso diário o que te aflige.",
+            "medo": "O medo é real, mas ele não define seu futuro. Foque no que você pode controlar hoje.",
+            "ajuda": "Se precisar conversar com alguém humano agora, o CVV (188) está disponível 24h gratuitamente.",
+            "dormir": "Tente desligar as luzes e respirar fundo 10 vezes. Evite o celular agora.",
+            "deus": "Ele cuida de você. 'Lançando sobre Ele toda a vossa ansiedade, porque Ele tem cuidado de vós.' (1 Pedro 5:7)",
+            "default": "Entendo. Me conte mais sobre isso. Estou aqui para te ouvir."
         };
 
         function askIA() {
@@ -162,23 +228,16 @@
             const chat = document.getElementById('chatBox');
             if(!input.value) return;
 
-            // Mensagem do Usuário
             chat.innerHTML += `<div class="bubble user">${input.value}</div>`;
-            
-            // Lógica de Resposta
             const msg = input.value.toLowerCase();
             let r = respostas["default"];
 
-            for(let chave in respostas) {
-                if(msg.includes(chave)) { r = respostas[chave]; break; }
-            }
+            for(let k in respostas) { if(msg.includes(k)) r = respostas[k]; }
 
-            // Simular atraso de resposta
             setTimeout(() => {
                 chat.innerHTML += `<div class="bubble bot">${r}</div>`;
                 chat.scrollTop = chat.scrollHeight;
             }, 600);
-
             input.value = "";
             chat.scrollTop = chat.scrollHeight;
         }
@@ -187,10 +246,9 @@
         let breathing = false;
         let bInterval;
         function toggleBreathing() {
+            const btn = document.getElementById('btnStartStop');
             if(!breathing) {
-                breathing = true;
-                document.getElementById('btnStartStop').innerText = "Parar";
-                document.getElementById('btnStartStop').style.background = "var(--danger)";
+                breathing = true; btn.innerText = "Parar"; btn.style.background = "var(--danger)";
                 startCycle();
             } else { stopBreathing(); }
         }
@@ -200,7 +258,7 @@
             const t = document.getElementById('breatheText');
             function loop() {
                 if(!breathing) return;
-                t.innerText = "Inspire..."; c.classList.add('inhale-act'); c.innerText = "";
+                t.innerText = "Inspire..."; c.classList.add('inhale-act');
                 setTimeout(() => {
                     if(!breathing) return;
                     t.innerText = "Segure...";
@@ -220,8 +278,22 @@
             document.getElementById('btnStartStop').style.background = "var(--primary)";
             document.getElementById('visualCircle').classList.remove('inhale-act');
             document.getElementById('visualCircle').innerText = "Iniciar";
-            document.getElementById('breatheText').innerText = "Exercício parado.";
         }
+
+        // 5. HUMOR
+        let mSelected = "";
+        function selectMood(btn, mood) {
+            document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected'); mSelected = mood;
+        }
+        function saveEntry() {
+            if(!mSelected) return alert("Selecione um humor.");
+            alert("Registrado: " + mSelected + ". Continue cuidando de você!");
+            document.getElementById('moodNote').value = "";
+        }
+
+        const h = new Date().getHours();
+        document.getElementById('greeting').innerText = h < 12 ? "Bom dia!" : h < 18 ? "Boa tarde!" : "Boa noite!";
     </script>
 </body>
 </html>
