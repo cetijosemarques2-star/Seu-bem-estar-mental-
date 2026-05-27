@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MenteLeve - Evolução & Literatura</title>
+    <title>MenteLeve - Oficial</title>
     
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -52,10 +52,11 @@
         /* --- GRÁFICO --- */
         .chart-container {
             display: flex; align-items: flex-end; justify-content: space-between;
-            height: 120px; padding: 10px 5px; border-bottom: 2px solid var(--border); margin-bottom: 30px;
+            height: 120px; padding: 10px 10px; border-bottom: 2px solid var(--border); margin-bottom: 30px;
+            gap: 8px;
         }
-        .chart-bar { width: 24px; background: var(--primary); border-radius: 6px 6px 0 0; position: relative; min-height: 5px; transition: height 0.5s ease-in-out; }
-        .chart-label { position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%); font-size: 0.6rem; font-weight: 700; }
+        .chart-bar { flex: 1; background: var(--primary); border-radius: 6px 6px 0 0; position: relative; min-height: 5px; transition: height 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .chart-label { position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%); font-size: 0.6rem; font-weight: 700; color: var(--text-sub); }
 
         /* --- RESPIRAÇÃO --- */
         .circle-wrap { height: 200px; display: flex; align-items: center; justify-content: center; margin: 20px 0; }
@@ -67,7 +68,11 @@
         }
         .expanding { transform: scale(1.5); background: var(--success); }
 
-        .btn-main { width: 100%; background: var(--primary); color: white; border: none; padding: 14px; border-radius: 15px; font-weight: 700; cursor: pointer; }
+        .btn-main { width: 100%; background: var(--primary); color: white; border: none; padding: 14px; border-radius: 15px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-danger { background: var(--danger); }
+        
+        input, textarea { width: 100%; background: var(--bg); border: none; border-radius: 12px; padding: 12px; color: var(--text-main); outline: none; margin-bottom: 10px; }
+
         .nav-bar {
             position: fixed; bottom: 0; width: 100%; max-width: 450px;
             background: var(--card); display: flex; justify-content: space-around;
@@ -76,8 +81,6 @@
         .nav-item { border: none; background: none; color: var(--text-sub); display: flex; flex-direction: column; align-items: center; cursor: pointer; flex: 1; }
         .nav-item.active { color: var(--primary); }
         .nav-item span { font-size: 0.6rem; font-weight: 600; margin-top: 3px; }
-        
-        input, textarea { width: 100%; background: var(--bg); border: none; border-radius: 12px; padding: 12px; color: var(--text-main); outline: none; margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -101,14 +104,13 @@
 
         <section id="stats" class="page active">
             <div class="card">
-                <h3>Sua Evolução Visual</h3>
-                <div class="chart-container" id="moodChart">
-                    </div>
+                <h3>Sua Jornada</h3>
+                <div class="chart-container" id="moodChart"></div>
             </div>
             <div class="card">
-                <h3>Gratidão Diária 🙏</h3>
+                <h3>Gratidão 🙏</h3>
                 <div style="display: flex; gap: 5px; margin-bottom: 10px;">
-                    <input type="text" id="gratitudeInput" placeholder="Sou grato por..." style="margin:0;">
+                    <input type="text" id="gratitudeInput" placeholder="Pelo que é grato hoje?" style="margin:0;">
                     <button id="btnAddGratitude" style="background: var(--success); border:none; color:white; padding:10px; border-radius:10px;"><i class="ph ph-plus"></i></button>
                 </div>
                 <div id="gratitudeList"></div>
@@ -117,42 +119,57 @@
 
         <section id="home" class="page">
             <div class="card">
-                <h3>Como está seu humor agora?</h3>
+                <h3>Como você se sente?</h3>
                 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 15px 0;">
-                    <button class="mood-btn" data-val="5" onclick="registerMood(5, '🤩')">🤩</button>
-                    <button class="mood-btn" data-val="4" onclick="registerMood(4, '😊')">😊</button>
-                    <button class="mood-btn" data-val="4" onclick="registerMood(4, '😌')">😌</button>
-                    <button class="mood-btn" data-val="4" onclick="registerMood(4, '🙏')">🙏</button>
-                    <button class="mood-btn" data-val="2" onclick="registerMood(2, '😟')">😟</button>
-                    <button class="mood-btn" data-val="1" onclick="registerMood(1, '😔')">😔</button>
-                    <button class="mood-btn" data-val="1" onclick="registerMood(1, '😤')">😤</button>
-                    <button class="mood-btn" data-val="3" onclick="registerMood(3, '😴')">😴</button>
+                    <button class="mood-btn" onclick="registerMood(5, '🤩')">🤩</button>
+                    <button class="mood-btn" onclick="registerMood(4, '😊')">😊</button>
+                    <button class="mood-btn" onclick="registerMood(4, '😌')">😌</button>
+                    <button class="mood-btn" onclick="registerMood(4, '🙏')">🙏</button>
+                    <button class="mood-btn" onclick="registerMood(2, '😟')">😟</button>
+                    <button class="mood-btn" onclick="registerMood(1, '😔')">😔</button>
+                    <button class="mood-btn" onclick="registerMood(1, '😤')">😤</button>
+                    <button class="mood-btn" onclick="registerMood(3, '😴')">😴</button>
                 </div>
-                <textarea id="note" placeholder="Deseja registrar algum pensamento?"></textarea>
+                <textarea id="note" placeholder="Quer escrever algo?"></textarea>
                 <button class="btn-main" onclick="saveDiary()">Salvar Registro</button>
             </div>
         </section>
 
         <section id="breathe" class="page">
             <div class="card" style="text-align: center;">
-                <h3>Pausa para Respirar</h3>
+                <h3>Respire Fundo</h3>
                 <div class="circle-wrap">
                     <div class="circle" id="bCircle">Paz</div>
                 </div>
-                <button class="btn-main" id="bBtn" onclick="toggleBreathe()">Começar</button>
+                <button class="btn-main" id="bBtn" onclick="toggleBreathe()">Começar Exercício</button>
             </div>
         </section>
 
         <section id="inspire" class="page">
             <h3>Refúgio Literário 📖</h3>
-            <div class="card"><h4>Confiança</h4><p>"Entrega o teu caminho ao Senhor; confia nele, e ele tudo fará." (Salmo 37:5)</p></div>
-            <div class="card"><h4>Descanso</h4><p>"Vinde a mim todos os que estais cansados e sobrecarregados, e eu vos aliviarei." (Mateus 11:28)</p></div>
-            <div class="card"><h4>Superação</h4><p>"O que não me mata, me fortalece." - Friedrich Nietzsche</p></div>
-            <div class="card"><h4>Calma</h4><p>"Aquilo que você foca, se expande. Foque na sua paz hoje."</p></div>
-            <div class="card"><h4>Força Interna</h4><p>"Você tem dentro de si uma força capaz de mudar o seu mundo."</p></div>
-            <div class="card"><h4>Recomeço</h4><p>"Cada manhã traz uma nova oportunidade de ser quem você deseja."</p></div>
-            <div class="card"><h4>Gratidão</h4><p>"A gratidão transforma o que temos em suficiente."</p></div>
-            <div class="card"><h4>Paciência</h4><p>"Não apresse o rio, ele corre sozinho. Confie no tempo."</p></div>
+            <div class="card"><h4>Paz Interior</h4><p>"Não se turbe o vosso coração." (João 14:1)</p></div>
+            <div class="card"><h4>Descanso</h4><p>"Vinde a mim todos os que estais cansados." (Mateus 11:28)</p></div>
+            <div class="card"><h4>Esperança</h4><p>"A alegria vem pela manhã." (Salmo 30:5)</p></div>
+            <div class="card"><h4>Resiliência</h4><p>"Você é mais forte do que imagina."</p></div>
+            <div class="card"><h4>Calma</h4><p>"Um passo de cada vez é o suficiente."</p></div>
+        </section>
+
+        <section id="help" class="page">
+            <h3>Central de Ajuda</h3>
+            <div class="card">
+                <h4>Contato de Emergência</h4>
+                <input type="text" id="emergencyName" placeholder="Nome (Ex: Mãe)">
+                <input type="tel" id="emergencyPhone" placeholder="Número com DDD">
+                <button class="btn-main" onclick="saveEmergency()">Salvar Contato</button>
+                <div id="emergencyContactDisplay" style="margin-top:15px; display:none;">
+                    <button class="btn-main btn-danger" onclick="callEmergency()"><i class="ph ph-phone"></i> Ligar para <span id="eNameSpan"></span></button>
+                </div>
+            </div>
+            <div class="card">
+                <h4>Apoio Profissional</h4>
+                <p style="font-size:0.8rem; margin-bottom:10px;">O CVV oferece apoio emocional gratuito e sigiloso 24h.</p>
+                <button class="btn-main btn-danger" onclick="window.location.href='tel:188'"><i class="ph ph-phone"></i> Ligar para o CVV (188)</button>
+            </div>
         </section>
 
         <nav class="nav-bar">
@@ -192,6 +209,7 @@
                 document.getElementById('welcome-overlay').style.display = 'none';
                 document.getElementById('displayHeaderName').innerText = "Olá, " + userName;
             }
+            loadEmergency();
             syncFirebase();
         };
 
@@ -217,7 +235,7 @@
         window.registerMood = (v, emoji) => {
             push(ref(db, 'users/' + userId + '/history'), v);
             updatePts(5);
-            alert("Humor " + emoji + " registrado no mural!");
+            alert("Humor registrado!");
         };
 
         window.addGratitude = () => {
@@ -240,7 +258,8 @@
             last7.forEach((val, i) => {
                 const bar = document.createElement('div');
                 bar.className = 'chart-bar';
-                bar.style.height = (val * 20) + 'px';
+                // Altura baseada no valor 1-5
+                bar.style.height = (val * 20) + '%';
                 bar.innerHTML = `<div class="chart-label">R${i+1}</div>`;
                 container.appendChild(bar);
             });
@@ -254,6 +273,30 @@
                 </div>
             `).join('');
         }
+
+        // --- AJUDA & EMERGÊNCIA ---
+        window.saveEmergency = () => {
+            const n = document.getElementById('emergencyName').value;
+            const p = document.getElementById('emergencyPhone').value;
+            if(!n || !p) return alert("Preencha o nome e o telefone!");
+            localStorage.setItem('ml_e_name', n);
+            localStorage.setItem('ml_e_phone', p);
+            loadEmergency();
+            alert("Contato salvo!");
+        };
+
+        function loadEmergency() {
+            const n = localStorage.getItem('ml_e_name');
+            if(n) {
+                document.getElementById('emergencyContactDisplay').style.display = 'block';
+                document.getElementById('eNameSpan').innerText = n;
+            }
+        }
+
+        window.callEmergency = () => {
+            const p = localStorage.getItem('ml_e_phone');
+            window.location.href = "tel:" + p;
+        };
 
         // --- RESPIRAÇÃO ---
         let bOn = false, bInt;
@@ -274,7 +317,7 @@
                 cycle();
             } else {
                 bOn = false; clearTimeout(bInt);
-                btn.innerText = "Começar"; circ.innerText = "Paz";
+                btn.innerText = "Começar Exercício"; circ.innerText = "Paz";
                 circ.classList.remove('expanding');
                 updatePts(2);
             }
@@ -289,7 +332,7 @@
         };
 
         window.toggleDark = () => document.body.classList.toggle('dark-mode');
-        window.saveDiary = () => { alert("Pensamento guardado com segurança."); updatePts(10); document.getElementById('note').value = ""; };
+        window.saveDiary = () => { alert("Pensamento salvo!"); updatePts(10); document.getElementById('note').value = ""; };
 
         document.getElementById('btnEnter').onclick = window.enterApp;
         document.getElementById('btnAddGratitude').onclick = window.addGratitude;
