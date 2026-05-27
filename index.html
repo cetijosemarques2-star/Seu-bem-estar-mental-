@@ -23,6 +23,14 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; transition: all 0.2s ease; }
         body { background-color: #cbd5e0; display: flex; justify-content: center; min-height: 100vh; color: var(--text-main); }
 
+        /* --- TELA DE BOAS-VINDAS --- */
+        #welcome-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 30px; text-align: center; color: white;
+        }
+
         #app {
             width: 100%; max-width: 450px; background: var(--bg);
             min-height: 100vh; position: relative; display: flex; flex-direction: column;
@@ -51,23 +59,14 @@
         .chart-label { position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%); font-size: 0.6rem; font-weight: 700; }
 
         /* --- GRATIDÃO --- */
-        .gratitude-list { display: flex; flex-direction: column; gap: 8px; }
-        .gratitude-item { background: var(--bg); padding: 10px; border-radius: 12px; font-size: 0.85rem; display: flex; gap: 10px; }
+        .gratitude-item { background: var(--bg); padding: 10px; border-radius: 12px; font-size: 0.85rem; display: flex; gap: 10px; margin-bottom: 8px;}
 
-        /* --- IA E RESPIRAÇÃO --- */
+        /* --- IA E CONTEÚDO --- */
         .chat-box { height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
-        .bubble { padding: 12px; border-radius: 18px; font-size: 0.85rem; max-width: 85%; line-height: 1.4; }
+        .bubble { padding: 12px; border-radius: 18px; font-size: 0.85rem; max-width: 85%; }
         .bot { background: var(--primary); color: white; align-self: flex-start; border-bottom-left-radius: 2px; }
         .user { background: var(--chat-user); color: var(--text-main); align-self: flex-end; border-bottom-right-radius: 2px; }
 
-        .circle {
-            width: 140px; height: 140px; background: var(--primary); border-radius: 50%;
-            margin: 20px auto; display: flex; align-items: center; justify-content: center;
-            color: white; font-weight: 700; transition: 4s ease-in-out;
-        }
-        .expanding { transform: scale(1.4); background: var(--success); }
-
-        /* --- UI CONTROLS --- */
         .btn-main { width: 100%; background: var(--primary); color: white; border: none; padding: 14px; border-radius: 15px; font-weight: 700; cursor: pointer; }
         .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); padding: 12px; border-radius: 15px; font-weight: 700; width: 100%; margin-top: 10px; cursor: pointer;}
         
@@ -85,10 +84,18 @@
 </head>
 <body>
 
+    <div id="welcome-overlay">
+        <i class="ph ph-sparkle-fill" style="font-size: 3.5rem; margin-bottom: 20px;"></i>
+        <h1>Bem-vindo!</h1>
+        <p style="margin-bottom: 25px; opacity: 0.9;">Como podemos te chamar?</p>
+        <input type="text" id="userNameInput" placeholder="Seu nome aqui..." style="width: 100%; max-width: 300px; text-align: center; background: white; color: #333;">
+        <button class="btn-main" style="background: white; color: var(--primary); max-width: 300px;" onclick="enterApp()">Entrar</button>
+    </div>
+
     <div id="app">
         <header>
             <div>
-                <h2 style="margin:0; font-size: 1.1rem;">MenteLeve</h2>
+                <h2 id="displayHeaderName" style="margin:0; font-size: 1.1rem;">MenteLeve</h2>
                 <div style="font-size: 0.75rem; opacity: 0.9;"><i class="ph ph-sparkle-fill"></i> <span id="pts">0</span> Pontos</div>
             </div>
             <button onclick="toggleDark()" style="background:none; border:none; color:white; font-size: 1.4rem;"><i class="ph ph-moon-stars"></i></button>
@@ -102,13 +109,11 @@
 
             <div class="card">
                 <h3>Mural da Gratidão 🙏</h3>
-                <p style="font-size: 0.8rem; margin-bottom: 10px;">Pelo que você é grato hoje?</p>
                 <div style="display: flex; gap: 5px; margin-bottom: 10px;">
-                    <input type="text" id="gratitudeInput" placeholder="Ex: Pela minha família" style="margin:0;">
+                    <input type="text" id="gratitudeInput" placeholder="Pelo que é grato hoje?" style="margin:0;">
                     <button onclick="addGratitude()" style="background: var(--success); border:none; color:white; padding:10px; border-radius:10px;"><i class="ph ph-plus"></i></button>
                 </div>
-                <div class="gratitude-list" id="gratitudeList">
-                    </div>
+                <div id="gratitudeList"></div>
             </div>
         </section>
 
@@ -119,11 +124,7 @@
                     <button style="border:none; background:none; font-size:1.8rem;" onclick="registerMood(5, '🤩')">🤩</button>
                     <button style="border:none; background:none; font-size:1.8rem;" onclick="registerMood(4, '😊')">😊</button>
                     <button style="border:none; background:none; font-size:1.8rem;" onclick="registerMood(3, '😌')">😌</button>
-                    <button style="border:none; background:none; font-size:1.8rem;" onclick="registerMood(3, '😴')">😴</button>
                     <button style="border:none; background:none; font-size:1.8rem;" onclick="registerMood(2, '😟')">😟</button>
-                    <button style="border:none; background:none; font-size:1.8rem;" onclick="registerMood(1, '😔')">😔</button>
-                    <button style="border:none; background:none; font-size:1.8rem;" onclick="registerMood(1, '😤')">😤</button>
-                    <button style="border:none; background:none; font-size:1.8rem;" onclick="registerMood(2, '😰')">😰</button>
                 </div>
                 <textarea id="note" placeholder="O que houve hoje?"></textarea>
                 <button class="btn-main" onclick="saveData()">Salvar no Diário</button>
@@ -133,46 +134,41 @@
         <section id="chat" class="page">
             <div class="card">
                 <div class="chat-box" id="chatContent">
-                    <div class="bubble bot">Oi! Sou sua IA. Como posso te apoiar agora?</div>
+                    <div class="bubble bot">Oi! Estou aqui para te ouvir. Como foi seu dia?</div>
                 </div>
                 <div style="display:flex; gap:8px;">
                     <input type="text" id="chatInput" placeholder="Fale comigo..." style="margin:0;">
                     <button class="btn-main" style="width: 50px;" onclick="sendMsg()"><i class="ph ph-paper-plane"></i></button>
                 </div>
-                <button class="btn-outline" onclick="aiReport()"><i class="ph ph-magic-wand"></i> Análise Semanal da IA</button>
+                <button class="btn-outline" onclick="aiReport()">Análise Semanal da IA</button>
             </div>
         </section>
 
         <section id="inspire" class="page">
             <h3>Refúgio Literário 📖</h3>
             <div class="card">
-                <h4>Para momentos de medo</h4>
-                <p>"A coragem não é a ausência do medo, mas o julgamento de que algo é mais importante que ele."</p>
+                <h4>Paz Interior</h4>
+                <p>"Não se turbe o vosso coração." (João 14:1)</p>
             </div>
             <div class="card">
-                <h4>Um abraço na alma</h4>
-                <p>"Você não precisa carregar o mundo nas costas. Descanse um pouco, o sol nascerá amanhã de qualquer forma."</p>
-            </div>
-            <div class="card">
-                <h4>Versículo de Paz</h4>
-                <p>"Lançando sobre ele toda a vossa ansiedade, porque ele tem cuidado de vós." (1 Pedro 5:7)</p>
+                <h4>Coragem</h4>
+                <p>"Tudo passa. O que é bom, o que é ruim. Mantenha a calma."</p>
             </div>
         </section>
 
         <section id="help" class="page">
-            <h3>Apoio e Dicas</h3>
+            <h3>Apoio</h3>
             <div class="card">
-                <h4>Contato de Emergência Privado</h4>
-                <input type="text" id="emergencyName" placeholder="Nome do amigo" style="font-size:0.8rem;">
-                <input type="tel" id="emergencyPhone" placeholder="Número com DDD" style="font-size:0.8rem;">
-                <button class="btn-main" onclick="saveEmergency()">Salvar Contato</button>
+                <h4>Contato de Emergência</h4>
+                <input type="text" id="emergencyName" placeholder="Nome do amigo">
+                <input type="tel" id="emergencyPhone" placeholder="Número">
+                <button class="btn-main" onclick="saveEmergency()">Salvar</button>
                 <div id="emergencyContact" style="margin-top:15px; display:none;">
-                    <button class="btn-main" style="background:var(--danger);" onclick="callEmergency()"><i class="ph ph-phone"></i> Ligar para <span id="eNameDisplay"></span></button>
+                    <button class="btn-main" style="background:var(--danger);" onclick="callEmergency()"><i class="ph ph-phone"></i> Ligar</button>
                 </div>
             </div>
             <div class="card">
-                <h4>Socorro Profissional</h4>
-                <button class="btn-main" style="background:#ff7675;" onclick="window.location.href='tel:188'"><i class="ph ph-phone"></i> Ligar para o CVV (188)</button>
+                <button class="btn-main" style="background:#ff7675;" onclick="window.location.href='tel:188'">Ligar CVV (188)</button>
             </div>
         </section>
 
@@ -186,18 +182,30 @@
     </div>
 
     <script>
-        let moodHistory = JSON.parse(localStorage.getItem('ml_h')) || [3, 4, 2, 5, 3];
+        let moodHistory = JSON.parse(localStorage.getItem('ml_h')) || [3, 4, 3, 5, 2];
         let pts = parseInt(localStorage.getItem('ml_p')) || 0;
         let gratitudes = JSON.parse(localStorage.getItem('ml_g')) || [];
+        let storedName = localStorage.getItem('ml_user_name');
 
         function init() {
+            if(storedName) {
+                document.getElementById('welcome-overlay').style.display = 'none';
+                document.getElementById('displayHeaderName').innerText = "Olá, " + storedName;
+            }
             renderChart();
             renderGratitude();
             loadEmergency();
             document.getElementById('pts').innerText = pts;
         }
 
-        // --- GRÁFICO ---
+        function enterApp() {
+            const name = document.getElementById('userNameInput').value;
+            if(!name) return alert("Por favor, diga como podemos te chamar!");
+            localStorage.setItem('ml_user_name', name);
+            location.reload();
+        }
+
+        // Funções de Mural, Mood, etc (Mantidas)
         function renderChart() {
             const chart = document.getElementById('moodChart');
             chart.innerHTML = "";
@@ -214,11 +222,10 @@
             moodHistory.push(val);
             localStorage.setItem('ml_h', JSON.stringify(moodHistory));
             renderChart();
-            alert("Humor " + emoji + " registrado!");
+            alert("Humor registrado!");
             addPts(5);
         }
 
-        // --- GRATIDÃO ---
         function addGratitude() {
             const i = document.getElementById('gratitudeInput');
             if(!i.value) return;
@@ -235,36 +242,6 @@
             list.innerHTML = gratitudes.map(g => `<div class="gratitude-item"><i class="ph ph-heart" style="color:var(--danger)"></i> ${g}</div>`).join('');
         }
 
-        // --- EMERGÊNCIA ---
-        function saveEmergency() {
-            const n = document.getElementById('emergencyName').value;
-            const p = document.getElementById('emergencyPhone').value;
-            if(!n || !p) return alert("Preencha o contato!");
-            localStorage.setItem('ml_e_n', n);
-            localStorage.setItem('ml_e_p', p);
-            loadEmergency();
-        }
-
-        function loadEmergency() {
-            const n = localStorage.getItem('ml_e_n');
-            if(n) {
-                document.getElementById('emergencyContact').style.display = 'block';
-                document.getElementById('eNameDisplay').innerText = n;
-            }
-        }
-
-        function callEmergency() {
-            window.location.href = "tel:" + localStorage.getItem('ml_e_p');
-        }
-
-        // --- IA REPORT ---
-        function aiReport() {
-            const avg = moodHistory.reduce((a,b) => a+b, 0) / moodHistory.length;
-            let msg = avg > 3 ? "Você teve uma semana estável! Continue cultivando bons hábitos." : "Sua semana foi desafiadora. Que tal focar em descansar mais hoje?";
-            alert("Análise da IA:\n\n" + msg);
-        }
-
-        // --- BÁSICOS ---
         function tab(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -272,22 +249,27 @@
             event.currentTarget.classList.add('active');
         }
 
-        function sendMsg() {
+        function toggleDark() { document.body.classList.toggle('dark-mode'); }
+        function addPts(v) { pts += v; localStorage.setItem('ml_p', pts); document.getElementById('pts').innerText = pts; }
+        function saveData() { alert("Salvo!"); addPts(10); }
+        function sendMsg() { 
             const i = document.getElementById('chatInput');
             const c = document.getElementById('chatContent');
             if(!i.value) return;
             c.innerHTML += `<div class="bubble user">${i.value}</div>`;
-            setTimeout(() => {
-                c.innerHTML += `<div class="bubble bot">Estou aqui processando seus sentimentos... Lembre-se que você é forte!</div>`;
-                c.scrollTop = c.scrollHeight;
-                addPts(2);
-            }, 600);
+            setTimeout(() => { c.innerHTML += `<div class="bubble bot">Estou ouvindo... conte mais.</div>`; c.scrollTop = c.scrollHeight; }, 600);
             i.value = "";
         }
-
-        function addPts(v) { pts += v; localStorage.setItem('ml_p', pts); document.getElementById('pts').innerText = pts; }
-        function toggleDark() { document.body.classList.toggle('dark-mode'); }
-        function saveData() { alert("Diário atualizado!"); document.getElementById('note').value = ""; addPts(10); }
+        function saveEmergency() { 
+            localStorage.setItem('ml_e_n', document.getElementById('emergencyName').value);
+            localStorage.setItem('ml_e_p', document.getElementById('emergencyPhone').value);
+            loadEmergency();
+        }
+        function loadEmergency() {
+            if(localStorage.getItem('ml_e_n')) document.getElementById('emergencyContact').style.display = 'block';
+        }
+        function callEmergency() { window.location.href = "tel:" + localStorage.getItem('ml_e_p'); }
+        function aiReport() { alert("Você está evoluindo bem!"); }
 
         init();
     </script>
