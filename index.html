@@ -3,276 +3,318 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MenteLeve - Seu Web App</title>
+    <title>MenteLeve - Equilíbrio</title>
     
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg: #f8faff; --card: #ffffff; --text: #2d3436;
-            --primary: #6c63ff; --accent: #a29bfe;
-            --danger: #ff7675; --success: #00b894;
+            --bg: #f0f4f8;
+            --card: #ffffff;
+            --text-main: #2d3436;
+            --text-sub: #636e72;
+            --primary: #6c63ff;
+            --accent: #a29bfe;
+            --danger: #ff7675;
+            --success: #00b894;
+            --chat-user: #dfe6e9;
         }
 
         .dark-mode {
-            --bg: #1a1a2e; --card: #16213e; --text: #e9ecef;
-            --primary: #a29bfe; --accent: #6c63ff;
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text-main: #f1f5f9;
+            --text-sub: #94a3b8;
+            --primary: #818cf8;
+            --accent: #4f46e5;
+            --chat-user: #334155;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; transition: background 0.3s, color 0.3s; }
-        body { background-color: #e0e6ed; display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; transition: all 0.2s ease; }
+        
+        body { background-color: #d1d8e0; display: flex; justify-content: center; min-height: 100vh; color: var(--text-main); }
 
         #app {
             width: 100%; max-width: 450px; background: var(--bg);
             min-height: 100vh; position: relative; display: flex; flex-direction: column;
-            box-shadow: 0 0 30px rgba(0,0,0,0.1); color: var(--text); padding-bottom: 80px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.2); padding-bottom: 90px;
         }
 
         header {
-            padding: 25px; background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: white; border-bottom-left-radius: 35px; border-bottom-right-radius: 35px;
+            padding: 30px 20px; background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px;
             display: flex; justify-content: space-between; align-items: center;
         }
 
-        .stats-badge { background: rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
-
-        .carousel-container {
-            margin: -20px 20px 15px 20px; background: var(--card); padding: 15px;
-            border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            text-align: center; min-height: 80px; display: flex; align-items: center; justify-content: center;
+        .welcome-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--primary); z-index: 1000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 40px; color: white; text-align: center;
         }
 
-        .page { display: none; padding: 20px; animation: fadeIn 0.3s ease; }
+        .page { display: none; padding: 20px; animation: slideUp 0.3s ease; }
         .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        .card { background: var(--card); padding: 20px; border-radius: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); margin-bottom: 15px; }
+        .card { background: var(--card); padding: 20px; border-radius: 24px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
 
-        /* Grade de Humor com Variedade */
-        .mood-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 15px 0; }
-        .mood-btn { border: none; background: none; font-size: 1.8rem; cursor: pointer; transition: transform 0.2s; }
-        .mood-btn:active { transform: scale(1.3); }
+        h2, h3 { font-weight: 700; margin-bottom: 8px; color: var(--text-main); }
+        p { color: var(--text-sub); line-height: 1.5; font-size: 0.9rem; }
 
-        /* IA Chat */
-        .chat-box { height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 10px; margin-bottom: 10px; border: 1px solid #eee; border-radius: 15px; }
-        .bubble { padding: 12px; border-radius: 18px; font-size: 0.85rem; max-width: 85%; line-height: 1.4; }
-        .bot { background: var(--primary); color: white; align-self: flex-start; border-bottom-left-radius: 2px; }
-        .user { background: #dfe6e9; color: #2d3436; align-self: flex-end; border-bottom-right-radius: 2px; }
+        /* --- IA Chat --- */
+        .chat-box { height: 280px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 10px; margin-bottom: 15px; }
+        .bubble { padding: 12px 16px; border-radius: 20px; font-size: 0.85rem; max-width: 85%; font-weight: 500; }
+        .bot { background: var(--primary); color: white; align-self: flex-start; border-bottom-left-radius: 4px; }
+        .user { background: var(--chat-user); color: var(--text-main); align-self: flex-end; border-bottom-right-radius: 4px; }
 
-        /* Respiração */
-        .breathing-visual {
+        /* --- Respiração --- */
+        .circle {
             width: 150px; height: 150px; background: var(--primary); border-radius: 50%;
             margin: 20px auto; display: flex; align-items: center; justify-content: center;
-            color: white; font-weight: bold; transition: 4s ease-in-out; box-shadow: 0 0 20px var(--accent);
+            color: white; font-weight: 700; transition: 4s ease-in-out;
+            box-shadow: 0 0 30px rgba(108, 99, 255, 0.3);
         }
-        .inhaling { transform: scale(1.6); background: var(--success); }
+        .expanding { transform: scale(1.4); background: var(--success); }
 
-        /* Barra de Navegação */
-        .bottom-nav {
-            position: fixed; bottom: 0; width: 100%; max-width: 450px; background: var(--card);
-            display: flex; justify-content: space-around; padding: 12px; border-top: 1px solid rgba(0,0,0,0.05);
-            z-index: 100;
+        /* --- Dicas --- */
+        .tip-item { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; border-left: 4px solid var(--primary); padding-left: 10px; }
+        .tip-icon { font-size: 1.5rem; color: var(--primary); }
+
+        /* --- Botões --- */
+        .mood-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 15px 0; }
+        .mood-btn { border: none; background: transparent; font-size: 1.8rem; cursor: pointer; }
+        
+        .btn-main {
+            width: 100%; background: var(--primary); color: white; border: none;
+            padding: 15px; border-radius: 15px; font-weight: 700; cursor: pointer;
         }
-        .nav-btn { border: none; background: none; color: #b2bec3; display: flex; flex-direction: column; align-items: center; font-size: 0.7rem; cursor: pointer; }
-        .nav-btn.active { color: var(--primary); }
-        .nav-btn i { font-size: 1.5rem; margin-bottom: 3px; }
 
-        .btn-action { width: 100%; background: var(--primary); color: white; border: none; padding: 14px; border-radius: 15px; font-weight: bold; cursor: pointer; }
-        textarea, input { width: 100%; border: 1px solid #eee; border-radius: 12px; padding: 12px; outline: none; background: var(--card); color: var(--text); margin-bottom: 10px; }
+        input, textarea {
+            width: 100%; background: var(--bg); border: 1px solid transparent; 
+            border-radius: 12px; padding: 12px; color: var(--text-main); outline: none; margin-bottom: 10px;
+        }
+
+        /* --- Navegação --- */
+        .nav-bar {
+            position: fixed; bottom: 0; width: 100%; max-width: 450px;
+            background: var(--card); display: flex; justify-content: space-around;
+            padding: 10px; border-top: 1px solid rgba(0,0,0,0.05); z-index: 100;
+        }
+        .nav-item { border: none; background: none; color: var(--text-sub); display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; flex: 1; }
+        .nav-item.active { color: var(--primary); }
+        .nav-item i { font-size: 1.3rem; }
+        .nav-item span { font-size: 0.7rem; font-weight: 600; }
     </style>
 </head>
 <body>
 
+    <div id="welcome" class="welcome-screen">
+        <i class="ph ph-sparkle" style="font-size: 3rem; margin-bottom: 15px;"></i>
+        <h1>Bem-vindo</h1>
+        <p style="color: rgba(255,255,255,0.8); margin-bottom: 25px;">Como devemos chamar você?</p>
+        <input type="text" id="nameInput" placeholder="Seu nome ou apelido" style="background: white; color: #333; text-align: center; width: 80%;">
+        <button class="btn-main" style="background: white; color: var(--primary); width: 80%;" onclick="startApp()">Entrar</button>
+    </div>
+
     <div id="app">
         <header>
             <div>
-                <h2 id="greet">Olá!</h2>
-                <span id="pts-display" class="stats-badge"><i class="ph ph-sparkle"></i> <span id="points">0</span> pts</span>
+                <h2 id="helloUser" style="margin:0; font-size: 1.2rem;">Olá!</h2>
+                <div style="font-size: 0.75rem; font-weight: 600; opacity: 0.9;"><i class="ph ph-heart-fill"></i> <span id="pts">0</span> pontos de paz</div>
             </div>
-            <button onclick="toggleDarkMode()" style="background:none; border:none; color:white; font-size: 1.5rem;"><i class="ph ph-moon-stars"></i></button>
+            <button onclick="toggleDark()" style="background:none; border:none; color:white; font-size: 1.4rem;"><i class="ph ph-moon-stars"></i></button>
         </header>
 
-        <div class="carousel-container">
-            <p id="phrase-display" style="font-style: italic; font-size: 0.85rem;">"Respire fundo. Você está indo bem."</p>
-        </div>
-
-        <section id="dashboard" class="page active">
+        <section id="home" class="page active">
             <div class="card">
-                <h3>Como você está se sentindo?</h3>
+                <h3>Como está agora?</h3>
                 <div class="mood-grid">
-                    <button class="mood-btn" onclick="moodAct('😊')">😊</button>
-                    <button class="mood-btn" onclick="moodAct('😌')">😌</button>
-                    <button class="mood-btn" onclick="moodAct('🤩')">🤩</button>
-                    <button class="mood-btn" onclick="moodAct('🥳')">🥳</button>
-                    <button class="mood-btn" onclick="moodAct('😟')">😟</button>
-                    <button class="mood-btn" onclick="moodAct('😔')">😔</button>
-                    <button class="mood-btn" onclick="moodAct('😤')">😤</button>
-                    <button class="mood-btn" onclick="moodAct('😴')">😴</button>
+                    <button class="mood-btn" onclick="saveMood('😊')">😊</button>
+                    <button class="mood-btn" onclick="saveMood('😌')">😌</button>
+                    <button class="mood-btn" onclick="saveMood('🙏')">🙏</button>
+                    <button class="mood-btn" onclick="saveMood('🤩')">🤩</button>
+                    <button class="mood-btn" onclick="saveMood('😟')">😟</button>
+                    <button class="mood-btn" onclick="saveMood('😔')">😔</button>
+                    <button class="mood-btn" onclick="saveMood('😤')">😤</button>
+                    <button class="mood-btn" onclick="saveMood('😴')">😴</button>
                 </div>
-                <textarea id="diaryInput" placeholder="Quer desabafar algo? Suas notas ficam salvas aqui..."></textarea>
-                <button class="btn-action" onclick="saveDiary()">Salvar Diário (+10 pts)</button>
+                <textarea id="note" placeholder="Desabafe algo aqui..."></textarea>
+                <button class="btn-main" onclick="saveDiary()">Salvar Diário</button>
+            </div>
+
+            <div class="card">
+                <h3>Sugestão do Dia</h3>
+                <p id="dailyTip">"Tente beber um copo de água calmamente e sentir a temperatura."</p>
             </div>
         </section>
 
-        <section id="ia" class="page">
-            <h3>IA Amiga 🌿</h3>
+        <section id="chat" class="page">
             <div class="card">
-                <div class="chat-box" id="chatBox">
-                    <div class="bubble bot">Olá! Eu sou sua assistente de bem-estar. Como posso ajudar seu coração hoje?</div>
+                <h3>IA Amiga</h3>
+                <div class="chat-box" id="chatContent">
+                    <div class="bubble bot">Estou aqui para ouvir. O que está pesando no seu coração hoje?</div>
                 </div>
                 <div style="display:flex; gap:8px;">
-                    <input type="text" id="iaInput" placeholder="Pergunte algo...">
-                    <button onclick="askIA()" style="background:var(--primary); color:white; border:none; width:50px; border-radius:12px;"><i class="ph ph-paper-plane-tilt"></i></button>
+                    <input type="text" id="chatInput" placeholder="Escreva..." style="margin:0;">
+                    <button class="btn-main" style="width: 50px;" onclick="sendMsg()"><i class="ph ph-paper-plane"></i></button>
                 </div>
             </div>
         </section>
 
-        <section id="kit" class="page">
-            <h3 style="text-align: center;">Exercício de Respiração</h3>
+        <section id="breathe" class="page">
             <div class="card" style="text-align: center;">
-                <div class="breathing-visual" id="breathCircle">Iniciar</div>
-                <p id="breathStatus" style="margin-bottom: 20px; font-weight: 600;">Toque no botão para começar</p>
-                <button class="btn-action" id="btnBreath" onclick="handleBreath()">Começar Exercício</button>
+                <h3>Respire Fundo</h3>
+                <div class="circle" id="bCircle">Iniciar</div>
+                <button class="btn-main" id="bBtn" onclick="toggleBreathe()">Começar</button>
             </div>
-            
             <div class="card">
-                <p style="margin-bottom: 10px; font-weight: 600;">Sons para relaxar:</p>
-                <div style="display: flex; gap: 10px;">
-                    <button class="btn-action" style="background: #45aaf2;" onclick="toggleSound('chuva')">🌧️ Chuva</button>
-                    <button class="btn-action" style="background: #26de81;" onclick="toggleSound('natureza')">🍃 Floresta</button>
+                <p style="text-align:center; font-weight:600;">Sons ambientes:</p>
+                <div style="display:flex; gap:10px; margin-top:10px;">
+                    <button onclick="playS('chuva')" class="btn-main" style="background:#45aaf2; font-size:0.8rem;">🌧️ Chuva</button>
+                    <button onclick="playS('mar')" class="btn-main" style="background:#2d98da; font-size:0.8rem;">🌊 Ondas</button>
                 </div>
             </div>
         </section>
 
-        <nav class="bottom-nav">
-            <button class="nav-btn active" onclick="nav('dashboard')"><i class="ph ph-house"></i>Início</button>
-            <button class="nav-btn" onclick="nav('ia')"><i class="ph ph-robot"></i>IA Amiga</button>
-            <button class="nav-btn" onclick="nav('kit')"><i class="ph ph-wind"></i>Respira</button>
+        <section id="tips" class="page">
+            <h3>Como se sentir melhor?</h3>
+            <div class="card">
+                <div class="tip-item">
+                    <i class="ph ph-brain tip-icon"></i>
+                    <div>
+                        <h4 style="font-size:0.9rem;">Técnica 5-4-3-2-1</h4>
+                        <p style="font-size:0.8rem;">Para ansiedade: Nomeie 5 coisas que vê, 4 que toca, 3 que ouve, 2 que cheira e 1 sabor.</p>
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <i class="ph ph-coffee tip-icon"></i>
+                    <div>
+                        <h4 style="font-size:0.9rem;">Ritual do Chá</h4>
+                        <p style="font-size:0.8rem;">Prepare um chá morno e sinta o vapor e o calor da xícara em suas mãos.</p>
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <i class="ph ph-足 tip-icon"></i>
+                    <div>
+                        <h4 style="font-size:0.9rem;">Pés no Chão</h4>
+                        <p style="font-size:0.8rem;">Sinta o peso do seu corpo sobre os pés e o contato com o chão por 1 minuto.</p>
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <i class="ph ph-book-open tip-icon"></i>
+                    <div>
+                        <h4 style="font-size:0.9rem;">Desabafo no Papel</h4>
+                        <p style="font-size:0.8rem;">Escreva tudo o que sente sem julgar. Depois, se quiser, rasgue o papel.</p>
+                    </div>
+                </div>
+            </div>
+            <p style="text-align:center; font-size:0.75rem;">Para apoio imediato em situações graves, ligue 188.</p>
+        </section>
+
+        <nav class="nav-bar">
+            <button class="nav-item active" onclick="tab('home')"><i class="ph ph-house"></i><span>Início</span></button>
+            <button class="nav-item" onclick="tab('chat')"><i class="ph ph-robot"></i><span>IA</span></button>
+            <button class="nav-item" onclick="tab('breathe')"><i class="ph ph-wind"></i><span>Respira</span></button>
+            <button class="nav-item" onclick="tab('tips')"><i class="ph ph-lightbulb"></i><span>Dicas</span></button>
         </nav>
     </div>
 
-    <audio id="audio-chuva" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3"></audio>
-    <audio id="audio-natureza" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3"></audio>
+    <audio id="s-chuva" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3"></audio>
+    <audio id="s-mar" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3"></audio>
 
     <script>
-        // --- SISTEMA DE PONTOS E PERSISTÊNCIA ---
-        let pts = parseInt(localStorage.getItem('userPts')) || 0;
-        function updatePts(val) {
-            pts += val;
-            localStorage.setItem('userPts', pts);
-            document.getElementById('points').innerText = pts;
+        let userName = localStorage.getItem('mlName');
+        let points = parseInt(localStorage.getItem('mlPts')) || 0;
+
+        if(userName) {
+            document.getElementById('welcome').style.display = 'none';
+            document.getElementById('helloUser').innerText = "Olá, " + userName + "!";
+        }
+        document.getElementById('pts').innerText = points;
+
+        function startApp() {
+            const n = document.getElementById('nameInput').value;
+            if(!n) return alert("Diga-nos seu nome!");
+            localStorage.setItem('mlName', n);
+            location.reload();
         }
 
-        // --- NAVEGAÇÃO ---
-        function nav(id) {
+        function addPts(v) {
+            points += v;
+            localStorage.setItem('mlPts', points);
+            document.getElementById('pts').innerText = points;
+        }
+
+        function tab(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             event.currentTarget.classList.add('active');
-            if(id !== 'kit') stopBreathing();
+            if(id !== 'breathe') stopB();
         }
 
-        // --- HUMOR E DIÁRIO ---
-        function moodAct(emoji) {
-            alert("Humor " + emoji + " registrado! Lembre-se: seus sentimentos são válidos.");
-            updatePts(5);
-        }
+        function saveMood(e) { alert("Mood " + e + " registrado!"); addPts(5); }
+
         function saveDiary() {
-            localStorage.setItem('savedDiary', document.getElementById('diaryInput').value);
-            updatePts(10);
-            alert("Diário atualizado com sucesso!");
+            const t = document.getElementById('note').value;
+            if(!t) return;
+            alert("Sentimento guardado.");
+            document.getElementById('note').value = "";
+            addPts(10);
         }
 
-        // --- IA PSICÓLOGA ---
-        const knowledge = {
-            "ansiedade": "A ansiedade é uma onda. Não lute contra ela, apenas flutue. Vamos tentar o exercício de respiração?",
-            "triste": "Sinto muito que esteja assim. Às vezes o coração precisa de repouso. O que te faria sentir 1% melhor agora?",
-            "medo": "O medo é o modo de proteção do cérebro ativado. Respire fundo e foque em algo que você pode tocar agora.",
-            "deus": "Ele está contigo em cada suspiro. 'Não temas, porque eu sou contigo.' (Isaías 41:10)",
-            "sozinho": "Você não está só. Eu estou aqui para te ouvir e existem pessoas que te amam.",
-            "ajuda": "Se estiver muito difícil, você pode ligar para o 188 (CVV). Falar salva vidas."
+        const botData = {
+            "ansiedade": "A ansiedade é como uma tempestade: ela faz barulho, mas sempre passa. Respire comigo agora.",
+            "triste": "Sinto muito que esteja passando por isso. Chorar às vezes é necessário para limpar a visão.",
+            "medo": "O medo é natural, mas você não precisa carregar o mundo nas costas hoje. Vá devagar.",
+            "deus": "Ele conhece o seu cansaço e ouve as suas orações, mesmo as silenciosas.",
+            "default": "Entendo. Estou aqui ouvindo você. Fale mais sobre como se sente."
         };
 
-        function askIA() {
-            const input = document.getElementById('iaInput');
-            const chat = document.getElementById('chatBox');
-            if(!input.value) return;
-
-            chat.innerHTML += `<div class="bubble user">${input.value}</div>`;
-            const msg = input.value.toLowerCase();
-            let res = "Entendo perfeitamente. Como você se sente falando sobre isso?";
-
-            for(let key in knowledge) { if(msg.includes(key)) res = knowledge[key]; }
-
+        function sendMsg() {
+            const i = document.getElementById('chatInput');
+            const c = document.getElementById('chatContent');
+            if(!i.value) return;
+            c.innerHTML += `<div class="bubble user">${i.value}</div>`;
+            const v = i.value.toLowerCase();
+            let res = botData["default"];
+            for(let k in botData) { if(v.includes(k)) res = botData[k]; }
             setTimeout(() => {
-                chat.innerHTML += `<div class="bubble bot">${res}</div>`;
-                chat.scrollTop = chat.scrollHeight;
-                updatePts(2);
-            }, 600);
-            input.value = "";
+                c.innerHTML += `<div class="bubble bot">${res}</div>`;
+                c.scrollTop = c.scrollHeight;
+                addPts(2);
+            }, 500);
+            i.value = "";
         }
 
-        // --- EXERCÍCIO DE RESPIRAÇÃO ---
-        let breathing = false;
-        function handleBreath() {
-            const btn = document.getElementById('btnBreath');
-            const circle = document.getElementById('breathCircle');
-            const status = document.getElementById('breathStatus');
-
-            if(!breathing) {
-                breathing = true;
-                btn.innerText = "Parar Exercício"; btn.style.background = "var(--danger)";
-                startCycle();
-            } else {
-                stopBreathing();
-            }
+        let bOn = false, bInt;
+        function toggleBreathe() {
+            const btn = document.getElementById('bBtn');
+            if(!bOn) { bOn = true; btn.innerText = "Parar"; startB(); }
+            else { stopB(); btn.innerText = "Começar"; }
         }
-
-        function startCycle() {
-            const circle = document.getElementById('breathCircle');
-            const status = document.getElementById('breathStatus');
-            const run = () => {
-                if(!breathing) return;
-                status.innerText = "Inspire pelo nariz...";
-                circle.classList.add('inhaling');
+        function startB() {
+            const c = document.getElementById('bCircle');
+            const cycle = () => {
+                if(!bOn) return;
+                c.innerText = "Inspire..."; c.classList.add('expanding');
                 setTimeout(() => {
-                    if(!breathing) return;
-                    status.innerText = "Solte pela boca...";
-                    circle.classList.remove('inhaling');
-                    setTimeout(run, 4000);
+                    if(!bOn) return;
+                    c.innerText = "Solte..."; c.classList.remove('expanding');
+                    bInt = setTimeout(cycle, 4000);
                 }, 4000);
-            }
-            run();
+            };
+            cycle();
         }
+        function stopB() { bOn = false; clearTimeout(bInt); document.getElementById('bCircle').innerText = "Iniciar"; }
 
-        function stopBreathing() {
-            breathing = false;
-            const btn = document.getElementById('btnBreath');
-            btn.innerText = "Começar Exercício"; btn.style.background = "var(--primary)";
-            document.getElementById('breathCircle').classList.remove('inhaling');
-            document.getElementById('breathCircle').innerText = "Iniciar";
-            document.getElementById('breathStatus').innerText = "Exercício encerrado.";
-            updatePts(20);
-        }
-
-        // --- UTILITÁRIOS ---
-        function toggleDarkMode() { document.body.classList.toggle('dark-mode'); }
-        function toggleSound(type) {
-            const a = document.getElementById('audio-' + type);
+        function toggleDark() { document.body.classList.toggle('dark-mode'); }
+        function playS(t) {
+            const a = document.getElementById('s-' + t);
             a.paused ? a.play() : a.pause();
         }
-
-        // Carregar Diário e Pontos ao iniciar
-        document.getElementById('points').innerText = pts;
-        document.getElementById('diaryInput').value = localStorage.getItem('savedDiary') || "";
-        const h = new Date().getHours();
-        document.getElementById('greet').innerText = h < 12 ? "Bom dia!" : h < 18 ? "Boa tarde!" : "Boa noite!";
-
-        const frases = ["Você é forte.", "Respire, tudo passa.", "Um passo de cada vez.", "O Senhor é meu pastor."];
-        setInterval(() => {
-            document.getElementById('phrase-display').innerText = frases[Math.floor(Math.random()*frases.length)];
-        }, 5000);
     </script>
 </body>
 </html>
