@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MenteLeve - Web App</title>
+    <title>MenteLeve - Seu Web App</title>
     
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
@@ -15,25 +15,24 @@
             --danger: #ff7675; --success: #00b894;
         }
 
-        /* Estilos Modo Escuro */
         .dark-mode {
             --bg: #1a1a2e; --card: #16213e; --text: #e9ecef;
             --primary: #a29bfe; --accent: #6c63ff;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; transition: background 0.3s, color 0.3s; }
-        body { background-color: #e0e6ed; display: flex; justify-content: center; min-height: 100vh; overflow: hidden; }
+        body { background-color: #e0e6ed; display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
 
         #app {
             width: 100%; max-width: 450px; background: var(--bg);
-            height: 100vh; position: relative; display: flex; flex-direction: column;
-            box-shadow: 0 0 30px rgba(0,0,0,0.1); color: var(--text);
+            min-height: 100vh; position: relative; display: flex; flex-direction: column;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1); color: var(--text); padding-bottom: 80px;
         }
 
         header {
             padding: 25px; background: linear-gradient(135deg, var(--primary), var(--accent));
             color: white; border-bottom-left-radius: 35px; border-bottom-right-radius: 35px;
-            display: flex; justify-content: space-between; align-items: flex-start;
+            display: flex; justify-content: space-between; align-items: center;
         }
 
         .stats-badge { background: rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
@@ -44,40 +43,43 @@
             text-align: center; min-height: 80px; display: flex; align-items: center; justify-content: center;
         }
 
-        .page { display: none; padding: 20px; flex: 1; overflow-y: auto; padding-bottom: 100px; animation: fadeIn 0.3s ease; }
+        .page { display: none; padding: 20px; animation: fadeIn 0.3s ease; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
         .card { background: var(--card); padding: 20px; border-radius: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); margin-bottom: 15px; }
 
+        /* Grade de Humor com Variedade */
+        .mood-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 15px 0; }
+        .mood-btn { border: none; background: none; font-size: 1.8rem; cursor: pointer; transition: transform 0.2s; }
+        .mood-btn:active { transform: scale(1.3); }
+
         /* IA Chat */
-        .chat-box { height: 280px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 10px; }
-        .bubble { padding: 12px; border-radius: 18px; font-size: 0.85rem; max-width: 85%; }
+        .chat-box { height: 250px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 10px; margin-bottom: 10px; border: 1px solid #eee; border-radius: 15px; }
+        .bubble { padding: 12px; border-radius: 18px; font-size: 0.85rem; max-width: 85%; line-height: 1.4; }
         .bot { background: var(--primary); color: white; align-self: flex-start; border-bottom-left-radius: 2px; }
         .user { background: #dfe6e9; color: #2d3436; align-self: flex-end; border-bottom-right-radius: 2px; }
 
-        /* Respiração e Sons */
-        .breathing-circle {
-            width: 140px; height: 140px; background: var(--primary); border-radius: 50%;
-            margin: 30px auto; display: flex; align-items: center; justify-content: center;
-            color: white; font-weight: bold; transition: 4s ease-in-out;
+        /* Respiração */
+        .breathing-visual {
+            width: 150px; height: 150px; background: var(--primary); border-radius: 50%;
+            margin: 20px auto; display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: bold; transition: 4s ease-in-out; box-shadow: 0 0 20px var(--accent);
         }
-        .inhale { transform: scale(1.6); background: var(--success); }
+        .inhaling { transform: scale(1.6); background: var(--success); }
 
-        .sound-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .sound-btn { background: var(--card); border: 1px solid var(--primary); color: var(--primary); padding: 10px; border-radius: 12px; cursor: pointer; }
-        .sound-btn.playing { background: var(--primary); color: white; }
-
-        /* Navegação */
+        /* Barra de Navegação */
         .bottom-nav {
-            position: absolute; bottom: 0; width: 100%; background: var(--card);
-            display: flex; justify-content: space-around; padding: 15px; border-top: 1px solid rgba(0,0,0,0.05);
+            position: fixed; bottom: 0; width: 100%; max-width: 450px; background: var(--card);
+            display: flex; justify-content: space-around; padding: 12px; border-top: 1px solid rgba(0,0,0,0.05);
+            z-index: 100;
         }
-        .nav-btn { border: none; background: none; color: #b2bec3; display: flex; flex-direction: column; align-items: center; font-size: 0.7rem; }
+        .nav-btn { border: none; background: none; color: #b2bec3; display: flex; flex-direction: column; align-items: center; font-size: 0.7rem; cursor: pointer; }
         .nav-btn.active { color: var(--primary); }
+        .nav-btn i { font-size: 1.5rem; margin-bottom: 3px; }
 
-        .btn-action { width: 100%; background: var(--primary); color: white; border: none; padding: 14px; border-radius: 15px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        textarea, input { width: 100%; border: 1px solid #eee; border-radius: 12px; padding: 12px; outline: none; background: var(--card); color: var(--text); }
+        .btn-action { width: 100%; background: var(--primary); color: white; border: none; padding: 14px; border-radius: 15px; font-weight: bold; cursor: pointer; }
+        textarea, input { width: 100%; border: 1px solid #eee; border-radius: 12px; padding: 12px; outline: none; background: var(--card); color: var(--text); margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -86,65 +88,66 @@
         <header>
             <div>
                 <h2 id="greet">Olá!</h2>
-                <p id="user-name-display" style="font-size: 0.8rem; opacity: 0.9;">Carregando...</p>
+                <span id="pts-display" class="stats-badge"><i class="ph ph-sparkle"></i> <span id="points">0</span> pts</span>
             </div>
-            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 5px;">
-                <div class="stats-badge"><i class="ph ph-star-fill"></i> <span id="points">0</span> pts</div>
-                <button onclick="toggleDarkMode()" style="background:none; border:none; color:white; font-size: 1.2rem;"><i class="ph ph-moon-stars"></i></button>
-            </div>
+            <button onclick="toggleDarkMode()" style="background:none; border:none; color:white; font-size: 1.5rem;"><i class="ph ph-moon-stars"></i></button>
         </header>
 
         <div class="carousel-container">
-            <p id="phrase-display" style="font-style: italic; font-size: 0.85rem;">"A paz começa com um suspiro."</p>
+            <p id="phrase-display" style="font-style: italic; font-size: 0.85rem;">"Respire fundo. Você está indo bem."</p>
         </div>
 
         <section id="dashboard" class="page active">
-            <div class="card" id="name-setup" style="display: none;">
-                <h3>Como quer ser chamado?</h3>
-                <input type="text" id="nameInput" placeholder="Seu nome..." style="margin-top:10px;">
-                <button class="btn-action" onclick="saveName()">Começar Jornada</button>
-            </div>
-
             <div class="card">
-                <h3>Check-in de Humor</h3>
-                <div style="display:flex; justify-content: space-around; margin: 15px 0;">
-                    <button onclick="addPoint(5, '😊')" style="font-size:1.8rem; border:none; background:none;">😊</button>
-                    <button onclick="addPoint(5, '😌')" style="font-size:1.8rem; border:none; background:none;">😌</button>
-                    <button onclick="addPoint(5, '😟')" style="font-size:1.8rem; border:none; background:none;">😟</button>
-                    <button onclick="addPoint(5, '😔')" style="font-size:1.8rem; border:none; background:none;">😔</button>
+                <h3>Como você está se sentindo?</h3>
+                <div class="mood-grid">
+                    <button class="mood-btn" onclick="moodAct('😊')">😊</button>
+                    <button class="mood-btn" onclick="moodAct('😌')">😌</button>
+                    <button class="mood-btn" onclick="moodAct('🤩')">🤩</button>
+                    <button class="mood-btn" onclick="moodAct('🥳')">🥳</button>
+                    <button class="mood-btn" onclick="moodAct('😟')">😟</button>
+                    <button class="mood-btn" onclick="moodAct('😔')">😔</button>
+                    <button class="mood-btn" onclick="moodAct('😤')">😤</button>
+                    <button class="mood-btn" onclick="moodAct('😴')">😴</button>
                 </div>
-                <textarea id="diaryInput" placeholder="O que houve hoje? (Sua nota fica salva aqui)"></textarea>
-                <button class="btn-action" onclick="saveDiary()">Salvar Diário</button>
+                <textarea id="diaryInput" placeholder="Quer desabafar algo? Suas notas ficam salvas aqui..."></textarea>
+                <button class="btn-action" onclick="saveDiary()">Salvar Diário (+10 pts)</button>
             </div>
         </section>
 
         <section id="ia" class="page">
-            <h3>IA Psicóloga Amiga</h3>
+            <h3>IA Amiga 🌿</h3>
             <div class="card">
                 <div class="chat-box" id="chatBox">
-                    <div class="bubble bot">Olá! Estou aqui para te ouvir sem julgamentos. O que te traz aqui hoje?</div>
+                    <div class="bubble bot">Olá! Eu sou sua assistente de bem-estar. Como posso ajudar seu coração hoje?</div>
                 </div>
                 <div style="display:flex; gap:8px;">
-                    <input type="text" id="iaInput" placeholder="Fale comigo...">
-                    <button onclick="askIA()" style="background:var(--primary); color:white; border:none; padding:10px; border-radius:12px; width:50px;"><i class="ph ph-paper-plane-tilt"></i></button>
+                    <input type="text" id="iaInput" placeholder="Pergunte algo...">
+                    <button onclick="askIA()" style="background:var(--primary); color:white; border:none; width:50px; border-radius:12px;"><i class="ph ph-paper-plane-tilt"></i></button>
                 </div>
             </div>
         </section>
 
         <section id="kit" class="page">
-            <h3 style="text-align: center;">Sons & Respiração</h3>
-            <div class="breathing-circle" id="breathCircle">Iniciar</div>
-            <button class="btn-action" id="btnBreath" onclick="handleBreath()">Iniciar Exercício</button>
+            <h3 style="text-align: center;">Exercício de Respiração</h3>
+            <div class="card" style="text-align: center;">
+                <div class="breathing-visual" id="breathCircle">Iniciar</div>
+                <p id="breathStatus" style="margin-bottom: 20px; font-weight: 600;">Toque no botão para começar</p>
+                <button class="btn-action" id="btnBreath" onclick="handleBreath()">Começar Exercício</button>
+            </div>
             
-            <div class="sound-grid">
-                <button class="sound-btn" onclick="toggleSound('chuva', this)"><i class="ph ph-cloud-rain"></i> Chuva</button>
-                <button class="sound-btn" onclick="toggleSound('natureza', this)"><i class="ph ph-tree"></i> Natureza</button>
+            <div class="card">
+                <p style="margin-bottom: 10px; font-weight: 600;">Sons para relaxar:</p>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn-action" style="background: #45aaf2;" onclick="toggleSound('chuva')">🌧️ Chuva</button>
+                    <button class="btn-action" style="background: #26de81;" onclick="toggleSound('natureza')">🍃 Floresta</button>
+                </div>
             </div>
         </section>
 
         <nav class="bottom-nav">
             <button class="nav-btn active" onclick="nav('dashboard')"><i class="ph ph-house"></i>Início</button>
-            <button class="nav-btn" onclick="nav('ia')"><i class="ph ph-chat-circle"></i>IA Amiga</button>
+            <button class="nav-btn" onclick="nav('ia')"><i class="ph ph-robot"></i>IA Amiga</button>
             <button class="nav-btn" onclick="nav('kit')"><i class="ph ph-wind"></i>Respira</button>
         </nav>
     </div>
@@ -153,51 +156,42 @@
     <audio id="audio-natureza" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3"></audio>
 
     <script>
-        // 1. DADOS E PERSISTÊNCIA
-        let points = parseInt(localStorage.getItem('points')) || 0;
-        let userName = localStorage.getItem('userName') || "";
-
-        function init() {
-            document.getElementById('points').innerText = points;
-            if(!userName) {
-                document.getElementById('name-setup').style.display = 'block';
-            } else {
-                document.getElementById('user-name-display').innerText = "Jornada de " + userName;
-                document.getElementById('diaryInput').value = localStorage.getItem('diaryText') || "";
-            }
-            updateGreeting();
+        // --- SISTEMA DE PONTOS E PERSISTÊNCIA ---
+        let pts = parseInt(localStorage.getItem('userPts')) || 0;
+        function updatePts(val) {
+            pts += val;
+            localStorage.setItem('userPts', pts);
+            document.getElementById('points').innerText = pts;
         }
 
-        function saveName() {
-            const val = document.getElementById('nameInput').value;
-            if(val) {
-                localStorage.setItem('userName', val);
-                userName = val;
-                location.reload();
-            }
+        // --- NAVEGAÇÃO ---
+        function nav(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            event.currentTarget.classList.add('active');
+            if(id !== 'kit') stopBreathing();
         }
 
+        // --- HUMOR E DIÁRIO ---
+        function moodAct(emoji) {
+            alert("Humor " + emoji + " registrado! Lembre-se: seus sentimentos são válidos.");
+            updatePts(5);
+        }
         function saveDiary() {
-            localStorage.setItem('diaryText', document.getElementById('diaryInput').value);
-            addPoint(10);
-            alert("Diário salvo localmente!");
+            localStorage.setItem('savedDiary', document.getElementById('diaryInput').value);
+            updatePts(10);
+            alert("Diário atualizado com sucesso!");
         }
 
-        function addPoint(val, emo = "") {
-            points += val;
-            localStorage.setItem('points', points);
-            document.getElementById('points').innerText = points;
-            if(emo) alert("Obrigado por registrar seu humor " + emo);
-        }
-
-        // 2. IA PSICÓLOGA
+        // --- IA PSICÓLOGA ---
         const knowledge = {
-            "ansiedade": "A ansiedade é um excesso de futuro. Vamos focar no 'agora'? Tente o exercício de respiração.",
-            "triste": "Sinto muito. É permitido ficar triste, mas lembre-se: sentimentos são como nuvens, eles passam.",
-            "medo": "O medo protege, mas não pode nos paralisar. Qual o primeiro pequeno passo que você pode dar?",
-            "dormir": "Desligue as telas e foque em um som de chuva aqui no app. Ajuda a baixar o cortisol.",
-            "ajuda": "Você é muito corajoso por pedir ajuda. Se precisar de alguém agora, ligue 188 (CVV).",
-            "deus": "Ele é o seu refúgio e fortaleza. Descanse o seu coração na fé hoje."
+            "ansiedade": "A ansiedade é uma onda. Não lute contra ela, apenas flutue. Vamos tentar o exercício de respiração?",
+            "triste": "Sinto muito que esteja assim. Às vezes o coração precisa de repouso. O que te faria sentir 1% melhor agora?",
+            "medo": "O medo é o modo de proteção do cérebro ativado. Respire fundo e foque em algo que você pode tocar agora.",
+            "deus": "Ele está contigo em cada suspiro. 'Não temas, porque eu sou contigo.' (Isaías 41:10)",
+            "sozinho": "Você não está só. Eu estou aqui para te ouvir e existem pessoas que te amam.",
+            "ajuda": "Se estiver muito difícil, você pode ligar para o 188 (CVV). Falar salva vidas."
         };
 
         function askIA() {
@@ -207,82 +201,78 @@
 
             chat.innerHTML += `<div class="bubble user">${input.value}</div>`;
             const msg = input.value.toLowerCase();
-            let res = "Entendo. Me conte mais sobre como isso te afeta. Estou ouvindo.";
+            let res = "Entendo perfeitamente. Como você se sente falando sobre isso?";
 
-            for(let k in knowledge) { if(msg.includes(k)) res = knowledge[k]; }
+            for(let key in knowledge) { if(msg.includes(key)) res = knowledge[key]; }
 
             setTimeout(() => {
                 chat.innerHTML += `<div class="bubble bot">${res}</div>`;
                 chat.scrollTop = chat.scrollHeight;
-                addPoint(2);
-            }, 700);
+                updatePts(2);
+            }, 600);
             input.value = "";
         }
 
-        // 3. RESPIRAÇÃO E SONS
-        let isBreathing = false;
-        let breathInterval;
+        // --- EXERCÍCIO DE RESPIRAÇÃO ---
+        let breathing = false;
         function handleBreath() {
             const btn = document.getElementById('btnBreath');
             const circle = document.getElementById('breathCircle');
-            if(!isBreathing) {
-                isBreathing = true; btn.innerText = "Parar"; btn.style.background = "var(--danger)";
-                cycle();
+            const status = document.getElementById('breathStatus');
+
+            if(!breathing) {
+                breathing = true;
+                btn.innerText = "Parar Exercício"; btn.style.background = "var(--danger)";
+                startCycle();
             } else {
-                isBreathing = false; clearInterval(breathInterval);
-                btn.innerText = "Iniciar Exercício"; btn.style.background = "var(--primary)";
-                circle.classList.remove('inhale'); circle.innerText = "Iniciar";
+                stopBreathing();
             }
         }
 
-        function cycle() {
+        function startCycle() {
             const circle = document.getElementById('breathCircle');
+            const status = document.getElementById('breathStatus');
             const run = () => {
-                if(!isBreathing) return;
-                circle.innerText = "Inspire"; circle.classList.add('inhale');
+                if(!breathing) return;
+                status.innerText = "Inspire pelo nariz...";
+                circle.classList.add('inhaling');
                 setTimeout(() => {
-                    if(!isBreathing) return;
-                    circle.innerText = "Expire"; circle.classList.remove('inhale');
+                    if(!breathing) return;
+                    status.innerText = "Solte pela boca...";
+                    circle.classList.remove('inhaling');
                     setTimeout(run, 4000);
                 }, 4000);
             }
             run();
         }
 
-        function toggleSound(type, btn) {
-            const audio = document.getElementById('audio-' + type);
-            document.querySelectorAll('.sound-btn').forEach(b => b.classList.remove('playing'));
-            if(audio.paused) {
-                audio.play(); btn.classList.add('playing');
-            } else {
-                audio.pause();
-            }
+        function stopBreathing() {
+            breathing = false;
+            const btn = document.getElementById('btnBreath');
+            btn.innerText = "Começar Exercício"; btn.style.background = "var(--primary)";
+            document.getElementById('breathCircle').classList.remove('inhaling');
+            document.getElementById('breathCircle').innerText = "Iniciar";
+            document.getElementById('breathStatus').innerText = "Exercício encerrado.";
+            updatePts(20);
         }
 
-        // 4. UTILITÁRIOS
-        function nav(id) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            event.currentTarget.classList.add('active');
+        // --- UTILITÁRIOS ---
+        function toggleDarkMode() { document.body.classList.toggle('dark-mode'); }
+        function toggleSound(type) {
+            const a = document.getElementById('audio-' + type);
+            a.paused ? a.play() : a.pause();
         }
 
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-        }
+        // Carregar Diário e Pontos ao iniciar
+        document.getElementById('points').innerText = pts;
+        document.getElementById('diaryInput').value = localStorage.getItem('savedDiary') || "";
+        const h = new Date().getHours();
+        document.getElementById('greet').innerText = h < 12 ? "Bom dia!" : h < 18 ? "Boa tarde!" : "Boa noite!";
 
-        function updateGreeting() {
-            const h = new Date().getHours();
-            document.getElementById('greet').innerText = h < 12 ? "Bom dia!" : h < 18 ? "Boa tarde!" : "Boa noite!";
-        }
-
-        // CARROSSEL DE FRASES
-        const frases = ["A calma é um superpoder.", "Um dia de cada vez.", "Você já superou 100% dos seus dias difíceis.", "O Senhor é o meu pastor, nada me faltará."];
+        const frases = ["Você é forte.", "Respire, tudo passa.", "Um passo de cada vez.", "O Senhor é meu pastor."];
         setInterval(() => {
             document.getElementById('phrase-display').innerText = frases[Math.floor(Math.random()*frases.length)];
-        }, 6000);
-
-        init();
+        }, 5000);
     </script>
 </body>
 </html>
