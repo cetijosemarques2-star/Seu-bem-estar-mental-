@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MenteLeve - Oficial</title>
+    <title>MenteLeve - Versão Final</title>
     
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,12 +12,12 @@
         :root {
             --bg: #f0f4f8; --card: #ffffff; --text-main: #2d3436; --text-sub: #636e72;
             --primary: #6c63ff; --accent: #a29bfe; --danger: #ff7675; --success: #00b894;
-            --chat-user: #dfe6e9; --border: #edf2f7;
+            --border: #edf2f7;
         }
 
         .dark-mode {
             --bg: #0f172a; --card: #1e293b; --text-main: #f1f5f9; --text-sub: #94a3b8;
-            --primary: #818cf8; --accent: #4f46e5; --chat-user: #334155; --border: #334155;
+            --primary: #818cf8; --accent: #4f46e5; --border: #334155;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; transition: all 0.2s ease; }
@@ -42,24 +42,28 @@
             display: flex; justify-content: space-between; align-items: center;
         }
 
-        .page { display: none; padding: 15px; animation: slideUp 0.3s ease; overflow-y: auto; }
+        .page { display: none; padding: 15px; animation: slideUp 0.3s ease; }
         .page.active { display: block; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .card { background: var(--card); padding: 18px; border-radius: 24px; margin-bottom: 15px; border: 1px solid var(--border); }
         h3 { font-size: 1.1rem; margin-bottom: 12px; font-weight: 700; }
 
-        /* --- GRÁFICO --- */
+        /* --- GRÁFICO FIX --- */
         .chart-container {
             display: flex; align-items: flex-end; justify-content: space-between;
-            height: 120px; padding: 10px 10px; border-bottom: 2px solid var(--border); margin-bottom: 30px;
-            gap: 8px;
+            height: 120px; padding: 10px; border-bottom: 2px solid var(--border); margin-bottom: 30px;
+            gap: 8px; background: rgba(0,0,0,0.02); border-radius: 10px;
         }
-        .chart-bar { flex: 1; background: var(--primary); border-radius: 6px 6px 0 0; position: relative; min-height: 5px; transition: height 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .chart-label { position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%); font-size: 0.6rem; font-weight: 700; color: var(--text-sub); }
+        .chart-bar { 
+            flex: 1; background: var(--primary); border-radius: 6px 6px 0 0; 
+            position: relative; min-height: 10px;
+            transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        .chart-label { position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); font-size: 0.6rem; font-weight: 700; color: var(--text-sub); }
 
         /* --- RESPIRAÇÃO --- */
-        .circle-wrap { height: 200px; display: flex; align-items: center; justify-content: center; margin: 20px 0; }
+        .circle-wrap { height: 200px; display: flex; align-items: center; justify-content: center; }
         .circle {
             width: 120px; height: 120px; background: var(--primary); border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
@@ -69,8 +73,6 @@
         .expanding { transform: scale(1.5); background: var(--success); }
 
         .btn-main { width: 100%; background: var(--primary); color: white; border: none; padding: 14px; border-radius: 15px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-danger { background: var(--danger); }
-        
         input, textarea { width: 100%; background: var(--bg); border: none; border-radius: 12px; padding: 12px; color: var(--text-main); outline: none; margin-bottom: 10px; }
 
         .nav-bar {
@@ -119,56 +121,44 @@
 
         <section id="home" class="page">
             <div class="card">
-                <h3>Como você se sente?</h3>
+                <h3>Como você está?</h3>
                 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 15px 0;">
-                    <button class="mood-btn" onclick="registerMood(5, '🤩')">🤩</button>
-                    <button class="mood-btn" onclick="registerMood(4, '😊')">😊</button>
-                    <button class="mood-btn" onclick="registerMood(4, '😌')">😌</button>
-                    <button class="mood-btn" onclick="registerMood(4, '🙏')">🙏</button>
-                    <button class="mood-btn" onclick="registerMood(2, '😟')">😟</button>
-                    <button class="mood-btn" onclick="registerMood(1, '😔')">😔</button>
-                    <button class="mood-btn" onclick="registerMood(1, '😤')">😤</button>
-                    <button class="mood-btn" onclick="registerMood(3, '😴')">😴</button>
+                    <button class="btn-main" style="background:none; font-size:1.8rem;" onclick="registerMood(5, '🤩')">🤩</button>
+                    <button class="btn-main" style="background:none; font-size:1.8rem;" onclick="registerMood(4, '😊')">😊</button>
+                    <button class="btn-main" style="background:none; font-size:1.8rem;" onclick="registerMood(4, '😌')">😌</button>
+                    <button class="btn-main" style="background:none; font-size:1.8rem;" onclick="registerMood(4, '🙏')">🙏</button>
+                    <button class="btn-main" style="background:none; font-size:1.8rem;" onclick="registerMood(2, '😟')">😟</button>
+                    <button class="btn-main" style="background:none; font-size:1.8rem;" onclick="registerMood(1, '😔')">😔</button>
+                    <button class="btn-main" style="background:none; font-size:1.8rem;" onclick="registerMood(1, '😤')">😤</button>
+                    <button class="btn-main" style="background:none; font-size:1.8rem;" onclick="registerMood(3, '😴')">😴</button>
                 </div>
-                <textarea id="note" placeholder="Quer escrever algo?"></textarea>
-                <button class="btn-main" onclick="saveDiary()">Salvar Registro</button>
+                <textarea id="note" placeholder="Conte mais..."></textarea>
+                <button class="btn-main" onclick="saveDiary()">Salvar no Diário</button>
             </div>
         </section>
 
         <section id="breathe" class="page">
             <div class="card" style="text-align: center;">
-                <h3>Respire Fundo</h3>
+                <h3>Respire</h3>
                 <div class="circle-wrap">
                     <div class="circle" id="bCircle">Paz</div>
                 </div>
-                <button class="btn-main" id="bBtn" onclick="toggleBreathe()">Começar Exercício</button>
+                <button class="btn-main" id="bBtn" onclick="toggleBreathe()">Começar</button>
             </div>
         </section>
 
         <section id="inspire" class="page">
-            <h3>Refúgio Literário 📖</h3>
-            <div class="card"><h4>Paz Interior</h4><p>"Não se turbe o vosso coração." (João 14:1)</p></div>
-            <div class="card"><h4>Descanso</h4><p>"Vinde a mim todos os que estais cansados." (Mateus 11:28)</p></div>
-            <div class="card"><h4>Esperança</h4><p>"A alegria vem pela manhã." (Salmo 30:5)</p></div>
-            <div class="card"><h4>Resiliência</h4><p>"Você é mais forte do que imagina."</p></div>
-            <div class="card"><h4>Calma</h4><p>"Um passo de cada vez é o suficiente."</p></div>
+            <h3>Refúgio 📖</h3>
+            <div class="card"><h4>Paz</h4><p>"Não se turbe o vosso coração." (João 14:1)</p></div>
+            <div class="card"><h4>Descanso</h4><p>"Eu vos aliviarei." (Mateus 11:28)</p></div>
+            <div class="card"><h4>Força</h4><p>"O choro dura uma noite, mas a alegria vem de manhã."</p></div>
+            <div class="card"><h4>Fé</h4><p>"Tudo posso naquele que me fortalece."</p></div>
         </section>
 
         <section id="help" class="page">
-            <h3>Central de Ajuda</h3>
+            <h3>Ajuda</h3>
             <div class="card">
-                <h4>Contato de Emergência</h4>
-                <input type="text" id="emergencyName" placeholder="Nome (Ex: Mãe)">
-                <input type="tel" id="emergencyPhone" placeholder="Número com DDD">
-                <button class="btn-main" onclick="saveEmergency()">Salvar Contato</button>
-                <div id="emergencyContactDisplay" style="margin-top:15px; display:none;">
-                    <button class="btn-main btn-danger" onclick="callEmergency()"><i class="ph ph-phone"></i> Ligar para <span id="eNameSpan"></span></button>
-                </div>
-            </div>
-            <div class="card">
-                <h4>Apoio Profissional</h4>
-                <p style="font-size:0.8rem; margin-bottom:10px;">O CVV oferece apoio emocional gratuito e sigiloso 24h.</p>
-                <button class="btn-main btn-danger" onclick="window.location.href='tel:188'"><i class="ph ph-phone"></i> Ligar para o CVV (188)</button>
+                <button class="btn-main" style="background:var(--danger);" onclick="window.location.href='tel:188'">Ligar CVV (188)</button>
             </div>
         </section>
 
@@ -204,37 +194,45 @@
         let userName = localStorage.getItem('ml_user_name');
         let points = 0;
 
+        // CARREGAR DADOS INICIAIS
         window.onload = () => {
             if(userName) {
                 document.getElementById('welcome-overlay').style.display = 'none';
                 document.getElementById('displayHeaderName').innerText = "Olá, " + userName;
             }
-            loadEmergency();
-            syncFirebase();
+            syncData();
         };
 
-        function syncFirebase() {
+        function syncData() {
             onValue(ref(db, 'users/' + userId), (snap) => {
                 const data = snap.val();
                 if(data) {
-                    if(data.points) { points = data.points; document.getElementById('pts').innerText = points; }
-                    if(data.history) renderChart(Object.values(data.history));
-                    if(data.gratitudes) renderGratitudes(Object.values(data.gratitudes));
+                    if(data.points !== undefined) {
+                        points = data.points;
+                        document.getElementById('pts').innerText = points;
+                    }
+                    if(data.history) {
+                        renderChart(Object.values(data.history));
+                    }
+                    if(data.gratitudes) {
+                        renderGratitudes(Object.values(data.gratitudes));
+                    }
                 }
             });
         }
 
         window.enterApp = () => {
             const val = document.getElementById('userNameInput').value;
-            if(!val) return alert("Por favor, digite seu nome.");
+            if(!val) return alert("Digite seu nome!");
             localStorage.setItem('ml_user_name', val);
             set(ref(db, 'users/' + userId + '/profile'), { name: val });
             location.reload();
         };
 
+        // --- PONTOS E HUMOR ---
         window.registerMood = (v, emoji) => {
             push(ref(db, 'users/' + userId + '/history'), v);
-            updatePts(5);
+            updatePts(5); // Soma 5 pontos
             alert("Humor registrado!");
         };
 
@@ -243,12 +241,13 @@
             if(!i.value) return;
             push(ref(db, 'users/' + userId + '/gratitudes'), i.value);
             i.value = "";
-            updatePts(10);
+            updatePts(10); // Soma 10 pontos
         };
 
         function updatePts(v) {
             points += v;
-            set(ref(db, 'users/' + userId + '/points'), points);
+            document.getElementById('pts').innerText = points; // Atualiza na tela na hora
+            set(ref(db, 'users/' + userId + '/points'), points); // Salva no Firebase
         }
 
         function renderChart(history) {
@@ -258,9 +257,9 @@
             last7.forEach((val, i) => {
                 const bar = document.createElement('div');
                 bar.className = 'chart-bar';
-                // Altura baseada no valor 1-5
-                bar.style.height = (val * 20) + '%';
-                bar.innerHTML = `<div class="chart-label">R${i+1}</div>`;
+                // Calculo de altura: val(1 a 5) * 20%
+                setTimeout(() => { bar.style.height = (val * 20) + '%'; }, 100);
+                bar.innerHTML = `<div class="chart-label">D${i+1}</div>`;
                 container.appendChild(bar);
             });
         }
@@ -273,30 +272,6 @@
                 </div>
             `).join('');
         }
-
-        // --- AJUDA & EMERGÊNCIA ---
-        window.saveEmergency = () => {
-            const n = document.getElementById('emergencyName').value;
-            const p = document.getElementById('emergencyPhone').value;
-            if(!n || !p) return alert("Preencha o nome e o telefone!");
-            localStorage.setItem('ml_e_name', n);
-            localStorage.setItem('ml_e_phone', p);
-            loadEmergency();
-            alert("Contato salvo!");
-        };
-
-        function loadEmergency() {
-            const n = localStorage.getItem('ml_e_name');
-            if(n) {
-                document.getElementById('emergencyContactDisplay').style.display = 'block';
-                document.getElementById('eNameSpan').innerText = n;
-            }
-        }
-
-        window.callEmergency = () => {
-            const p = localStorage.getItem('ml_e_phone');
-            window.location.href = "tel:" + p;
-        };
 
         // --- RESPIRAÇÃO ---
         let bOn = false, bInt;
@@ -317,12 +292,13 @@
                 cycle();
             } else {
                 bOn = false; clearTimeout(bInt);
-                btn.innerText = "Começar Exercício"; circ.innerText = "Paz";
+                btn.innerText = "Começar"; circ.innerText = "Paz";
                 circ.classList.remove('expanding');
-                updatePts(2);
+                updatePts(2); // Ganha 2 pontos por respirar
             }
         };
 
+        // --- NAVEGAÇÃO ---
         window.tab = (id) => {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -332,7 +308,7 @@
         };
 
         window.toggleDark = () => document.body.classList.toggle('dark-mode');
-        window.saveDiary = () => { alert("Pensamento salvo!"); updatePts(10); document.getElementById('note').value = ""; };
+        window.saveDiary = () => { alert("Salvo!"); updatePts(10); document.getElementById('note').value = ""; };
 
         document.getElementById('btnEnter').onclick = window.enterApp;
         document.getElementById('btnAddGratitude').onclick = window.addGratitude;
