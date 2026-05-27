@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MenteLeve - Super App</title>
+    <title>MenteLeve - Completo</title>
     
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -23,7 +23,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; transition: all 0.2s ease; }
         body { background-color: #cbd5e0; display: flex; justify-content: center; min-height: 100vh; color: var(--text-main); }
 
-        /* --- TELA DE BOAS-VINDAS --- */
         #welcome-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(135deg, var(--primary), var(--accent));
@@ -50,26 +49,19 @@
         .card { background: var(--card); padding: 18px; border-radius: 24px; margin-bottom: 15px; border: 1px solid var(--border); }
         h3 { font-size: 1.1rem; margin-bottom: 12px; font-weight: 700; }
 
-        /* --- GRÁFICO --- */
         .chart-container {
             display: flex; align-items: flex-end; justify-content: space-between;
             height: 100px; padding-top: 10px; border-bottom: 2px solid var(--border); margin-bottom: 30px;
         }
-        .chart-bar { width: 25px; background: var(--primary); border-radius: 5px 5px 0 0; position: relative; }
+        .chart-bar { width: 22px; background: var(--primary); border-radius: 5px 5px 0 0; position: relative; }
         .chart-label { position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%); font-size: 0.6rem; font-weight: 700; }
 
-        /* --- GRATIDÃO --- */
-        .gratitude-item { background: var(--bg); padding: 10px; border-radius: 12px; font-size: 0.85rem; display: flex; gap: 10px; margin-bottom: 8px;}
-
-        /* --- IA E CONTEÚDO --- */
         .chat-box { height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
         .bubble { padding: 12px; border-radius: 18px; font-size: 0.85rem; max-width: 85%; }
         .bot { background: var(--primary); color: white; align-self: flex-start; border-bottom-left-radius: 2px; }
         .user { background: var(--chat-user); color: var(--text-main); align-self: flex-end; border-bottom-right-radius: 2px; }
 
         .btn-main { width: 100%; background: var(--primary); color: white; border: none; padding: 14px; border-radius: 15px; font-weight: 700; cursor: pointer; }
-        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); padding: 12px; border-radius: 15px; font-weight: 700; width: 100%; margin-top: 10px; cursor: pointer;}
-        
         input, textarea { width: 100%; background: var(--bg); border: none; border-radius: 12px; padding: 12px; color: var(--text-main); outline: none; margin-bottom: 10px; }
 
         .nav-bar {
@@ -96,17 +88,16 @@
         <header>
             <div>
                 <h2 id="displayHeaderName" style="margin:0; font-size: 1.1rem;">MenteLeve</h2>
-                <div style="font-size: 0.75rem; opacity: 0.9;"><i class="ph ph-sparkle-fill"></i> <span id="pts">0</span> Pontos</div>
+                <div style="font-size: 0.75rem; opacity: 0.9;"><i class="ph ph-heart-fill"></i> <span id="pts">0</span> Pontos</div>
             </div>
             <button onclick="toggleDark()" style="background:none; border:none; color:white; font-size: 1.4rem;"><i class="ph ph-moon-stars"></i></button>
         </header>
 
         <section id="stats" class="page active">
             <div class="card">
-                <h3>Mural de Evolução</h3>
+                <h3>Evolução de Humor</h3>
                 <div class="chart-container" id="moodChart"></div>
             </div>
-
             <div class="card">
                 <h3>Mural da Gratidão 🙏</h3>
                 <div style="display: flex; gap: 5px; margin-bottom: 10px;">
@@ -123,10 +114,14 @@
                 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 15px 0;">
                     <button style="border:none; background:none; font-size:1.8rem;" onclick="registerMood(5, '🤩')">🤩</button>
                     <button style="border:none; background:none; font-size:1.8rem;" onclick="registerMood(4, '😊')">😊</button>
-                    <button style="border:none; background:none; font-size:1.8rem;" onclick="registerMood(3, '😌')">😌</button>
+                    <button style="border:none; background:none; font-size:1.8rem;" onclick="registerMood(4, '😌')">😌</button>
+                    <button style="border:none; background:none; font-size:1.8rem;" onclick="registerMood(4, '🙏')">🙏</button>
                     <button style="border:none; background:none; font-size:1.8rem;" onclick="registerMood(2, '😟')">😟</button>
+                    <button style="border:none; background:none; font-size:1.8rem;" onclick="registerMood(1, '😔')">😔</button>
+                    <button style="border:none; background:none; font-size:1.8rem;" onclick="registerMood(1, '😤')">😤</button>
+                    <button style="border:none; background:none; font-size:1.8rem;" onclick="registerMood(3, '😴')">😴</button>
                 </div>
-                <textarea id="note" placeholder="O que houve hoje?"></textarea>
+                <textarea id="note" placeholder="Conte mais sobre o seu dia..."></textarea>
                 <button class="btn-main" onclick="saveData()">Salvar no Diário</button>
             </div>
         </section>
@@ -134,13 +129,12 @@
         <section id="chat" class="page">
             <div class="card">
                 <div class="chat-box" id="chatContent">
-                    <div class="bubble bot">Oi! Estou aqui para te ouvir. Como foi seu dia?</div>
+                    <div class="bubble bot">Oi! Como está o seu coração agora?</div>
                 </div>
                 <div style="display:flex; gap:8px;">
-                    <input type="text" id="chatInput" placeholder="Fale comigo..." style="margin:0;">
+                    <input type="text" id="chatInput" placeholder="Desabafe..." style="margin:0;">
                     <button class="btn-main" style="width: 50px;" onclick="sendMsg()"><i class="ph ph-paper-plane"></i></button>
                 </div>
-                <button class="btn-outline" onclick="aiReport()">Análise Semanal da IA</button>
             </div>
         </section>
 
@@ -148,27 +142,34 @@
             <h3>Refúgio Literário 📖</h3>
             <div class="card">
                 <h4>Paz Interior</h4>
-                <p>"Não se turbe o vosso coração." (João 14:1)</p>
+                <p>"Não se turbe o vosso coração; credes em Deus, crede também em mim." (João 14:1)</p>
             </div>
             <div class="card">
-                <h4>Coragem</h4>
-                <p>"Tudo passa. O que é bom, o que é ruim. Mantenha a calma."</p>
+                <h4>Descanso</h4>
+                <p>"Vinde a mim todos os que estais cansados e sobrecarregados, e eu vos aliviarei." (Mateus 11:28)</p>
+            </div>
+            <div class="card">
+                <h4>Resiliência</h4>
+                <p>"A vida não é sobre esperar a tempestade passar, é sobre aprender a dançar na chuva."</p>
+            </div>
+            <div class="card">
+                <h4>Esperança</h4>
+                <p>"O choro pode durar uma noite, mas a alegria vem pela manhã." (Salmo 30:5)</p>
+            </div>
+            <div class="card">
+                <h4>Pequenos Passos</h4>
+                <p>"Você não precisa ver toda a escada, apenas dê o primeiro passo com fé."</p>
+            </div>
+            <div class="card">
+                <h4>Autocuidado</h4>
+                <p>"Ser gentil consigo mesmo é a melhor forma de ser gentil com o mundo."</p>
             </div>
         </section>
 
         <section id="help" class="page">
-            <h3>Apoio</h3>
             <div class="card">
-                <h4>Contato de Emergência</h4>
-                <input type="text" id="emergencyName" placeholder="Nome do amigo">
-                <input type="tel" id="emergencyPhone" placeholder="Número">
-                <button class="btn-main" onclick="saveEmergency()">Salvar</button>
-                <div id="emergencyContact" style="margin-top:15px; display:none;">
-                    <button class="btn-main" style="background:var(--danger);" onclick="callEmergency()"><i class="ph ph-phone"></i> Ligar</button>
-                </div>
-            </div>
-            <div class="card">
-                <button class="btn-main" style="background:#ff7675;" onclick="window.location.href='tel:188'">Ligar CVV (188)</button>
+                <h4>Socorro Profissional (CVV)</h4>
+                <button class="btn-main" style="background:#ff7675;" onclick="window.location.href='tel:188'">Ligar 188</button>
             </div>
         </section>
 
@@ -182,7 +183,7 @@
     </div>
 
     <script>
-        let moodHistory = JSON.parse(localStorage.getItem('ml_h')) || [3, 4, 3, 5, 2];
+        let moodHistory = JSON.parse(localStorage.getItem('ml_h')) || [3, 4, 3, 5, 2, 4, 3];
         let pts = parseInt(localStorage.getItem('ml_p')) || 0;
         let gratitudes = JSON.parse(localStorage.getItem('ml_g')) || [];
         let storedName = localStorage.getItem('ml_user_name');
@@ -194,7 +195,6 @@
             }
             renderChart();
             renderGratitude();
-            loadEmergency();
             document.getElementById('pts').innerText = pts;
         }
 
@@ -205,7 +205,6 @@
             location.reload();
         }
 
-        // Funções de Mural, Mood, etc (Mantidas)
         function renderChart() {
             const chart = document.getElementById('moodChart');
             chart.innerHTML = "";
@@ -222,7 +221,7 @@
             moodHistory.push(val);
             localStorage.setItem('ml_h', JSON.stringify(moodHistory));
             renderChart();
-            alert("Humor registrado!");
+            alert("Humor " + emoji + " registrado!");
             addPts(5);
         }
 
@@ -239,7 +238,7 @@
 
         function renderGratitude() {
             const list = document.getElementById('gratitudeList');
-            list.innerHTML = gratitudes.map(g => `<div class="gratitude-item"><i class="ph ph-heart" style="color:var(--danger)"></i> ${g}</div>`).join('');
+            list.innerHTML = gratitudes.map(g => `<div class="gratitude-item"><i class="ph ph-heart-fill" style="color:var(--danger)"></i> ${g}</div>`).join('');
         }
 
         function tab(id) {
@@ -251,25 +250,16 @@
 
         function toggleDark() { document.body.classList.toggle('dark-mode'); }
         function addPts(v) { pts += v; localStorage.setItem('ml_p', pts); document.getElementById('pts').innerText = pts; }
-        function saveData() { alert("Salvo!"); addPts(10); }
+        function saveData() { alert("Diário salvo!"); document.getElementById('note').value = ""; addPts(10); }
+        
         function sendMsg() { 
             const i = document.getElementById('chatInput');
             const c = document.getElementById('chatContent');
             if(!i.value) return;
             c.innerHTML += `<div class="bubble user">${i.value}</div>`;
-            setTimeout(() => { c.innerHTML += `<div class="bubble bot">Estou ouvindo... conte mais.</div>`; c.scrollTop = c.scrollHeight; }, 600);
+            setTimeout(() => { c.innerHTML += `<div class="bubble bot">Estou processando o que você disse. Saiba que você é importante e sua dor é válida.</div>`; c.scrollTop = c.scrollHeight; }, 600);
             i.value = "";
         }
-        function saveEmergency() { 
-            localStorage.setItem('ml_e_n', document.getElementById('emergencyName').value);
-            localStorage.setItem('ml_e_p', document.getElementById('emergencyPhone').value);
-            loadEmergency();
-        }
-        function loadEmergency() {
-            if(localStorage.getItem('ml_e_n')) document.getElementById('emergencyContact').style.display = 'block';
-        }
-        function callEmergency() { window.location.href = "tel:" + localStorage.getItem('ml_e_p'); }
-        function aiReport() { alert("Você está evoluindo bem!"); }
 
         init();
     </script>
