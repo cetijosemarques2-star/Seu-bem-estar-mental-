@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MenteLeve - Edição Vencedora</title>
+    <title>MenteLeve - Edição Vencedora PRO</title>
     
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -15,6 +15,7 @@
             --border: #e2e8f0;
         }
 
+        /* CONFIGURAÇÃO DO MODO ESCURO */
         .dark-mode {
             --bg: #0f172a; --card: #1e293b; --text-main: #f1f5f9; --text-sub: #94a3b8;
             --primary: #818cf8; --accent: #4f46e5; --border: #334155;
@@ -34,7 +35,8 @@
             color: white; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px;
         }
 
-        .points-header { display: flex; justify-content: space-between; align-items: center; }
+        .header-top { display: flex; justify-content: space-between; align-items: flex-start; }
+        
         .progress-container { width: 100%; height: 8px; background: rgba(0,0,0,0.1); border-radius: 10px; margin-top: 15px; }
         .progress-bar { height: 100%; background: #fff; width: 0%; border-radius: 10px; transition: width 0.8s; }
 
@@ -68,18 +70,21 @@
         .nav-item.active { color: var(--primary); }
         .nav-item span { font-size: 0.55rem; font-weight: 700; margin-top: 4px; }
 
-        /* COMUNIDADE */
-        .msg-bubble { background: #eef2ff; padding: 12px; border-radius: 15px; margin-bottom: 10px; border-left: 4px solid var(--primary); font-size: 0.9rem; position: relative; }
-        .msg-bubble small { display: block; font-size: 0.7rem; color: var(--text-sub); margin-top: 5px; }
+        .msg-bubble { background: var(--bg); padding: 12px; border-radius: 15px; margin-bottom: 10px; border-left: 4px solid var(--primary); font-size: 0.9rem; border: 1px solid var(--border); }
     </style>
 </head>
 <body>
 
     <div id="app">
         <header>
-            <div class="points-header">
+            <div class="header-top">
                 <div>
-                    <h2 style="font-size: 1.1rem;">MenteLeve</h2>
+                    <h2 style="font-size: 1.1rem; display: flex; align-items: center; gap: 10px;">
+                        MenteLeve 
+                        <button onclick="toggleDarkMode()" style="background:none; border:none; color:white; cursor:pointer; font-size: 1.2rem;">
+                            <i class="ph ph-moon-stars"></i>
+                        </button>
+                    </h2>
                     <span id="levelLabel" style="font-size: 0.7rem; opacity: 0.9; font-weight: 700;">Semente da Paz</span>
                 </div>
                 <div style="text-align: right;">
@@ -106,7 +111,7 @@
 
         <section id="home" class="page">
             <div class="card" style="text-align: center;">
-                <h3>Como está você?</h3>
+                <h3>Como se sente agora?</h3>
                 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 20px 0;">
                     <button onclick="saveMood(5)" style="font-size:2rem; border:none; background:none; cursor:pointer;">🤩</button>
                     <button onclick="saveMood(4)" style="font-size:2rem; border:none; background:none; cursor:pointer;">😊</button>
@@ -123,9 +128,8 @@
         <section id="comunidade" class="page">
             <div class="card">
                 <h3><i class="ph ph-users-three"></i> Mural Positivo</h3>
-                <p style="font-size: 0.8rem; margin-bottom: 10px;">Envie uma palavra de apoio para outros jovens.</p>
-                <textarea id="comMsg" placeholder="Escreva algo inspirador..." style="height: 80px;"></textarea>
-                <button onclick="sendCommunityMsg()" class="btn-main"><i class="ph ph-paper-plane-tilt"></i> Enviar Anonimamente</button>
+                <textarea id="comMsg" placeholder="Escreva algo inspirador..."></textarea>
+                <button onclick="sendCommunityMsg()" class="btn-main">Enviar Apoio</button>
             </div>
             <div id="communityWall"></div>
         </section>
@@ -141,7 +145,7 @@
         <section id="refugio" class="page">
             <h3><i class="ph ph-book-open"></i> Refúgio</h3>
             <div class="card"><h4>Força</h4><p>"Tudo posso naquele que me fortalece."</p></div>
-            <div class="card"><h4>Calma</h4><p>"Não se turbe o vosso coração."</p></div>
+            <div class="card"><h4>Descanso</h4><p>"Vinde a mim e eu vos aliviarei."</p></div>
             <div class="card"><h4>Esperança</h4><p>"A alegria vem pela manhã."</p></div>
         </section>
 
@@ -183,7 +187,17 @@
         localStorage.setItem('ml_uid', uid);
         let pts = 0;
 
-        // SINCRONIZAÇÃO
+        // FUNÇÃO MODO ESCURO
+        window.toggleDarkMode = () => {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('ml_darkmode', isDark);
+        };
+
+        // CARREGAR PREFERÊNCIA DE TEMA
+        if(localStorage.getItem('ml_darkmode') === 'true') document.body.classList.add('dark-mode');
+
+        // SINCRONIZAÇÃO FIREBASE
         onValue(ref(db, 'users/' + uid), (snap) => {
             const data = snap.val();
             if(data) {
@@ -195,16 +209,15 @@
             }
         });
 
-        // COMUNIDADE GLOBAL
         onValue(ref(db, 'community'), (snap) => {
             const wall = document.getElementById('communityWall');
             wall.innerHTML = "";
             const msgs = snap.val();
             if(msgs) {
-                Object.values(msgs).reverse().slice(0, 10).forEach(m => {
+                Object.values(msgs).reverse().slice(0, 5).forEach(m => {
                     const d = document.createElement('div');
                     d.className = 'msg-bubble';
-                    d.innerHTML = `${m.text} <small>Enviado por um Amigo Leve</small>`;
+                    d.innerHTML = `${m.text} <br><small style="opacity:0.6; font-size:0.6rem;">Mensagem de Apoio</small>`;
                     wall.appendChild(d);
                 });
             }
@@ -221,15 +234,14 @@
 
         window.saveMood = (v) => {
             push(ref(db, `users/${uid}/history`), v);
-            addPts(10); alert("Humor salvo! +10 pontos.");
-            tab('stats');
+            addPts(10); tab('stats');
         };
 
         window.sendCommunityMsg = () => {
             const el = document.getElementById('comMsg');
             if(!el.value) return;
             push(ref(db, 'community'), { text: el.value, time: serverTimestamp() });
-            el.value = ""; addPts(20); alert("Mensagem enviada! Você ganhou +20 pontos por espalhar o bem.");
+            el.value = ""; addPts(20);
         };
 
         window.addGratitude = () => {
@@ -257,7 +269,7 @@
 
         function renderGrat(list) {
             const c = document.getElementById('gratitudeList');
-            c.innerHTML = list.reverse().slice(0, 3).map(t => `<div style="background:#f1f5f9; padding:10px; border-radius:12px; font-size:0.8rem; margin-bottom:5px;">✨ ${t}</div>`).join('');
+            c.innerHTML = list.reverse().slice(0, 3).map(t => `<div class="msg-bubble">✨ ${t}</div>`).join('');
         }
 
         let bActive = false, bInt;
