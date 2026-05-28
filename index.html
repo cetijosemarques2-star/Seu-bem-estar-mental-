@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MenteLeve - Versão Final</title>
+    <title>MenteLeve - Edição Liga Jovem</title>
     
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -23,13 +23,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; transition: all 0.2s ease; }
         body { background-color: #cbd5e0; display: flex; justify-content: center; min-height: 100vh; color: var(--text-main); }
 
-        #welcome-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 30px; text-align: center; color: white;
-        }
-
         #app {
             width: 100%; max-width: 450px; background: var(--bg);
             min-height: 100vh; position: relative; display: flex; flex-direction: column;
@@ -39,41 +32,44 @@
         header {
             padding: 25px 20px; background: linear-gradient(135deg, var(--primary), var(--accent));
             color: white; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px;
-            display: flex; justify-content: space-between; align-items: center;
         }
 
-        .page { display: none; padding: 15px; animation: slideUp 0.3s ease; }
+        .user-info { display: flex; justify-content: space-between; align-items: center; }
+        
+        /* BARRA DE NÍVEL */
+        .level-badge { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; margin-top: 5px; display: inline-block; }
+        .progress-container { width: 100%; height: 6px; background: rgba(255,255,255,0.3); border-radius: 10px; margin-top: 10px; overflow: hidden; }
+        .progress-bar { height: 100%; background: #fff; width: 0%; transition: width 1s ease; }
+
+        .page { display: none; padding: 15px; animation: fadeIn 0.4s ease; }
         .page.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .card { background: var(--card); padding: 18px; border-radius: 24px; margin-bottom: 15px; border: 1px solid var(--border); }
-        h3 { font-size: 1.1rem; margin-bottom: 12px; font-weight: 700; }
-
-        /* --- GRÁFICO FIX --- */
+        .card { background: var(--card); padding: 18px; border-radius: 24px; margin-bottom: 15px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+        
         .chart-container {
-            display: flex; align-items: flex-end; justify-content: space-between;
-            height: 120px; padding: 10px; border-bottom: 2px solid var(--border); margin-bottom: 30px;
-            gap: 8px; background: rgba(0,0,0,0.02); border-radius: 10px;
+            display: flex; align-items: flex-end; justify-content: space-around;
+            height: 150px; padding: 10px; border-bottom: 2px solid var(--border); 
+            margin-bottom: 35px; background: rgba(255,255,255,0.5); border-radius: 15px; gap: 5px;
         }
         .chart-bar { 
-            flex: 1; background: var(--primary); border-radius: 6px 6px 0 0; 
-            position: relative; min-height: 10px;
-            transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1); 
+            width: 30px; background: var(--primary); border-radius: 8px 8px 0 0; 
+            position: relative; min-height: 5px; transition: height 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
         .chart-label { position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); font-size: 0.6rem; font-weight: 700; color: var(--text-sub); }
 
-        /* --- RESPIRAÇÃO --- */
-        .circle-wrap { height: 200px; display: flex; align-items: center; justify-content: center; }
+        .circle-wrap { height: 180px; display: flex; align-items: center; justify-content: center; }
         .circle {
-            width: 120px; height: 120px; background: var(--primary); border-radius: 50%;
+            width: 100px; height: 100px; background: var(--primary); border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             color: white; font-weight: 700; transition: 4s ease-in-out;
-            box-shadow: 0 0 30px rgba(108, 99, 255, 0.3);
+            box-shadow: 0 0 30px rgba(108, 99, 255, 0.4);
         }
-        .expanding { transform: scale(1.5); background: var(--success); }
+        .expanding { transform: scale(1.6); background: var(--success); }
 
         .btn-main { width: 100%; background: var(--primary); color: white; border: none; padding: 14px; border-radius: 15px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        input, textarea { width: 100%; background: var(--bg); border: none; border-radius: 12px; padding: 12px; color: var(--text-main); outline: none; margin-bottom: 10px; }
+        .mood-btn { background: none; border: none; font-size: 2rem; cursor: pointer; transition: transform 0.2s; }
+        .mood-btn:hover { transform: scale(1.2); }
 
         .nav-bar {
             position: fixed; bottom: 0; width: 100%; max-width: 450px;
@@ -87,78 +83,76 @@
 </head>
 <body>
 
-    <div id="welcome-overlay">
-        <i class="ph ph-sparkle-fill" style="font-size: 3.5rem; margin-bottom: 20px;"></i>
-        <h1>Bem-vindo!</h1>
-        <p style="margin-bottom: 25px; opacity: 0.9;">Como podemos te chamar?</p>
-        <input type="text" id="userNameInput" placeholder="Seu nome..." style="width: 100%; max-width: 300px; text-align: center; background: white; color: #333;">
-        <button class="btn-main" id="btnEnter" style="background: white; color: var(--primary); max-width: 300px;">Entrar</button>
-    </div>
-
     <div id="app">
         <header>
-            <div>
-                <h2 id="displayHeaderName" style="margin:0; font-size: 1.1rem;">MenteLeve</h2>
-                <div style="font-size: 0.75rem; opacity: 0.9;"><i class="ph ph-heart-fill"></i> <span id="pts">0</span> Pontos</div>
+            <div class="user-info">
+                <div>
+                    <h2 id="userName" style="font-size: 1.2rem;">MenteLeve</h2>
+                    <div class="level-badge" id="levelName">Semente da Paz</div>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-weight: 700;"><i class="ph ph-sparkle-fill"></i> <span id="pts">0</span></div>
+                    <div style="font-size: 0.6rem; opacity: 0.8;">PONTOS</div>
+                </div>
             </div>
-            <button onclick="toggleDark()" style="background:none; border:none; color:white; font-size: 1.4rem;"><i class="ph ph-moon-stars"></i></button>
+            <div class="progress-container">
+                <div class="progress-bar" id="levelProgress"></div>
+            </div>
         </header>
 
         <section id="stats" class="page active">
             <div class="card">
-                <h3>Sua Jornada</h3>
+                <h3>Análise de Bem-estar</h3>
                 <div class="chart-container" id="moodChart"></div>
             </div>
             <div class="card">
-                <h3>Gratidão 🙏</h3>
-                <div style="display: flex; gap: 5px; margin-bottom: 10px;">
-                    <input type="text" id="gratitudeInput" placeholder="Pelo que é grato hoje?" style="margin:0;">
-                    <button id="btnAddGratitude" style="background: var(--success); border:none; color:white; padding:10px; border-radius:10px;"><i class="ph ph-plus"></i></button>
+                <h3>Diário de Gratidão</h3>
+                <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                    <input type="text" id="gratitudeInput" placeholder="Hoje eu agradeço por..." style="flex:1; padding: 10px; border-radius: 10px; border: 1px solid var(--border); outline: none;">
+                    <button id="btnAddGratitude" style="background: var(--success); border:none; color:white; padding:10px; border-radius:10px;"><i class="ph ph-plus-bold"></i></button>
                 </div>
                 <div id="gratitudeList"></div>
             </div>
         </section>
 
         <section id="home" class="page">
-            <div class="card">
-                <h3>Como você está?</h3>
-                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 15px 0;">
-                    <button class="btn-main" style="background:none; font-size:1.8rem;" onclick="registerMood(5, '🤩')">🤩</button>
-                    <button class="btn-main" style="background:none; font-size:1.8rem;" onclick="registerMood(4, '😊')">😊</button>
-                    <button class="btn-main" style="background:none; font-size:1.8rem;" onclick="registerMood(4, '😌')">😌</button>
-                    <button class="btn-main" style="background:none; font-size:1.8rem;" onclick="registerMood(4, '🙏')">🙏</button>
-                    <button class="btn-main" style="background:none; font-size:1.8rem;" onclick="registerMood(2, '😟')">😟</button>
-                    <button class="btn-main" style="background:none; font-size:1.8rem;" onclick="registerMood(1, '😔')">😔</button>
-                    <button class="btn-main" style="background:none; font-size:1.8rem;" onclick="registerMood(1, '😤')">😤</button>
-                    <button class="btn-main" style="background:none; font-size:1.8rem;" onclick="registerMood(3, '😴')">😴</button>
+            <div class="card" style="text-align: center;">
+                <h3 style="margin-bottom: 20px;">Como está seu coração agora?</h3>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
+                    <button class="mood-btn" onclick="registerMood(5, '🤩')">🤩</button>
+                    <button class="mood-btn" onclick="registerMood(4, '😊')">😊</button>
+                    <button class="mood-btn" onclick="registerMood(4, '😌')">😌</button>
+                    <button class="mood-btn" onclick="registerMood(4, '🙏')">🙏</button>
+                    <button class="mood-btn" onclick="registerMood(2, '😟')">😟</button>
+                    <button class="mood-btn" onclick="registerMood(1, '😔')">😔</button>
+                    <button class="mood-btn" onclick="registerMood(1, '😤')">😤</button>
+                    <button class="mood-btn" onclick="registerMood(3, '😴')">😴</button>
                 </div>
-                <textarea id="note" placeholder="Conte mais..."></textarea>
-                <button class="btn-main" onclick="saveDiary()">Salvar no Diário</button>
+                <p style="margin-top: 20px; font-size: 0.8rem; color: var(--text-sub);">Ganhe +5 pontos por registro</p>
             </div>
         </section>
 
         <section id="breathe" class="page">
             <div class="card" style="text-align: center;">
-                <h3>Respire</h3>
+                <h3>Treino de Resiliência</h3>
                 <div class="circle-wrap">
                     <div class="circle" id="bCircle">Paz</div>
                 </div>
-                <button class="btn-main" id="bBtn" onclick="toggleBreathe()">Começar</button>
+                <button class="btn-main" id="bBtn" onclick="toggleBreathe()">Iniciar Exercício</button>
             </div>
         </section>
 
         <section id="inspire" class="page">
             <h3>Refúgio 📖</h3>
-            <div class="card"><h4>Paz</h4><p>"Não se turbe o vosso coração." (João 14:1)</p></div>
-            <div class="card"><h4>Descanso</h4><p>"Eu vos aliviarei." (Mateus 11:28)</p></div>
-            <div class="card"><h4>Força</h4><p>"O choro dura uma noite, mas a alegria vem de manhã."</p></div>
-            <div class="card"><h4>Fé</h4><p>"Tudo posso naquele que me fortalece."</p></div>
+            <div class="card"><h4>Resiliência</h4><p>"O que não provoca minha morte, faz com que eu fique mais forte."</p></div>
+            <div class="card"><h4>Calma</h4><p>"A paz não é a ausência de conflito, mas a presença de Deus/Equilíbrio neles."</p></div>
         </section>
 
         <section id="help" class="page">
-            <h3>Ajuda</h3>
             <div class="card">
-                <button class="btn-main" style="background:var(--danger);" onclick="window.location.href='tel:188'">Ligar CVV (188)</button>
+                <h3>Suporte Imediato</h3>
+                <p style="margin-bottom: 15px; font-size: 0.9rem;">Você não está sozinho. Conecte-se agora com ajuda profissional.</p>
+                <button class="btn-main" style="background:var(--danger);" onclick="window.location.href='tel:188'">Ligar para CVV (188)</button>
             </div>
         </section>
 
@@ -191,49 +185,46 @@
 
         let userId = localStorage.getItem('ml_user_id') || 'u_' + Math.random().toString(36).substr(2, 9);
         localStorage.setItem('ml_user_id', userId);
-        let userName = localStorage.getItem('ml_user_name');
         let points = 0;
 
-        // CARREGAR DADOS INICIAIS
-        window.onload = () => {
-            if(userName) {
-                document.getElementById('welcome-overlay').style.display = 'none';
-                document.getElementById('displayHeaderName').innerText = "Olá, " + userName;
-            }
-            syncData();
-        };
+        // --- SISTEMA DE NÍVEIS ---
+        function updateLevelUI(pts) {
+            let level = "Semente da Paz";
+            let nextLimit = 50;
+            let percent = 0;
 
-        function syncData() {
-            onValue(ref(db, 'users/' + userId), (snap) => {
-                const data = snap.val();
-                if(data) {
-                    if(data.points !== undefined) {
-                        points = data.points;
-                        document.getElementById('pts').innerText = points;
-                    }
-                    if(data.history) {
-                        renderChart(Object.values(data.history));
-                    }
-                    if(data.gratitudes) {
-                        renderGratitudes(Object.values(data.gratitudes));
-                    }
-                }
-            });
+            if(pts >= 500) { level = "Carvalho Resiliente"; nextLimit = 1000; }
+            else if(pts >= 150) { level = "Árvore Jovem"; nextLimit = 500; }
+            else if(pts >= 50) { level = "Broto de Calma"; nextLimit = 150; }
+
+            percent = (pts / nextLimit) * 100;
+            if(percent > 100) percent = 100;
+
+            document.getElementById('levelName').innerText = level;
+            document.getElementById('levelProgress').style.width = percent + "%";
+            document.getElementById('pts').innerText = pts;
         }
 
-        window.enterApp = () => {
-            const val = document.getElementById('userNameInput').value;
-            if(!val) return alert("Digite seu nome!");
-            localStorage.setItem('ml_user_name', val);
-            set(ref(db, 'users/' + userId + '/profile'), { name: val });
-            location.reload();
-        };
+        // --- FIREBASE SYNC ---
+        onValue(ref(db, 'users/' + userId), (snap) => {
+            const data = snap.val();
+            if(data) {
+                points = data.points || 0;
+                updateLevelUI(points);
+                if(data.history) renderChart(Object.values(data.history));
+                if(data.gratitudes) renderGratitudes(Object.values(data.gratitudes));
+            }
+        });
 
-        // --- PONTOS E HUMOR ---
+        // --- AÇÕES ---
         window.registerMood = (v, emoji) => {
             push(ref(db, 'users/' + userId + '/history'), v);
-            updatePts(5); // Soma 5 pontos
-            alert("Humor registrado!");
+            updatePts(5);
+            if(v <= 2) {
+                alert("Percebemos que você não está muito bem. Que tal fazer um exercício de respiração ou ver nosso Refúgio?");
+            } else {
+                alert("Humor registrado! Você ganhou +5 pontos.");
+            }
         };
 
         window.addGratitude = () => {
@@ -241,13 +232,12 @@
             if(!i.value) return;
             push(ref(db, 'users/' + userId + '/gratitudes'), i.value);
             i.value = "";
-            updatePts(10); // Soma 10 pontos
+            updatePts(10);
         };
 
         function updatePts(v) {
             points += v;
-            document.getElementById('pts').innerText = points; // Atualiza na tela na hora
-            set(ref(db, 'users/' + userId + '/points'), points); // Salva no Firebase
+            set(ref(db, 'users/' + userId + '/points'), points);
         }
 
         function renderChart(history) {
@@ -257,18 +247,18 @@
             last7.forEach((val, i) => {
                 const bar = document.createElement('div');
                 bar.className = 'chart-bar';
-                // Calculo de altura: val(1 a 5) * 20%
-                setTimeout(() => { bar.style.height = (val * 20) + '%'; }, 100);
-                bar.innerHTML = `<div class="chart-label">D${i+1}</div>`;
+                bar.style.height = "0%";
+                bar.innerHTML = `<div class="chart-label">R${i+1}</div>`;
                 container.appendChild(bar);
+                setTimeout(() => { bar.style.height = (val / 5) * 100 + "%"; }, 100);
             });
         }
 
         function renderGratitudes(list) {
             const container = document.getElementById('gratitudeList');
             container.innerHTML = list.reverse().slice(0, 3).map(text => `
-                <div style="background:var(--bg); padding:10px; border-radius:12px; font-size:0.85rem; margin-bottom:8px; display:flex; gap:10px;">
-                    <i class="ph ph-heart-fill" style="color:var(--danger)"></i> ${text}
+                <div style="background:var(--bg); padding:10px; border-radius:12px; font-size:0.85rem; margin-bottom:8px; border-left: 4px solid var(--success);">
+                    ✨ ${text}
                 </div>
             `).join('');
         }
@@ -292,25 +282,19 @@
                 cycle();
             } else {
                 bOn = false; clearTimeout(bInt);
-                btn.innerText = "Começar"; circ.innerText = "Paz";
+                btn.innerText = "Iniciar Exercício"; circ.innerText = "Paz";
                 circ.classList.remove('expanding');
-                updatePts(2); // Ganha 2 pontos por respirar
+                updatePts(2);
             }
         };
 
-        // --- NAVEGAÇÃO ---
         window.tab = (id) => {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             event.currentTarget.classList.add('active');
-            if(id !== 'breathe' && bOn) window.toggleBreathe();
         };
 
-        window.toggleDark = () => document.body.classList.toggle('dark-mode');
-        window.saveDiary = () => { alert("Salvo!"); updatePts(10); document.getElementById('note').value = ""; };
-
-        document.getElementById('btnEnter').onclick = window.enterApp;
         document.getElementById('btnAddGratitude').onclick = window.addGratitude;
     </script>
 </body>
