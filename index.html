@@ -1,305 +1,613 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MenteLeve - Edição Vencedora PRO</title>
-    
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projeto Abraçar</title>
+  <!-- Chart.js para os gráficos do Painel Admin -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* ==========================================================================
+       1. VARIÁVEIS E ESTILOS GERAIS
+       ========================================================================== */
+    :root {
+      --verde-principal: #2ecc71;
+      --verde-esmeralda: #1abc9c;
+      --roxo-principal: #8e44ad;
+      --roxo-escuro: #6c3483;
+      --degrade-abracar: linear-gradient(135deg, var(--verde-principal), var(--roxo-principal));
+      --bg-claro: #f8f9fa;
+      --texto-escuro: #2c3e50;
+      --branco: #ffffff;
+      --cinza-borda: #e2e8f0;
+    }
 
-    <style>
-        :root {
-            --bg: #f8fafc; --card: #ffffff; --text-main: #1e293b; --text-sub: #64748b;
-            --primary: #6366f1; --accent: #818cf8; --danger: #ef4444; --success: #10b981;
-            --border: #e2e8f0;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-        /* CONFIGURAÇÃO DO MODO ESCURO */
-        .dark-mode {
-            --bg: #0f172a; --card: #1e293b; --text-main: #f1f5f9; --text-sub: #94a3b8;
-            --primary: #818cf8; --accent: #4f46e5; --border: #334155;
-        }
+    body {
+      background-color: var(--bg-claro);
+      color: var(--texto-escuro);
+      display: flex;
+      min-height: 100vh;
+    }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; transition: all 0.2s ease; }
-        body { background-color: #cbd5e0; display: flex; justify-content: center; min-height: 100vh; color: var(--text-main); }
+    /* ==========================================================================
+       2. NAVEGAÇÃO / MENU LATERAL
+       ========================================================================== */
+    .sidebar {
+      width: 260px;
+      background: var(--degrade-abracar);
+      color: var(--branco);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      transition: transform 0.3s ease;
+      z-index: 1000;
+    }
 
-        #app {
-            width: 100%; max-width: 450px; background: var(--bg);
-            min-height: 100vh; position: relative; display: flex; flex-direction: column;
-            box-shadow: 0 10px 50px rgba(0,0,0,0.1); padding-bottom: 100px;
-        }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
 
-        header {
-            padding: 25px 20px; background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: white; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px;
-        }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
 
-        .header-top { display: flex; justify-content: space-between; align-items: flex-start; }
-        
-        .progress-container { width: 100%; height: 8px; background: rgba(0,0,0,0.1); border-radius: 10px; margin-top: 15px; }
-        .progress-bar { height: 100%; background: #fff; width: 0%; border-radius: 10px; transition: width 0.8s; }
+    .nav-links a {
+      color: var(--branco);
+      text-decoration: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      display: block;
+      transition: background 0.2s;
+    }
 
-        .page { display: none; padding: 15px; animation: fadeIn 0.3s ease; }
-        .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .nav-links a:hover, .nav-links a.active {
+      background: rgba(255, 255, 255, 0.2);
+    }
 
-        .card { background: var(--card); padding: 18px; border-radius: 24px; margin-bottom: 15px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
-        h3 { font-size: 1.1rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    /* Navbar Mobile Header */
+    .mobile-header {
+      display: none;
+      background: var(--degrade-abracar);
+      color: var(--branco);
+      padding: 15px 20px;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1100;
+    }
 
-        .chart-container {
-            display: flex; align-items: flex-end; justify-content: space-around;
-            height: 140px; padding: 10px; background: rgba(0,0,0,0.02); border-radius: 15px; margin-bottom: 30px;
-        }
-        .bar { width: 25px; background: var(--primary); border-radius: 6px 6px 2px 2px; position: relative; transition: height 1s; }
-        .bar-label { position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%); font-size: 0.6rem; font-weight: 700; color: var(--text-sub); }
+    .menu-toggle {
+      background: none;
+      border: none;
+      color: var(--branco);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
 
-        .circle-wrap { height: 160px; display: flex; align-items: center; justify-content: center; }
-        .circle { width: 100px; height: 100px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; transition: 4s ease-in-out; }
-        .expanding { transform: scale(1.5); background: var(--success); }
+    /* ==========================================================================
+       3. ÁREA DE CONTEÚDO PRINCIPAL
+       ========================================================================== */
+    .main-content {
+      flex: 1;
+      padding: 30px;
+      overflow-y: auto;
+    }
 
-        .btn-main { width: 100%; background: var(--primary); color: white; border: none; padding: 14px; border-radius: 15px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 5px; }
-        input, textarea { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 12px; color: var(--text-main); outline: none; margin-bottom: 10px; }
+    .section-page {
+      display: none;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
 
-        .nav-bar {
-            position: fixed; bottom: 0; width: 100%; max-width: 450px;
-            background: var(--card); display: grid; grid-template-columns: repeat(6, 1fr);
-            padding: 10px 5px; border-top: 1px solid var(--border); z-index: 100;
-        }
-        .nav-item { border: none; background: none; color: var(--text-sub); display: flex; flex-direction: column; align-items: center; cursor: pointer; font-size: 1.2rem; }
-        .nav-item.active { color: var(--primary); }
-        .nav-item span { font-size: 0.55rem; font-weight: 700; margin-top: 4px; }
+    .section-page.active {
+      display: block;
+    }
 
-        .msg-bubble { background: var(--bg); padding: 12px; border-radius: 15px; margin-bottom: 10px; border-left: 4px solid var(--primary); font-size: 0.9rem; border: 1px solid var(--border); }
-    </style>
+    /* Cards e Layouts */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: var(--branco);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid var(--cinza-borda);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    }
+
+    .card-destaque {
+      background: var(--degrade-abracar);
+      color: var(--branco);
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      background: var(--degrade-abracar);
+      color: var(--branco);
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s;
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    /* ==========================================================================
+       4. COMPONENTE: CHAT ANÔNIMO
+       ========================================================================== */
+    .chat-container {
+      background: var(--branco);
+      border-radius: 12px;
+      border: 1px solid var(--cinza-borda);
+      height: 500px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .message {
+      max-width: 70%;
+      padding: 10px 15px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+    }
+
+    .message.sent {
+      align-self: flex-end;
+      background: var(--verde-principal);
+      color: var(--branco);
+      border-bottom-right-radius: 2px;
+    }
+
+    .message.received {
+      align-self: flex-start;
+      background: #e9ecef;
+      color: var(--texto-escuro);
+      border-bottom-left-radius: 2px;
+    }
+
+    .chat-input-area {
+      display: flex;
+      padding: 15px;
+      border-top: 1px solid var(--cinza-borda);
+      gap: 10px;
+    }
+
+    .chat-input-area input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid var(--cinza-borda);
+      border-radius: 6px;
+      outline: none;
+    }
+
+    /* ==========================================================================
+       5. COMPONENTE: EXERCÍCIO DE RESPIRAÇÃO
+       ========================================================================== */
+    .respiracao-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      background: var(--branco);
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .bolha-pulmao {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: var(--degrade-abracar);
+      margin: 30px 0;
+      box-shadow: 0 0 20px rgba(46, 204, 113, 0.3);
+      transition: transform 4s ease-in-out;
+    }
+
+    .bolha-pulmao.inspirar {
+      transform: scale(1.8);
+    }
+
+    .bolha-pulmao.expirar {
+      transform: scale(1);
+    }
+
+    /* ==========================================================================
+       6. PAINEL ADMIN E RECURSOS
+       ========================================================================== */
+    .admin-login {
+      max-width: 400px;
+      margin: 40px auto;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--cinza-borda);
+      border-radius: 6px;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      body { flex-direction: column; }
+      .mobile-header { display: flex; }
+      .sidebar {
+        position: fixed;
+        top: 60px;
+        left: -260px;
+        bottom: 0;
+      }
+      .sidebar.open { transform: translateX(260px); }
+      .main-content { padding: 80px 20px 20px 20px; }
+    }
+  </style>
 </head>
 <body>
 
-    <div id="app">
-        <header>
-            <div class="header-top">
-                <div>
-                    <h2 style="font-size: 1.1rem; display: flex; align-items: center; gap: 10px;">
-                        MenteLeve 
-                        <button onclick="toggleDarkMode()" style="background:none; border:none; color:white; cursor:pointer; font-size: 1.2rem;">
-                            <i class="ph ph-moon-stars"></i>
-                        </button>
-                    </h2>
-                    <span id="levelLabel" style="font-size: 0.7rem; opacity: 0.9; font-weight: 700;">Semente da Paz</span>
-                </div>
-                <div style="text-align: right;">
-                    <div style="font-size: 1.2rem; font-weight: 800;"><i class="ph ph-sparkle-fill"></i> <span id="pts">0</span></div>
-                </div>
-            </div>
-            <div class="progress-container"><div id="levelBar" class="progress-bar"></div></div>
-        </header>
+  <!-- Menu Mobile Header -->
+  <div class="mobile-header">
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+    <div>🟢🟣 ABRAÇAR</div>
+    <div>🔔</div>
+  </div>
 
-        <section id="stats" class="page active">
-            <div class="card">
-                <h3><i class="ph ph-chart-line-up"></i> Evolução</h3>
-                <div class="chart-container" id="moodChart"></div>
-            </div>
-            <div class="card">
-                <h3><i class="ph ph-heart"></i> Gratidão</h3>
-                <div style="display: flex; gap: 8px;">
-                    <input type="text" id="gratitudeIn" placeholder="Agradeço por..." style="margin:0;">
-                    <button onclick="addGratitude()" style="background:var(--success); border:none; color:white; padding:12px; border-radius:12px;"><i class="ph ph-plus-bold"></i></button>
-                </div>
-                <div id="gratitudeList" style="margin-top:15px;"></div>
-            </div>
-        </section>
-
-        <section id="home" class="page">
-            <div class="card" style="text-align: center;">
-                <h3>Como se sente agora?</h3>
-                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 20px 0;">
-                    <button onclick="saveMood(5)" style="font-size:2rem; border:none; background:none; cursor:pointer;">🤩</button>
-                    <button onclick="saveMood(4)" style="font-size:2rem; border:none; background:none; cursor:pointer;">😊</button>
-                    <button onclick="saveMood(4)" style="font-size:2rem; border:none; background:none; cursor:pointer;">😌</button>
-                    <button onclick="saveMood(4)" style="font-size:2rem; border:none; background:none; cursor:pointer;">🙏</button>
-                    <button onclick="saveMood(3)" style="font-size:2rem; border:none; background:none; cursor:pointer;">😴</button>
-                    <button onclick="saveMood(2)" style="font-size:2rem; border:none; background:none; cursor:pointer;">😟</button>
-                    <button onclick="saveMood(1)" style="font-size:2rem; border:none; background:none; cursor:pointer;">😔</button>
-                    <button onclick="saveMood(1)" style="font-size:2rem; border:none; background:none; cursor:pointer;">😤</button>
-                </div>
-            </div>
-        </section>
-
-        <section id="comunidade" class="page">
-            <div class="card">
-                <h3><i class="ph ph-users-three"></i> Mural Positivo</h3>
-                <textarea id="comMsg" placeholder="Escreva algo inspirador..."></textarea>
-                <button onclick="sendCommunityMsg()" class="btn-main">Enviar Apoio</button>
-            </div>
-            <div id="communityWall"></div>
-        </section>
-
-        <section id="breathe" class="page">
-            <div class="card" style="text-align: center;">
-                <h3>Foco e Calma</h3>
-                <div class="circle-wrap"><div id="bCircle" class="circle">Paz</div></div>
-                <button id="bBtn" onclick="toggleBreathe()" class="btn-main">Começar</button>
-            </div>
-        </section>
-
-        <section id="refugio" class="page">
-            <h3><i class="ph ph-book-open"></i> Refúgio</h3>
-            <div class="card"><h4>Força</h4><p>"Tudo posso naquele que me fortalece."</p></div>
-            <div class="card"><h4>Descanso</h4><p>"Vinde a mim e eu vos aliviarei."</p></div>
-            <div class="card"><h4>Esperança</h4><p>"A alegria vem pela manhã."</p></div>
-        </section>
-
-        <section id="help" class="page">
-            <div class="card">
-                <h3>Suporte Profissional</h3>
-                <button onclick="window.location.href='tel:188'" class="btn-main" style="background:var(--danger);"><i class="ph ph-phone"></i> Ligar CVV 188</button>
-            </div>
-        </section>
-
-        <nav class="nav-bar">
-            <button class="nav-item active" onclick="tab('stats')"><i class="ph ph-chart-bar"></i><span>Mural</span></button>
-            <button class="nav-item" onclick="tab('home')"><i class="ph ph-plus-circle"></i><span>Mood</span></button>
-            <button class="nav-item" onclick="tab('comunidade')"><i class="ph ph-users-three"></i><span>Apoio</span></button>
-            <button class="nav-item" onclick="tab('breathe')"><i class="ph ph-wind"></i><span>Respira</span></button>
-            <button class="nav-item" onclick="tab('refugio')"><i class="ph ph-book"></i><span>Refúgio</span></button>
-            <button class="nav-item" onclick="tab('help')"><i class="ph ph-lifebuoy"></i><span>Ajuda</span></button>
-        </nav>
+  <!-- Menu Lateral -->
+  <nav class="sidebar" id="sidebar">
+    <div class="brand">
+      <span>🟢🟣</span>
+      <div>
+        <strong>ABRAÇAR</strong><br>
+        <small style="font-size: 0.7rem; opacity: 0.8;">Escuta & Acolhimento</small>
+      </div>
     </div>
+    <ul class="nav-links">
+      <li><a href="#" class="active" onclick="navegar('inicio')">🏠 Início</a></li>
+      <li><a href="#" onclick="navegar('conversar')">💬 Conversar (Anônimo)</a></li>
+      <li><a href="#" onclick="navegar('bem-estar')">🧠 Bem-estar / Respiração</a></li>
+      <li><a href="#" onclick="navegar('combate')">🛡️ Combate ao Bullying</a></li>
+      <li><a href="#" onclick="navegar('admin')">🔒 Área Restrita (Admin)</a></li>
+    </ul>
+  </nav>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-        import { getDatabase, ref, set, push, onValue, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-database.js";
+  <!-- Conteúdo Principal -->
+  <main class="main-content">
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyADKE067DT_uAovdsC0RSMqWkkdKux2_4Y",
-            authDomain: "mental-leve-69d87.firebaseapp.com",
-            databaseURL: "https://mental-leve-69d87-default-rtdb.firebaseio.com",
-            projectId: "mental-leve-69d87",
-            storageBucket: "mental-leve-69d87.firebasestorage.app",
-            messagingSenderId: "282074351005",
-            appId: "1:282074351005:web:8088bb43ac3730d1a45b74",
-            measurementId: "G-CFCXFGL7S3"
-        };
+    <!-- 1. PÁGINA INÍCIO -->
+    <section id="inicio" class="section-page active">
+      <h2>🤗 Olá! Que bom ter você aqui.</h2>
+      <p style="margin-top: 5px; color: #666;">Um espaço para ouvir, acolher e construir uma escola melhor.</p>
+      
+      <div class="card-grid">
+        <div class="card">
+          <h3>💬 Conversa Anônima</h3>
+          <p>Precisa conversar? Fale com o Grêmio ou Coordenação sem expor sua identidade.</p>
+          <button class="btn" onclick="navegar('conversar')">Iniciar Chat</button>
+        </div>
+        <div class="card">
+          <h3>🧠 Espaço Bem-estar</h3>
+          <p>Pratique exercícios de respiração guiada para aliviar a ansiedade e o estresse.</p>
+          <button class="btn" onclick="navegar('bem-estar')">Acessar</button>
+        </div>
+      </div>
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        let uid = localStorage.getItem('ml_uid') || 'u' + Date.now();
-        localStorage.setItem('ml_uid', uid);
-        let pts = 0;
+      <div class="card card-destaque" style="margin-top: 20px;">
+        <h3>🌱 Seu bem-estar importa</h3>
+        <p>Conte com a gente. Estamos aqui para ajudar a manter nossa comunidade escolar segura e acolhedora.</p>
+      </div>
+    </section>
 
-        // FUNÇÃO MODO ESCURO
-        window.toggleDarkMode = () => {
-            document.body.classList.toggle('dark-mode');
-            const isDark = document.body.classList.contains('dark-mode');
-            localStorage.setItem('ml_darkmode', isDark);
-        };
+    <!-- 2. PÁGINA CONVERSAR (CHAT ANÔNIMO DIRETOR) -->
+    <section id="conversar" class="section-page">
+      <h2>💬 Chat Anônimo</h2>
+      <p style="margin-bottom: 15px;">Selecione com quem deseja conversar. Ninguém saberá quem você é.</p>
+      
+      <div class="form-group" style="max-width: 300px;">
+        <label for="canal-chat">Falar com:</label>
+        <select id="canal-chat" onchange="trocarCanalChat()" style="width: 100%; padding: 8px; border-radius: 6px;">
+          <option value="Gremio">Grêmio Estudantil</option>
+          <option value="Coordenacao">Coordenação Pedagógica</option>
+          <option value="Psicologia">Orientação / Acolhimento</option>
+        </select>
+      </div>
 
-        // CARREGAR PREFERÊNCIA DE TEMA
-        if(localStorage.getItem('ml_darkmode') === 'true') document.body.classList.add('dark-mode');
+      <div class="chat-container">
+        <div class="chat-messages" id="chat-messages">
+          <div class="message received">
+            Olá! Você está conectado anônimamente com o canal selecionado. Como podemos te ajudar hoje?
+          </div>
+        </div>
+        <div class="chat-input-area">
+          <input type="text" id="chat-input" placeholder="Digite sua mensagem anônima...">
+          <button class="btn" onclick="enviarMensagem()">Enviar</button>
+        </div>
+      </div>
+    </section>
 
-        // SINCRONIZAÇÃO FIREBASE
-        onValue(ref(db, 'users/' + uid), (snap) => {
-            const data = snap.val();
-            if(data) {
-                pts = data.points || 0;
-                document.getElementById('pts').innerText = pts;
-                updateLevel(pts);
-                if(data.history) renderChart(Object.values(data.history));
-                if(data.gratitudes) renderGrat(Object.values(data.gratitudes));
-            }
-        });
+    <!-- 3. PÁGINA BEM-ESTAR (RESPIRAÇÃO ANIMAÇÃO) -->
+    <section id="bem-estar" class="section-page">
+      <h2>🧠 Exercício de Respiração Guiada</h2>
+      <p style="margin-bottom: 20px;">Siga o ritmo do pulso para desacelerar e focar no presente.</p>
 
-        onValue(ref(db, 'community'), (snap) => {
-            const wall = document.getElementById('communityWall');
-            wall.innerHTML = "";
-            const msgs = snap.val();
-            if(msgs) {
-                Object.values(msgs).reverse().slice(0, 5).forEach(m => {
-                    const d = document.createElement('div');
-                    d.className = 'msg-bubble';
-                    d.innerHTML = `${m.text} <br><small style="opacity:0.6; font-size:0.6rem;">Mensagem de Apoio</small>`;
-                    wall.appendChild(d);
-                });
-            }
-        });
+      <div class="respiracao-box card">
+        <h3 id="instrucao-resp">Clique em "Iniciar" para começar</h3>
+        <div class="bolha-pulmao" id="bolha-pulmao"></div>
+        <button class="btn" id="btn-resp" onclick="toggleRespiracao()">Iniciar Exercício</button>
+      </div>
+    </section>
 
-        function updateLevel(p) {
-            let lvl = "Semente da Paz"; let lim = 100;
-            if(p >= 500) { lvl = "Carvalho Resiliente"; lim = 1000; }
-            else if(p >= 200) { lvl = "Árvore Forte"; lim = 500; }
-            else if(p >= 50) { lvl = "Broto de Calma"; lim = 200; }
-            document.getElementById('levelLabel').innerText = lvl;
-            document.getElementById('levelBar').style.width = Math.min((p / lim) * 100, 100) + "%";
+    <!-- 4. PÁGINA COMBATE AO BULLYING -->
+    <section id="combate" class="section-page">
+      <h2>🛡️ Combate ao Bullying e Dicas</h2>
+      <p style="margin-bottom: 20px;">Ações de conscientização e apoio dentro da escola.</p>
+
+      <div class="card-grid" id="lista-sugestoes">
+        <div class="card">
+          <h3>Respeito às Diferenças</h3>
+          <p>O bullying afeta a saúde mental. Promover a empatia no dia a dia torna a escola um ambiente seguro.</p>
+        </div>
+        <div class="card">
+          <h3>Não seja um espectador</h3>
+          <p>Se presenciar uma situação de desrespeito, ajude acolhendo a vítima e reportando aos responsáveis de forma anônima.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. ÁREA RESTRITA (ADMINISTRADOR) -->
+    <section id="admin" class="section-page">
+      <!-- Formulário de Autenticação para Proteção -->
+      <div id="admin-auth" class="card admin-login">
+        <h3>🔒 Acesso Restrito</h3>
+        <p style="margin-bottom: 15px; font-size: 0.9rem;">Área exclusiva para Gestão e Grêmio.</p>
+        <div class="form-group">
+          <label>Senha de Administrador:</label>
+          <input type="password" id="admin-pass" placeholder="Digite a senha (use: admin123)">
+        </div>
+        <button class="btn" onclick="loginAdmin()">Entrar no Painel</button>
+      </div>
+
+      <!-- Dashboard de Controle (Visível após login) -->
+      <div id="admin-dashboard" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h2>📊 Painel Administrativo</h2>
+          <button class="btn" style="background: #e74c3c;" onclick="logoutAdmin()">Sair</button>
+        </div>
+
+        <div class="card-grid" style="margin-top: 20px;">
+          <!-- Gráfico de Métricas -->
+          <div class="card">
+            <h3>Atendimentos / Demandas por Categoria</h3>
+            <canvas id="meuGrafico" style="max-height: 250px; margin-top: 15px;"></canvas>
+          </div>
+
+          <!-- Adicionar Conteúdo ao Site -->
+          <div class="card">
+            <h3>Adicionar Sugestão / Dica de Combate</h3>
+            <form onsubmit="adicionarSugestao(event)" style="margin-top: 15px;">
+              <div class="form-group">
+                <label>Título:</label>
+                <input type="text" id="novo-titulo" required>
+              </div>
+              <div class="form-group">
+                <label>Descrição/Orientações:</label>
+                <textarea id="nova-desc" rows="3" required></textarea>
+              </div>
+              <button type="submit" class="btn">Publicar Sugestão</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    /* ==========================================================================
+       LÓGICA DE NAVEGAÇÃO E INTERFACES
+       ========================================================================== */
+    function navegar(paginaId) {
+      // Ocultar todas as páginas
+      document.querySelectorAll('.section-page').forEach(sec => sec.classList.remove('active'));
+      // Desativar links do menu
+      document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+
+      // Mostrar a página escolhida
+      document.getElementById(paginaId).classList.add('active');
+
+      // Fechar menu mobile se estiver aberto
+      document.getElementById('sidebar').classList.remove('open');
+    }
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+    }
+
+    /* ==========================================================================
+       LÓGICA DO CHAT ANÔNIMO
+       ========================================================================== */
+    function trocarCanalChat() {
+      const canal = document.getElementById('canal-chat').value;
+      const chatBox = document.getElementById('chat-messages');
+      chatBox.innerHTML = `<div class="message received">Você iniciou uma conversa anônima com: <strong>${canal}</strong>. Pode digitar abaixo.</div>`;
+    }
+
+    function enviarMensagem() {
+      const input = document.getElementById('chat-input');
+      const texto = input.value.trim();
+      if (!texto) return;
+
+      const chatBox = document.getElementById('chat-messages');
+
+      // Adiciona mensagem enviada pelo usuário
+      const msgUsuario = document.createElement('div');
+      msgUsuario.className = 'message sent';
+      msgUsuario.innerText = texto;
+      chatBox.appendChild(msgUsuario);
+
+      input.value = '';
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      // Resposta Automática Simulação
+      setTimeout(() => {
+        const msgResposta = document.createElement('div');
+        msgResposta.className = 'message received';
+        msgResposta.innerText = "Recebemos sua mensagem! Nossa equipe responderá em breve. Fique tranquilo, seu anonimato está preservado.";
+        chatBox.appendChild(msgResposta);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }, 1200);
+    }
+
+    /* ==========================================================================
+       LÓGICA DO EXERCÍCIO DE RESPIRAÇÃO
+       ========================================================================== */
+    let emExecucao = false;
+    let intervaloResp = null;
+
+    function toggleRespiracao() {
+      const bolha = document.getElementById('bolha-pulmao');
+      const texto = document.getElementById('instrucao-resp');
+      const btn = document.getElementById('btn-resp');
+
+      if (!emExecucao) {
+        emExecucao = true;
+        btn.innerText = "Parar Exercício";
+        executarCiclo();
+        intervaloResp = setInterval(executarCiclo, 8000); // Ciclo completo de 8 segundos
+      } else {
+        emExecucao = false;
+        clearInterval(intervaloResp);
+        bolha.className = 'bolha-pulmao';
+        texto.innerText = 'Exercício pausado.';
+        btn.innerText = "Iniciar Exercício";
+      }
+    }
+
+    function executarCiclo() {
+      const bolha = document.getElementById('bolha-pulmao');
+      const texto = document.getElementById('instrucao-resp');
+
+      // Fase 1: Inspire (4 segundos)
+      texto.innerText = "Inspire profundamente...";
+      bolha.className = 'bolha-pulmao inspirar';
+
+      // Fase 2: Expire (4 segundos)
+      setTimeout(() => {
+        if (emExecucao) {
+          texto.innerText = "Exhale devagar...";
+          bolha.className = 'bolha-pulmao expirar';
         }
+      }, 4000);
+    }
 
-        window.saveMood = (v) => {
-            push(ref(db, `users/${uid}/history`), v);
-            addPts(10); tab('stats');
-        };
+    /* ==========================================================================
+       LÓGICA DA ÁREA DO ADMINISTRADOR
+       ========================================================================== */
+    let meuchart = null;
 
-        window.sendCommunityMsg = () => {
-            const el = document.getElementById('comMsg');
-            if(!el.value) return;
-            push(ref(db, 'community'), { text: el.value, time: serverTimestamp() });
-            el.value = ""; addPts(20);
-        };
+    function loginAdmin() {
+      const pass = document.getElementById('admin-pass').value;
+      if (pass === 'admin123') { // Senha simples para fins de teste
+        document.getElementById('admin-auth').style.display = 'none';
+        document.getElementById('admin-dashboard').style.display = 'block';
+        carregarGrafico();
+      } else {
+        alert('Senha incorreta! (Dica: utilize a senha admin123)');
+      }
+    }
 
-        window.addGratitude = () => {
-            const i = document.getElementById('gratitudeIn');
-            if(!i.value) return;
-            push(ref(db, `users/${uid}/gratitudes`), i.value);
-            i.value = ""; addPts(15);
-        };
+    function logoutAdmin() {
+      document.getElementById('admin-auth').style.display = 'block';
+      document.getElementById('admin-dashboard').style.display = 'none';
+      document.getElementById('admin-pass').value = '';
+    }
 
-        function addPts(v) {
-            pts += v;
-            set(ref(db, `users/${uid}/points`), pts);
+    function carregarGrafico() {
+      if (meuchart) return; // Evita recriar
+      
+      const ctx = document.getElementById('meuGrafico').getContext('2d');
+      meuchart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Acolhimento / Escuta', 'Dúvidas Gerais', 'Relatos de Bullying', 'Sugestões'],
+          datasets: [{
+            data: [40, 25, 15, 20],
+            backgroundColor: ['#2ecc71', '#8e44ad', '#e74c3c', '#3498db']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom' }
+          }
         }
+      });
+    }
 
-        function renderChart(history) {
-            const container = document.getElementById('moodChart');
-            container.innerHTML = "";
-            history.slice(-7).forEach((v, i) => {
-                const b = document.createElement('div');
-                b.className = 'bar'; b.style.height = (v * 20) + "%";
-                b.innerHTML = `<div class="bar-label">R${i+1}</div>`;
-                container.appendChild(b);
-            });
-        }
+    function adicionarSugestao(e) {
+      e.preventDefault();
+      const titulo = document.getElementById('novo-titulo').value;
+      const desc = document.getElementById('nova-desc').value;
 
-        function renderGrat(list) {
-            const c = document.getElementById('gratitudeList');
-            c.innerHTML = list.reverse().slice(0, 3).map(t => `<div class="msg-bubble">✨ ${t}</div>`).join('');
-        }
+      // Adiciona dynamicamente à página de combate ao bullying
+      const lista = document.getElementById('lista-sugestoes');
+      const novoCard = document.createElement('div');
+      novoCard.className = 'card';
+      novoCard.innerHTML = `<h3>${titulo}</h3><p>${desc}</p>`;
+      
+      lista.appendChild(novoCard);
 
-        let bActive = false, bInt;
-        window.toggleBreathe = () => {
-            const btn = document.getElementById('bBtn');
-            const circ = document.getElementById('bCircle');
-            if(!bActive) {
-                bActive = true; btn.innerText = "Parar";
-                const cycle = () => {
-                    if(!bActive) return;
-                    circ.innerText = "Inspire"; circ.classList.add('expanding');
-                    setTimeout(() => {
-                        if(!bActive) return;
-                        circ.innerText = "Solte"; circ.classList.remove('expanding');
-                        bInt = setTimeout(cycle, 4000);
-                    }, 4000);
-                };
-                cycle();
-            } else {
-                bActive = false; clearTimeout(bInt);
-                btn.innerText = "Começar"; addPts(5);
-            }
-        };
-
-        window.tab = (id) => {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            event.currentTarget.classList.add('active');
-        };
-    </script>
+      // Limpa os campos e notifica
+      document.getElementById('novo-titulo').value = '';
+      document.getElementById('nova-desc').value = '';
+      alert('Nova sugestão publicada com sucesso na aba de combate ao bullying!');
+    }
+  </script>
 </body>
 </html>
