@@ -100,10 +100,10 @@
     }
 
     /* ==========================================================================
-       3. ESTRUTURA DO APLICATIVO
+       3. ESTRUTURA DO APLICATIVO E MENU
        ========================================================================== */
     .app-container {
-      display: none; /* Ativado após a seleção */
+      display: none;
       flex: 1;
       min-height: 100vh;
     }
@@ -112,7 +112,6 @@
       display: flex;
     }
 
-    /* Header Mobile */
     .mobile-header {
       display: none;
       background: var(--degrade-abracar);
@@ -136,7 +135,6 @@
       cursor: pointer;
     }
 
-    /* Menu Lateral / Sidebar */
     .sidebar {
       width: var(--sidebar-largura);
       background: var(--degrade-abracar);
@@ -266,7 +264,7 @@
       z-index: 1000;
     }
 
-    /* Área Principal de Conteúdo */
+    /* Área Principal */
     .main-wrapper {
       flex: 1;
       margin-left: var(--sidebar-largura);
@@ -301,7 +299,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* User Status Bar */
     .user-bar {
       background: var(--branco);
       padding: 12px 25px;
@@ -322,7 +319,7 @@
     }
 
     /* ==========================================================================
-       4. CARDS E ELEMENTOS DE UI
+       4. CARDS E COMPONENTES DE UI
        ========================================================================== */
     .page-title {
       font-size: 1.6rem;
@@ -412,11 +409,6 @@
       background: #e2e8f0;
     }
 
-    /* ==========================================================================
-       5. REQUISITOS ESPECÍFICOS DAS PÁGINAS
-       ========================================================================== */
-    
-    /* Formulário de Relato */
     .form-container {
       background: var(--branco);
       padding: 25px;
@@ -436,7 +428,9 @@
       font-size: 0.9rem;
     }
 
-    /* Chat Direct Seleção */
+    /* ==========================================================================
+       5. CHAT COM DEGRADÊS E BOTÃO DE EXCLUIR
+       ========================================================================== */
     .chat-select-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -463,7 +457,7 @@
       background: var(--branco);
       border-radius: 14px;
       border: 1px solid var(--cinza-borda);
-      height: 400px;
+      height: 420px;
       display: flex;
       flex-direction: column;
     }
@@ -482,6 +476,9 @@
       flex: 1;
       padding: 20px;
       overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     .chat-input-area {
@@ -491,7 +488,60 @@
       gap: 10px;
     }
 
-    /* Respiração */
+    .chat-msg-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .chat-msg-row.sent {
+      justify-content: flex-end;
+    }
+
+    .chat-msg-row.received {
+      justify-content: flex-start;
+    }
+
+    .chat-msg-bubble {
+      padding: 10px 14px;
+      border-radius: 12px;
+      max-width: 75%;
+      font-size: 0.9rem;
+      color: #ffffff !important;
+      word-break: break-word;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    }
+
+    .chat-msg-row.sent .chat-msg-bubble {
+      background: linear-gradient(135deg, #2ecc71, #1abc9c);
+      border-bottom-right-radius: 2px;
+    }
+
+    .chat-msg-row.received .chat-msg-bubble {
+      background: linear-gradient(135deg, #8e44ad, #6c3483);
+      border-bottom-left-radius: 2px;
+    }
+
+    .btn-delete-msg {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      font-size: 0.85rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: color 0.2s;
+    }
+
+    .btn-delete-msg:hover {
+      color: #ef4444;
+      background: #fee2e2;
+    }
+
+    /* ==========================================================================
+       6. RESPIRAÇÃO COM TEXTO DENTRO DA BOLHA
+       ========================================================================== */
     .respiracao-box {
       display: flex;
       flex-direction: column;
@@ -505,19 +555,26 @@
     }
 
     .bolha-pulmao {
-      width: 150px;
-      height: 150px;
+      width: 160px;
+      height: 160px;
       border-radius: 50%;
       background: var(--degrade-abracar);
       margin: 35px 0;
       box-shadow: 0 0 30px rgba(46, 204, 113, 0.25);
       transition: transform 4s ease-in-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-weight: bold;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      user-select: none;
     }
 
     .bolha-pulmao.inspirar { transform: scale(1.75); }
     .bolha-pulmao.expirar { transform: scale(1); }
 
-    /* Avisos e Conteúdos */
     .aviso-item {
       padding: 15px 0;
       border-bottom: 1px solid var(--cinza-borda);
@@ -525,7 +582,7 @@
     .aviso-item:last-child { border-bottom: none; }
 
     /* ==========================================================================
-       6. RESPONSIVIDADE (MOBILE / TABLET)
+       7. RESPONSIVIDADE
        ========================================================================== */
     @media (max-width: 850px) {
       .mobile-header { display: flex; }
@@ -682,6 +739,12 @@
           </a>
         </li>
         <li>
+          <a href="#" onclick="navegar('canais-apoio', this)">
+            <span class="nav-icon">📞</span>
+            <span class="link-text">Canais de Apoio</span>
+          </a>
+        </li>
+        <li>
           <a href="#" onclick="navegar('sobre', this)">
             <span class="nav-icon">ℹ️</span>
             <span class="link-text">Projeto Abraçar</span>
@@ -805,9 +868,10 @@
               <span style="font-size: 0.8rem; background: #e2e8f0; padding: 2px 8px; border-radius: 4px;">🔒 Canal Anônimo</span>
             </div>
             <div class="chat-messages" id="chat-messages">
-              <p style="color: #94a3b8; text-align: center; margin-top: 40px; font-size: 0.9rem;">
-                Suas mensagens enviadas neste canal chegam diretamente aos responsáveis selecionados.
-              </p>
+              <div class="chat-msg-row received">
+                <div class="chat-msg-bubble">Olá! Este é um espaço seguro. Como podemos ajudar você hoje?</div>
+                <button class="btn-delete-msg" onclick="this.parentElement.remove()" title="Apagar">🗑️</button>
+              </div>
             </div>
             <div class="chat-input-area">
               <input type="text" id="input-chat" class="form-control" placeholder="Escreva sua mensagem anônima aqui...">
@@ -870,8 +934,7 @@
           <p class="page-subtitle">Faça uma pausa na rotina escolar para reorientar a atenção e focar no presente.</p>
 
           <div class="respiracao-box">
-            <h3 id="texto-instrucao-resp" style="color: var(--texto-escuro);">Pressione o botão para iniciar o ciclo de respiração</h3>
-            <div class="bolha-pulmao" id="bolha-animada"></div>
+            <div class="bolha-pulmao" id="bolha-animada">PAUSA</div>
             <button class="btn" id="btn-iniciar-resp" onclick="controlarRespiracao()">Iniciar Exercício</button>
           </div>
         </section>
@@ -925,7 +988,7 @@
           <h1 class="page-title">📚 Materiais & Conteúdos</h1>
           <p class="page-subtitle">Guias rápidos de convivência, artigos e materiais educativos.</p>
 
-          <div class="card-grid">
+          <div class="card-grid" id="lista-conteudos">
             <div class="card">
               <h3>Guia de Convivência Digital</h3>
               <p>Boas práticas para grupos de WhatsApp e comunicação responsável na rede.</p>
@@ -933,6 +996,22 @@
             <div class="card">
               <h3>Comunicação Não-Violenta</h3>
               <p>Dicas práticas sobre como expressar necessidades sem gerar conflitos.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="canais-apoio" class="section-page">
+          <h1 class="page-title">📞 Canais de Apoio</h1>
+          <p class="page-subtitle">Rede interna e externa de acolhimento e suporte.</p>
+
+          <div class="card-grid" id="lista-canais-apoio">
+            <div class="card">
+              <h3>Orientação Educacional</h3>
+              <p>Atendimento presencial no Bloco B - Segunda a Sexta, das 08h às 17h.</p>
+            </div>
+            <div class="card">
+              <h3>CVV - Centro de Valorização da Vida</h3>
+              <p>Apoio emocional gratuito e confidencial. Ligue 188 ou acesse cvv.org.br.</p>
             </div>
           </div>
         </section>
@@ -947,20 +1026,52 @@
         </section>
 
         <section id="admin-panel" class="section-page">
-          <h1 class="page-title">🔒 Painel de Gestão da Escola</h1>
-          <p class="page-subtitle">Área de visualização restrita para Coordenação e Orientação.</p>
+          <h1 class="page-title">🔒 Painel de Gestão da Escola (Editor)</h1>
+          <p class="page-subtitle">Gerencie conteúdos, canais de apoio, avisos e acompanhe estatísticas.</p>
 
           <div class="card-grid">
             <div class="card">
               <h3>Estatísticas de Atendimentos</h3>
-              <canvas id="graficoAdmin" style="max-height: 220px; margin-top: 10px;"></canvas>
+              <canvas id="graficoAdmin" style="max-height: 200px; margin-top: 10px;"></canvas>
             </div>
+
             <div class="card">
-              <h3>Registros de Relatos Recebidos</h3>
-              <p style="font-size: 0.85rem; color: #64748b;">(Modo de demonstração - Dados armazenados localmente)</p>
-              <div id="lista-relatos-admin" style="margin-top: 10px; font-size: 0.85rem;">
-                <em>Nenhum relato novo registrado nesta sessão.</em>
-              </div>
+              <h3>➕ Adicionar Conteúdo / Guia</h3>
+              <form onsubmit="adminAdicionarConteudo(event)" style="margin-top: 10px;">
+                <div class="form-group">
+                  <input type="text" id="admin-titulo-conteudo" class="form-control" placeholder="Título do Guia/Conteúdo" required style="margin-bottom: 8px;">
+                  <textarea id="admin-desc-conteudo" class="form-control" rows="2" placeholder="Descrição do conteúdo..." required></textarea>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Publicar Conteúdo</button>
+              </form>
+            </div>
+
+            <div class="card">
+              <h3>📢 Adicionar Aviso ao Grêmio</h3>
+              <form onsubmit="adminAdicionarAviso(event)" style="margin-top: 10px;">
+                <div class="form-group">
+                  <textarea id="admin-texto-aviso" class="form-control" rows="2" placeholder="Novo aviso para o mural..." required></textarea>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Publicar Aviso</button>
+              </form>
+            </div>
+
+            <div class="card">
+              <h3>📞 Adicionar Canal de Apoio</h3>
+              <form onsubmit="adminAdicionarCanal(event)" style="margin-top: 10px;">
+                <div class="form-group">
+                  <input type="text" id="admin-nome-canal" class="form-control" placeholder="Nome do Canal" required style="margin-bottom: 8px;">
+                  <textarea id="admin-desc-canal" class="form-control" rows="2" placeholder="Informações de contato/local..." required></textarea>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Cadastrar Canal</button>
+              </form>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: 20px;">
+            <h3>Registros de Relatos Recebidos</h3>
+            <div id="lista-relatos-admin" style="margin-top: 10px; font-size: 0.85rem;">
+              <em>Nenhum relato novo registrado nesta sessão.</em>
             </div>
           </div>
         </section>
@@ -970,9 +1081,6 @@
   </div>
 
   <script>
-    /* ==========================================================================
-       SISTEMA DE ESTADO DA APLICAÇÃO
-       ========================================================================== */
     let estadoApp = {
       usuarioTipo: 'estudante',
       turma: '',
@@ -1004,7 +1112,7 @@
         document.getElementById('divider-admin').style.display = 'none';
       } else {
         const senha = document.getElementById('senha-acesso').value;
-        if (senha !== 'admin123') { // Senha demonstrativa
+        if (senha !== 'admin123') {
           alert('Senha de administração incorreta.');
           return;
         }
@@ -1023,9 +1131,6 @@
       document.getElementById('app-container').classList.remove('active');
     }
 
-    /* ==========================================================================
-       NAVEGAÇÃO E INTERFACE RESPONSIVA
-       ========================================================================== */
     function navegar(paginaId, elementoLink) {
       document.querySelectorAll('.section-page').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-links a').forEach(el => el.classList.remove('active'));
@@ -1068,9 +1173,6 @@
       }
     }
 
-    /* ==========================================================================
-       LÓGICA DE CANAL DE CONVERSA (CHAT)
-       ========================================================================== */
     function selecionarDestinatario(cardEl, nomeTarget) {
       document.querySelectorAll('.chat-target-card').forEach(c => c.classList.remove('selected'));
       cardEl.classList.add('selected');
@@ -1086,22 +1188,27 @@
 
       const chatBox = document.getElementById('chat-messages');
 
-      if (chatBox.querySelector('p')) {
-        chatBox.innerHTML = '';
-      }
+      const row = document.createElement('div');
+      row.className = 'chat-msg-row sent';
 
-      const msgDiv = document.createElement('div');
-      msgDiv.style.cssText = "background: var(--degrade-abracar); color: white; padding: 10px 14px; border-radius: 12px; margin-bottom: 10px; align-self: flex-end; max-width: 80%; margin-left: auto; font-size: 0.9rem;";
-      msgDiv.innerText = texto;
+      const btnApagar = document.createElement('button');
+      btnApagar.className = 'btn-delete-msg';
+      btnApagar.innerText = '🗑️';
+      btnApagar.title = 'Apagar mensagem';
+      btnApagar.onclick = () => row.remove();
 
-      chatBox.appendChild(msgDiv);
+      const bubble = document.createElement('div');
+      bubble.className = 'chat-msg-bubble';
+      bubble.innerText = texto;
+
+      row.appendChild(btnApagar);
+      row.appendChild(bubble);
+
+      chatBox.appendChild(row);
       input.value = '';
       chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-    /* ==========================================================================
-       FORMULÁRIO DE RELATOS
-       ========================================================================== */
     function registrarRelato(e) {
       e.preventDefault();
       alert('Relato enviado com sucesso! A equipe responsável irá analisar o registro.');
@@ -1120,12 +1227,8 @@
       navegarDireto('inicio');
     }
 
-    /* ==========================================================================
-       EXERCÍCIO DE RESPIRAÇÃO GUIADA
-       ========================================================================== */
     function controlarRespiracao() {
       const bolha = document.getElementById('bolha-animada');
-      const texto = document.getElementById('texto-instrucao-resp');
       const btn = document.getElementById('btn-iniciar-resp');
 
       if (!estadoApp.respAtiva) {
@@ -1137,29 +1240,69 @@
         estadoApp.respAtiva = false;
         clearInterval(estadoApp.respTimer);
         bolha.className = 'bolha-pulmao';
-        texto.innerText = "Exercício finalizado. Faça uma pausa sempre que necessário.";
+        bolha.innerText = "PAUSA";
         btn.innerText = "Iniciar Exercício";
       }
     }
 
     function executarCicloResp() {
       const bolha = document.getElementById('bolha-animada');
-      const texto = document.getElementById('texto-instrucao-resp');
 
-      texto.innerText = "Inspire calmamente...";
+      bolha.innerText = "INSPIRE";
       bolha.className = 'bolha-pulmao inspirar';
 
       setTimeout(() => {
         if (estadoApp.respAtiva) {
-          texto.innerText = "Expire devagar...";
+          bolha.innerText = "EXPIRE";
           bolha.className = 'bolha-pulmao expirar';
         }
       }, 4000);
     }
 
-    /* ==========================================================================
-       GRÁFICO DO PAINEL ADMIN
-       ========================================================================== */
+    function adminAdicionarConteudo(e) {
+      e.preventDefault();
+      const titulo = document.getElementById('admin-titulo-conteudo').value;
+      const desc = document.getElementById('admin-desc-conteudo').value;
+
+      const lista = document.getElementById('lista-conteudos');
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `<h3>${titulo}</h3><p>${desc}</p>`;
+      lista.appendChild(card);
+
+      e.target.reset();
+      alert('Novo conteúdo publicado na aba "Conteúdos"!');
+    }
+
+    function adminAdicionarAviso(e) {
+      e.preventDefault();
+      const texto = document.getElementById('admin-texto-aviso').value;
+
+      const mural = document.querySelector('#gremio .card');
+      const item = document.createElement('div');
+      item.className = 'aviso-item';
+      item.innerHTML = `<strong>📌 Novo Aviso:</strong> ${texto}`;
+      mural.appendChild(item);
+
+      e.target.reset();
+      alert('Aviso publicado na área do Grêmio!');
+    }
+
+    function adminAdicionarCanal(e) {
+      e.preventDefault();
+      const nome = document.getElementById('admin-nome-canal').value;
+      const desc = document.getElementById('admin-desc-canal').value;
+
+      const lista = document.getElementById('lista-canais-apoio');
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `<h3>${nome}</h3><p>${desc}</p>`;
+      lista.appendChild(card);
+
+      e.target.reset();
+      alert('Novo canal adicionado à aba "Canais de Apoio"!');
+    }
+
     function carregarGraficoAdmin() {
       if (estadoApp.chartInstance) return;
 
