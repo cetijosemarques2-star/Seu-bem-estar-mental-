@@ -451,6 +451,100 @@
       font-size: 0.8rem;
     }
 
+    /* Estilos do Bem-Estar e Pesquisa */
+    .quiz-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .quiz-question {
+      margin-bottom: 16px;
+    }
+
+    .quiz-question p {
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--blue-dark);
+      font-size: 0.85rem;
+    }
+
+    .quiz-options {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .quiz-opt-btn {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all 0.2s;
+    }
+
+    .quiz-opt-btn:hover, .quiz-opt-btn.selected {
+      background-color: var(--blue-light);
+      border-color: var(--blue-main);
+      color: var(--blue-main);
+      font-weight: 600;
+    }
+
+    .result-box {
+      display: none;
+      background: var(--blue-light);
+      border: 1px solid var(--blue-main);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 16px;
+    }
+
+    .result-box h4 {
+      color: var(--blue-dark);
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+    }
+
+    .result-box p {
+      font-size: 0.85rem;
+      line-height: 1.4;
+      color: var(--text-dark);
+    }
+
+    .stat-bar-container {
+      margin-top: 10px;
+    }
+
+    .stat-item {
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      margin-bottom: 4px;
+      color: var(--text-dark);
+      font-weight: 500;
+    }
+
+    .stat-bg {
+      background: var(--bg-primary);
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .stat-fill {
+      background: var(--blue-main);
+      height: 100%;
+      border-radius: 4px;
+    }
+
     @media (max-width: 768px) {
       .mobile-header {
         display: flex;
@@ -487,6 +581,10 @@
       <li class="nav-item active" onclick="showSection('inicio', this)">
         <span class="icon">🏠</span>
         <span class="link-text">Início</span>
+      </li>
+      <li class="nav-item" onclick="showSection('bem-estar', this)">
+        <span class="icon">🧘</span>
+        <span class="link-text">Bem-Estar</span>
       </li>
       <li class="nav-item" onclick="showSection('atendimento', this)">
         <span class="icon">🏥</span>
@@ -554,6 +652,11 @@
       </div>
 
       <div class="grid-container">
+        <div class="card" onclick="showSection('bem-estar')">
+          <div class="card-icon">🧘</div>
+          <div class="card-title">Como você está hoje?</div>
+          <div class="card-desc">Faça um teste rápido de bem-estar e veja estatísticas da nossa comunidade.</div>
+        </div>
         <div class="card" onclick="showSection('atendimento')">
           <div class="card-icon">🏥</div>
           <div class="card-title">Onde buscar atendimento?</div>
@@ -569,267 +672,153 @@
           <div class="card-title">Calendário da Saúde</div>
           <div class="card-desc">Agenda atualizada de exames e consultas especializadas.</div>
         </div>
-        <div class="card" onclick="showSection('avisos')">
-          <div class="card-icon">📢</div>
-          <div class="card-title">Avisos da Comunidade</div>
-          <div class="card-desc">Comunicados oficiais da Secretaria de Saúde.</div>
-        </div>
       </div>
     </div>
 
-    <!-- ABA ATENDIMENTO -->
-    <div id="sec-atendimento" class="section-view">
-      <div class="help-banner">
-        <h3>📍 Locais de Atendimento em Várzea Branca</h3>
-        <p style="color: var(--text-light); margin-top: 6px;">• <strong>UBS Central:</strong> Rua Principal, S/N - Seg a Sex, 07h às 17h</p>
-        <p style="color: var(--text-light); margin-top: 6px;">• <strong>Posto Avançado Zazá:</strong> Povoado Zazá - Terças e Quintas, 08h às 12h</p>
-      </div>
-    </div>
-
-    <!-- ABA VACINAÇÃO -->
-    <div id="sec-vacinacao" class="section-view">
-      <div class="help-banner">
-        <h3>💉 Campanhas Ativas</h3>
-        <p style="color: var(--text-light); margin-top: 6px;">• <strong>Campanha Influenza:</strong> UBS Central - Todos os dias úteis.</p>
-        <p style="color: var(--text-light); margin-top: 6px;">• <strong>Atualização de Caderneta Infantil:</strong> Procure a sala de vacinas com o documento da criança.</p>
-      </div>
-    </div>
-
-    <!-- ABA CALENDÁRIO -->
-    <div id="sec-calendario" class="section-view">
-      <div class="calendar-container">
-        <div class="calendar-header">
-          <button class="calendar-btn" onclick="changeMonth(-1)">❮ Anterior</button>
-          <h3 id="calendar-month-year"></h3>
-          <button class="calendar-btn" onclick="changeMonth(1)">Próximo ❯</button>
-        </div>
-        <div class="calendar-grid" id="calendar-grid">
-          <!-- Gerado via JS -->
-        </div>
-      </div>
-    </div>
-
-    <!-- ABA AVISOS -->
-    <div id="sec-avisos" class="section-view">
-      <div class="help-banner">
-        <h3>📢 Últimos Comunicados</h3>
-        <p style="color: var(--text-light); margin-top: 6px;">• Mutirão de exames laboratoriais agendado para o próximo mês. Fique atento às datas no calendário.</p>
-      </div>
-    </div>
-
-    <!-- ABA ADMINISTRADOR -->
-    <div id="sec-admin" class="section-view">
-      <div class="admin-section">
-        <h3 style="color: var(--blue-dark); margin-bottom: 12px;">⚙️ Painel de Gestão</h3>
+    <!-- ABA BEM-ESTAR -->
+    <div id="sec-bem-estar" class="section-view">
+      <div class="quiz-card">
+        <h3 style="color: var(--blue-dark); font-size: 1rem; margin-bottom: 4px;">🌱 Checagem de Bem-Estar</h3>
+        <p style="color: var(--text-light); font-size: 0.8rem; margin-bottom: 16px;">Responda rápido para gerar seu perfil do momento e dicas de autocuidado. Não guarda dados pessoais.</p>
         
-        <form onsubmit="addServiceEvent(event)" style="margin-bottom: 24px;">
-          <h4 style="font-size: 0.85rem; margin-bottom: 8px; color: var(--text-dark);">Agendar Serviço no Calendário</h4>
-          <div class="form-group">
-            <label>Data do Serviço</label>
-            <input type="date" id="admin-date" required>
+        <div class="quiz-question">
+          <p>😄 Como você está se sentindo hoje?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q1', 'bem')">Muito bem</button>
+            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q1', 'ok')">Tranquilo(a)</button>
+            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q1', 'cansado')">Cansado(a)</button>
+            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q1', 'sobrecarregado')">Sobrecarregado(a)</button>
           </div>
-          <div class="form-group">
-            <label>Título do Serviço / Atendimento</label>
-            <input type="text" id="admin-title" placeholder="Ex: Ortopedista" required>
-          </div>
-          <button type="submit" class="btn-submit">Cadastrar no Calendário</button>
-        </form>
+        </div>
 
-        <h4 style="font-size: 0.85rem; margin-bottom: 8px; color: var(--text-dark);">📩 Solicitações "Preciso de Ajuda"</h4>
-        <div id="admin-msg-list" style="background: var(--bg-primary); border-radius: 8px; padding: 8px;">
-          <div class="msg-item">Nenhuma mensagem pendente.</div>
+        <div class="quiz-question">
+          <p>⚡ Como está sua energia?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q2', 'alta')">Alta</button>
+            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q2', 'media')">Média</button>
+            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q2', 'baixa')">Baixa</button>
+          </div>
+        </div>
+
+        <div class="quiz-question">
+          <p>📚 Como está sua disposição para estudar ou trabalhar?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q3', 'focado')">Focado(a)</button>
+            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q3', 'distraido')">Com dificuldade</button>
+            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q3', 'sem_disposicao')">Sem disposição</button>
+          </div>
+        </div>
+
+        <div class="quiz-question">
+          <p>🧑‍🤝‍🧑 Você está se sentindo conectado às pessoas ao seu redor?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q4', 'sim')">Sim, bastante</button>
+            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q4', 'mais_ou_menos')">Mais ou menos</button>
+            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q4', 'isolado')">Me sentindo distante</button>
+          </div>
+        </div>
+
+        <div class="quiz-question">
+          <p>💤 Como foi seu descanso na última noite?</p>
+          <div class="quiz-options">
+            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q5', 'bom')">Renovador</button>
+            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q5', 'regular')">Suficiente</button>
+            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q5', 'ruim')">Ruim / Incompleto</button>
+          </div>
+        </div>
+
+        <button class="btn-submit" onclick="generateWellbeingProfile()">Ver Perfil do Momento</button>
+
+        <div class="result-box" id="quiz-result">
+          <h4 id="result-title"></h4>
+          <p id="result-desc"></p>
         </div>
       </div>
-    </div>
 
+      <div class="help-banner">
+        <h3>📊 Bem-estar da nossa comunidade</h3>
+        <p style="color: var(--text-light); font-size: 0.8rem; margin-bottom: 12px;">Dados anônimos agregados sobre como os jovens e moradores da nossa comunidade estão se sentindo recentemente:</p>
+
+        <div class="stat-bar-container">
+          <div class="stat-item">
+            <div class="stat-label];
+            document.getElementById('quiz-result').style.display = 'block';
+            document.getElementById('result-title').innerText = result.title;
+            document.getElementById('result-desc').innerText = result.desc;
+          }
+
+          function selectOpt(btn, group, val) {
+            const parent = btn.parentElement;
+            parent.querySelectorAll('.quiz-opt-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            quizAnswers[group] = val;
+          }
+
+          function openHelpModal(option) {
+            currentHelpOption = option;
+            document.getElementById('modalTitle').innerText = option;
+            document.getElementById('modalDesc').innerText = 'Deixe seu contato para retornarmos com orientações sobre: ' + option;
+            document.getElementById('helpModal').style.display = 'flex';
+          }
+
+          function closeModal() {
+            document.getElementById('helpModal').style.display = 'none';
+          }
+
+          function submitHelp(e) {
+            e.preventDefault();
+            const name = document.getElementById('helpName').value;
+            const phone = document.getElementById('helpPhone').value;
+            
+            messages.unshift({
+              option: currentHelpOption,
+              name: name || 'Anônimo',
+              phone: phone,
+              time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            });
+
+            updateAdminMessages();
+            closeModal();
+            document.getElementById('helpName').value = '';
+            document.getElementById('helpPhone').value = '';
+            alert('Solicitação enviada com sucesso!');
+          }
+
+          function updateAdminMessages() {
+            const container = document.getElementById('admin-msg-list');
+            if (messages.length === 0) {
+              container.innerHTML = '<div class="msg-item">Nenhuma mensagem pendente.</div>';
+              return;
+            }
+            container.innerHTML = messages.map(m => `
+              <div class="msg-item">
+                <strong>${m.option}</strong> - ${m.name} (${m.phone})
+                <br><small style="color:var(--text-light)">Recebido às ${m.time}</small>
+              </div>
+            `).join('');
+          }
+
+          function addServiceEvent(e) {
+            e.preventDefault();
+            const dateVal = document.getElementById('admin-date').value;
+            const titleVal = document.getElementById('admin-title').value;
+
+            if (!events[dateVal]) {
+              events[dateVal] = [];
+            }
+            events[dateVal].push(titleVal);
+
+            document.getElementById('admin-title').value = '';
+            document.getElementById('admin-date').value = '';
+            renderCalendar();
+            alert('Atendimento adicionado ao calendário!');
+          }
+
+          renderCalendar();
+        </script>
+      </div>
+    </div>
   </main>
-
-  <!-- Modal de Ajuda -->
-  <div class="modal" id="helpModal">
-    <div class="modal-content">
-      <h3 id="modalTitle" style="color: var(--blue-dark); margin-bottom: 8px; font-size: 1rem;">Ajuda</h3>
-      <p id="modalDesc" style="margin-bottom: 12px; color: var(--text-light); font-size: 0.8rem;"></p>
-
-      <form onsubmit="submitHelp(event)">
-        <div class="form-group">
-          <label>Nome (Opcional)</label>
-          <input type="text" id="helpName" placeholder="Seu nome">
-        </div>
-        <div class="form-group">
-          <label>Telefone para contato</label>
-          <input type="tel" id="helpPhone" placeholder="(89) 9....">
-        </div>
-        <button type="submit" class="btn-submit">Enviar</button>
-        <button type="button" onclick="closeModal()" style="margin-top: 8px; background: none; border: none; width: 100%; cursor: pointer; color: var(--text-light); font-size: 0.8rem;">Cancelar</button>
-      </form>
-    </div>
-  </div>
-
-  <script>
-    // Estado Global
-    let currentDate = new Date();
-    let events = {};
-    let messages = [];
-    let currentHelpOption = '';
-
-    function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      const showBtn = document.getElementById('show-sidebar-btn');
-      
-      if (window.innerWidth <= 768) {
-        sidebar.classList.toggle('open');
-      } else {
-        sidebar.classList.toggle('hidden');
-        showBtn.style.display = sidebar.classList.contains('hidden') ? 'inline-block' : 'none';
-      }
-    }
-
-    function showSection(sectionId, element) {
-      document.querySelectorAll('.section-view').forEach(sec => sec.classList.remove('active'));
-      document.getElementById('sec-' + sectionId).classList.add('active');
-
-      if (element) {
-        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-        element.classList.add('active');
-      }
-
-      if (window.innerWidth <= 768) {
-        document.getElementById('sidebar').classList.remove('open');
-      }
-
-      if (sectionId === 'calendario') {
-        renderCalendar();
-      }
-    }
-
-    // Lógica do Calendário Real
-    function renderCalendar() {
-      const monthYearText = document.getElementById('calendar-month-year');
-      const grid = document.getElementById('calendar-grid');
-      
-      const year = currentDate.getFullYear();
-      const month = currentDate.getMonth();
-
-      const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-      monthYearText.innerText = `${monthNames[month]} ${year}`;
-
-          grid.innerHTML = '';
-
-      const dayNames = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-      dayNames.forEach(name => {
-        const el = document.createElement('div');
-        el.className = 'cal-day-name';
-        el.innerText = name;
-        grid.appendChild(el);
-      });
-
-      const firstDay = new Date(year, month, 1).getDay();
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-      for (let i = 0; i < firstDay; i++) {
-        const emptyCell = document.createElement('div');
-        emptyCell.className = 'cal-day empty';
-        grid.appendChild(emptyCell);
-      }
-
-      const today = new Date();
-
-      for (let day = 1; day <= daysInMonth; day++) {
-        const cell = document.createElement('div');
-        cell.className = 'cal-day';
-        
-        if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
-          cell.classList.add('today');
-        }
-
-        cell.innerHTML = `<span>${day}</span>`;
-
-        // Formatação YYYY-MM-DD para busca de eventos
-        const monthFormatted = String(month + 1).padStart(2, '0');
-        const dayFormatted = String(day).padStart(2, '0');
-        const dateKey = `${year}-${monthFormatted}-${dayFormatted}`;
-
-        if (events[dateKey]) {
-          events[dateKey].forEach(evt => {
-            const tag = document.createElement('div');
-            tag.className = 'event-tag';
-            tag.innerText = evt;
-            cell.appendChild(tag);
-          });
-        }
-
-        grid.appendChild(cell);
-      }
-    }
-
-    function changeMonth(direction) {
-      currentDate.setMonth(currentDate.getMonth() + direction);
-      renderCalendar();
-    }
-
-    // Modal de Ajuda
-    function openHelpModal(option) {
-      currentHelpOption = option;
-      const modal = document.getElementById('helpModal');
-      document.getElementById('modalTitle').innerText = 'Ajuda: ' + option;
-      document.getElementById('modalDesc').innerText = 'Envie seus dados para obter orientações da equipe da Secretaria de Saúde de Várzea Branca.';
-      modal.style.display = 'flex';
-    }
-
-    function closeModal() {
-      document.getElementById('helpModal').style.display = 'none';
-    }
-
-    function submitHelp(e) {
-      e.preventDefault();
-      const phone = document.getElementById('helpPhone').value;
-      const name = document.getElementById('helpName').value || 'Anônimo';
-
-      messages.push({
-        option: currentHelpOption,
-        name: name,
-        phone: phone,
-        time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
-      });
-
-      updateAdminMessages();
-      closeModal();
-      document.getElementById('helpPhone').value = '';
-      document.getElementById('helpName').value = '';
-    }
-
-    function updateAdminMessages() {
-      const container = document.getElementById('admin-msg-list');
-      if (messages.length === 0) {
-        container.innerHTML = '<div class="msg-item">Nenhuma mensagem pendente.</div>';
-        return;
-      }
-      container.innerHTML = messages.map(m => `
-        <div class="msg-item">
-          <strong>${m.option}</strong> - ${m.name} (${m.phone})
-          <br><small style="color:var(--text-light)">Recebido às ${m.time}</small>
-        </div>
-      `).join('');
-    }
-
-    // Cadastro Admin -> Calendário
-    function addServiceEvent(e) {
-      e.preventDefault();
-      const dateVal = document.getElementById('admin-date').value;
-      const titleVal = document.getElementById('admin-title').value;
-
-      if (!events[dateVal]) {
-        events[dateVal] = [];
-      }
-      events[dateVal].push(titleVal);
-
-      document.getElementById('admin-title').value = '';
-      renderCalendar();
-      showSection('calendario');
-    }
-
-    // Inicialização
-    renderCalendar();
-  </script>
 </body>
-</html>
+      </html>
+        
