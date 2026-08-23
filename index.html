@@ -18,6 +18,9 @@
       --alert-bg: #fef2f2;
       --alert-border: #fecaca;
       --alert-text: #991b1b;
+      --green-bg: #f0fdf4;
+      --green-border: #bbf7d0;
+      --green-text: #166534;
     }
 
     * {
@@ -291,6 +294,33 @@
       font-size: 0.85rem;
     }
 
+    .notice-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--blue-main);
+      padding: 14px 16px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+
+    .notice-card h4 {
+      color: var(--blue-dark);
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+    }
+
+    .notice-card p {
+      color: var(--text-dark);
+      font-size: 0.82rem;
+      line-height: 1.4;
+    }
+
+    .notice-card .date {
+      color: var(--text-light);
+      font-size: 0.75rem;
+      margin-top: 6px;
+    }
+
     /* Calendário */
     .calendar-container {
       background: var(--card-bg);
@@ -335,10 +365,10 @@
     }
 
     .cal-day {
-      padding: 10px 4px;
+      padding: 8px 4px;
       border-radius: 6px;
       border: 1px solid var(--border-color);
-      min-height: 52px;
+      min-height: 60px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -435,6 +465,38 @@
       padding: 20px;
       border-radius: 12px;
       border: 1px solid var(--border-color);
+      margin-bottom: 20px;
+    }
+
+    .admin-tab-buttons {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 8px;
+    }
+
+    .admin-tab-btn {
+      background: none;
+      border: none;
+      padding: 6px 12px;
+      font-weight: 600;
+      color: var(--text-light);
+      cursor: pointer;
+      border-radius: 6px;
+    }
+
+    .admin-tab-btn.active {
+      background-color: var(--blue-light);
+      color: var(--blue-main);
+    }
+
+    .admin-tab-content {
+      display: none;
+    }
+
+    .admin-tab-content.active {
+      display: block;
     }
 
     .section-view {
@@ -447,11 +509,14 @@
 
     .msg-item {
       padding: 10px;
-      border-bottom: 1px solid var(--border-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      margin-bottom: 8px;
       font-size: 0.8rem;
+      background: var(--bg-primary);
     }
 
-    /* Estilos do Bem-Estar e Pesquisa */
+    /* Quiz */
     .quiz-card {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
@@ -503,46 +568,15 @@
       margin-top: 16px;
     }
 
-    .result-box h4 {
-      color: var(--blue-dark);
-      font-size: 0.95rem;
-      margin-bottom: 6px;
-    }
-
-    .result-box p {
-      font-size: 0.85rem;
-      line-height: 1.4;
-      color: var(--text-dark);
-    }
-
-    .stat-bar-container {
-      margin-top: 10px;
-    }
-
-    .stat-item {
-      margin-bottom: 10px;
-    }
-
-    .stat-label {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.8rem;
-      margin-bottom: 4px;
-      color: var(--text-dark);
-      font-weight: 500;
-    }
-
-    .stat-bg {
-      background: var(--bg-primary);
-      height: 8px;
+    .btn-delete {
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 4px 8px;
       border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .stat-fill {
-      background: var(--blue-main);
-      height: 100%;
-      border-radius: 4px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      float: right;
     }
 
     @media (max-width: 768px) {
@@ -635,8 +669,8 @@
       <div class="today-card">
         <h2>📌 Hoje em Várzea Branca</h2>
         <div class="today-info" id="today-banner-content">
-          <p><strong>📅 Atendimento:</strong> Pediatria Geral</p>
-          <p><strong>📍 Local:</strong> UBS Central</p>
+          <p><strong>📅 Atendimento Especial:</strong> Pediatria Geral</p>
+          <p><strong>📍 Local:</strong> UBS Central - Centro</p>
           <p><strong>🕐 Horário:</strong> 08:00 às 12:00</p>
         </div>
       </div>
@@ -655,22 +689,22 @@
         <div class="card" onclick="showSection('bem-estar')">
           <div class="card-icon">🧘</div>
           <div class="card-title">Como você está hoje?</div>
-          <div class="card-desc">Faça um teste rápido de bem-estar e veja estatísticas da nossa comunidade.</div>
+          <div class="card-desc">Faça um teste rápido de bem-estar e receba dicas de autocuidado.</div>
         </div>
         <div class="card" onclick="showSection('atendimento')">
           <div class="card-icon">🏥</div>
           <div class="card-title">Onde buscar atendimento?</div>
-          <div class="card-desc">Endereços e horários dos pontos de saúde do município.</div>
+          <div class="card-desc">Endereços, telefones e horários dos pontos de saúde do município.</div>
         </div>
         <div class="card" onclick="showSection('vacinacao')">
           <div class="card-icon">💉</div>
           <div class="card-title">Vacinação e campanhas</div>
-          <div class="card-desc">Datas e orientações sobre imunização local.</div>
+          <div class="card-desc">Calendário municipal e orientações sobre imunização local.</div>
         </div>
         <div class="card" onclick="showSection('calendario')">
           <div class="card-icon">📅</div>
           <div class="card-title">Calendário da Saúde</div>
-          <div class="card-desc">Agenda atualizada de exames e consultas especializadas.</div>
+          <div class="card-desc">Agenda atualizada de consultas e médicos especialistas.</div>
         </div>
       </div>
     </div>
@@ -679,52 +713,10 @@
     <div id="sec-bem-estar" class="section-view">
       <div class="quiz-card">
         <h3 style="color: var(--blue-dark); font-size: 1rem; margin-bottom: 4px;">🌱 Checagem de Bem-Estar</h3>
-        <p style="color: var(--text-light); font-size: 0.8rem; margin-bottom: 16px;">Responda rápido para gerar seu perfil do momento e dicas de autocuidado. Não guarda dados pessoais.</p>
+        <p style="color: var(--text-light); font-size: 0.8rem; margin-bottom: 16px;">Responda rápido para gerar seu perfil de autocuidado do momento.</p>
         
-        <div class="quiz-question">
-          <p>😄 Como você está se sentindo hoje?</p>
-          <div class="quiz-options">
-            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q1', 'bem')">Muito bem</button>
-            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q1', 'ok')">Tranquilo(a)</button>
-            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q1', 'cansado')">Cansado(a)</button>
-            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q1', 'sobrecarregado')">Sobrecarregado(a)</button>
-          </div>
-        </div>
-
-        <div class="quiz-question">
-          <p>⚡ Como está sua energia?</p>
-          <div class="quiz-options">
-            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q2', 'alta')">Alta</button>
-            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q2', 'media')">Média</button>
-            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q2', 'baixa')">Baixa</button>
-          </div>
-        </div>
-
-        <div class="quiz-question">
-          <p>📚 Como está sua disposição para estudar ou trabalhar?</p>
-          <div class="quiz-options">
-            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q3', 'focado')">Focado(a)</button>
-            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q3', 'distraido')">Com dificuldade</button>
-            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q3', 'sem_disposicao')">Sem disposição</button>
-          </div>
-        </div>
-
-        <div class="quiz-question">
-          <p>🧑‍🤝‍🧑 Você está se sentindo conectado às pessoas ao seu redor?</p>
-          <div class="quiz-options">
-            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q4', 'sim')">Sim, bastante</button>
-            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q4', 'mais_ou_menos')">Mais ou menos</button>
-            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q4', 'isolado')">Me sentindo distante</button>
-          </div>
-        </div>
-
-        <div class="quiz-question">
-          <p>💤 Como foi seu descanso na última noite?</p>
-          <div class="quiz-options">
-            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q5', 'bom')">Renovador</button>
-            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q5', 'regular')">Suficiente</button>
-            <button class="quiz-opt-btn" onclick="selectOpt(this, 'q5', 'ruim')">Ruim / Incompleto</button>
-          </div>
+        <div id="quiz-questions-container">
+          <!-- As perguntas serão geradas dinamicamente -->
         </div>
 
         <button class="btn-submit" onclick="generateWellbeingProfile()">Ver Perfil do Momento</button>
@@ -734,85 +726,77 @@
           <p id="result-desc"></p>
         </div>
       </div>
-
-      <div class="help-banner">
-        <h3>📊 Bem-estar da nossa comunidade</h3>
-        <p style="color: var(--text-light); font-size: 0.8rem; margin-bottom: 12px;">Dados anônimos agregados sobre como os jovens e moradores da nossa comunidade estão se sentindo recentemente:</p>
-
-        <div class="stat-bar-container">
-          <div class="stat-item">
-            <div class="stat-label            <span>Sentindo-se bem ou tranquilos</span>
-            <span>68%</span>
-          </div>
-          <div class="stat-bg">
-            <div class="stat-fill" style="width: 68%;"></div>
-          </div>
-        </div>
-
-        <div class="stat-item">
-          <div class="stat-label">
-            <span>Relatando cansaço ou sobrecarga</span>
-            <span>24%</span>
-          </div>
-          <div class="stat-bg">
-            <div class="stat-fill" style="width: 24%; background-color: #f59e0b;"></div>
-          </div>
-        </div>
-
-        <div class="stat-item">
-          <div class="stat-label">
-            <span>Precisando de apoio/orientação</span>
-            <span>8%</span>
-          </div>
-          <div class="stat-bg">
-            <div class="stat-fill" style="width: 8%; background-color: #ef4444;"></div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- ABA ATENDIMENTO -->
     <div id="sec-atendimento" class="section-view">
-      <div class="today-card" style="background: linear-gradient(135deg, #1e293b, #334155);">
+      <div class="today-card" style="background: linear-gradient(135deg, #1e293b, #334155); margin-bottom: 20px;">
         <h2>🏥 Pontos de Atendimento em Várzea Branca</h2>
-        <p style="font-size: 0.85rem; opacity: 0.9;">Consulte os locais para atendimento médico, vacinação e exames no município.</p>
+        <p style="font-size: 0.85rem; opacity: 0.9;">Endereços e horários das unidades de saúde do município.</p>
       </div>
 
       <div class="grid-container">
-        <div class="card">
+        <div class="card" style="cursor: default;">
           <div class="card-icon">🏥</div>
-          <div class="card-title">UBS Central</div>
+          <div class="card-title">UBS Central (Unidade Básica)</div>
           <div class="card-desc">
-            <strong>Endereço:</strong> Centro<br>
-            <strong>Horário:</strong> Segunda a Sexta, 07h às 17h<br>
-            <strong>Serviços:</strong> Consultas gerais, vacinação, pré-natal, curativos.
+            <strong>📍 Endereço:</strong> Rua Principal, s/n - Centro<br>
+            <strong>⏰ Horário:</strong> Segunda a Sexta, 07h às 17h<br>
+            <strong>📞 Contato:</strong> (89) 3584-0000<br><br>
+            <strong>Serviços:</strong> Consultas de enfermagem, clínica geral, pré-natal, vacinação, distribuição de medicamentos e curativos.
           </div>
         </div>
 
-        <div class="card">
+        <div class="card" style="cursor: default;">
           <div class="card-icon">🚑</div>
-          <div class="card-title">Unidade de Urgência</div>
+          <div class="card-title">Pronto Atendimento / Urgência</div>
           <div class="card-desc">
-            <strong>Endereço:</strong> Anexo UBS Central<br>
-            <strong>Horário:</strong> 24 Horas<br>
-            <strong>Serviços:</strong> Atendimento de urgência e primeiros socorros.
+            <strong>📍 Endereço:</strong> Anexo à UBS Central<br>
+            <strong>⏰ Horário:</strong> 24 Horas (Todos os dias)<br><br>
+            <strong>Serviços:</strong> Urgências, primeiros socorros, estabilização de pacientes e encaminhamento de emergências.
           </div>
         </div>
-      </div>
+
+        <div class="card" style="cursor: default;">
+          <div class="card-icon">🩺</div>
+          <div class="card-title">Posto de Saúde da Zona Rural</div>
+          <div class="card-desc">
+            <strong>📍 Endereço:</strong> Povoado Lagoa da Roça<br>
+            <strong>⏰ Horário:</strong> Terças e Quintas, 08h às 13h<br><br>
+            <strong>Serviços:</strong> Atendimento itinerante, pesagem do Bolsa Família e aferição de pressão.
+          </div>
+        </div>
+        </div>
     </div>
 
     <!-- ABA VACINAÇÃO -->
     <div id="sec-vacinacao" class="section-view">
       <div class="help-banner">
-        <h3>💉 Vacinação Local</h3>
-        <p style="color: var(--text-light); font-size: 0.85rem; margin-bottom: 12px;">Mantenha sua caderneta atualizada. Confira as campanhas ativas em Várzea Branca:</p>
+        <h3>💉 Vacinação e Imunização em Várzea Branca</h3>
+        <p style="color: var(--text-light); font-size: 0.85rem; margin-bottom: 16px;">
+          Mantenha sua caderneta atualizada. Leve documento oficial com foto e o cartão do SUS ao vacinar-se.
+        </p>
 
-        <div class="alert-box" style="background: var(--blue-light); border-color: var(--blue-main); color: var(--blue-dark);">
-          <span>ℹ️</span>
-          <div>
-            <strong>Campanha Influenza & Covid-19:</strong> Vacinação contínua na UBS Central de segunda a sexta, das 08h às 16h. Apresente documento com foto e cartão do SUS.
+        <div style="margin-bottom: 16px;">
+          <h4 style="color: var(--blue-dark); font-size: 0.9rem; margin-bottom: 8px;">📌 Campanhas Ativas</h4>
+          <div class="notice-card" style="border-left-color: #2563eb;">
+            <h4>Vacina contra Influenza (Gripe)</h4>
+            <p>Disponível para idosos, gestantes, crianças de 6 meses a 6 anos, e profissionais da saúde e educação.</p>
+            <div class="date">Local: Sala de Vacinas - UBS Central (08h às 16h)</div>
+          </div>
+          <div class="notice-card" style="border-left-color: #10b981;">
+            <h4>Reforço COVID-19 Bivalente</h4>
+            <p>Disponível para toda a população acima de 12 anos que tomou a última dose há mais de 4 meses.</p>
+            <div class="date">Local: Sala de Vacinas - UBS Central</div>
           </div>
         </div>
+
+        <h4 style="color: var(--blue-dark); font-size: 0.9rem; margin-bottom: 8px;">📋 Documentos Necessários</h4>
+        <ul style="margin-left: 20px; color: var(--text-dark); font-size: 0.85rem; line-height: 1.6;">
+          <li>Cartão do SUS atualizado</li>
+          <li>Caderneta ou Cartão de Vacinação</li>
+          <li>CPF e Documento com foto</li>
+        </ul>
       </div>
     </div>
 
@@ -825,7 +809,7 @@
           <button class="calendar-btn" onclick="changeMonth(1)">Próximo ▶</button>
         </div>
         <div class="calendar-grid" id="calendar-grid">
-          <!-- Gerado via JavaScript -->
+          <!-- Gerado via JS -->
         </div>
       </div>
     </div>
@@ -834,35 +818,89 @@
     <div id="sec-avisos" class="section-view">
       <div class="help-banner">
         <h3>📢 Avisos da Secretaria de Saúde</h3>
-        <p style="color: var(--text-light); font-size: 0.85rem; margin-top: 8px;">
-          • Mantenha os quintais limpos para evitar a proliferação do mosquito da Dengue.<br>
-          • Agendamentos para exames especializados devem ser feitos presencialmente na UBS Central.
+        <p style="color: var(--text-light); font-size: 0.85rem; margin-bottom: 16px;">
+          Fique por dentro das notícias, campanhas e comunicados de Várzea Branca.
         </p>
+        <div id="notices-list">
+          <!-- Avisos renderizados via JS -->
+        </div>
       </div>
     </div>
 
-    <!-- ABA ADMINISTRAÇÃO -->
+    <!-- ABA ADMINISTRADOR -->
     <div id="sec-admin" class="section-view">
       <div class="admin-section">
-        <h3 style="color: var(--blue-dark); margin-bottom: 16px;">⚙️ Painel Administrativo</h3>
+        <h3 style="color: var(--blue-dark); margin-bottom: 16px;">⚙️ Painel de Controle e Edição</h3>
         
-        <h4 style="color: var(--blue-dark); font-size: 0.9rem; margin-bottom: 8px;">Adicionar Evento ao Calendário</h4>
-        <form onsubmit="addServiceEvent(e)" style="margin-bottom: 24px;">
-          <div class="form-group">
-            <label>Data</label>
-            <input type="date" id="admin-date" required>
-          </div>
-          <div class="form-group">
-            <label>Descrição / Atendimento</label>
-            <input type="text" id="admin-title" placeholder="Ex: Pediatria Geral" required>
-          </div>
-          <button type="submit" class="btn-submit">Adicionar Evento</button>
-        </form>
-
-        <h4 style="color: var(--blue-dark); font-size: 0.9rem; margin-bottom: 8px;">Mensagens de Solicitação de Ajuda</h4>
-        <div id="admin-msg-list">
-          <div class="msg-item">Nenhuma mensagem pendente.</div>
+        <div class="admin-tab-buttons">
+          <button class="admin-tab-btn active" onclick="switchAdminTab('avisos-admin', this)">Editar Avisos</button>
+          <button class="admin-tab-btn" onclick="switchAdminTab('quiz-admin', this)">Editar Quiz</button>
+          <button class="admin-tab-btn" onclick="switchAdminTab('cal-admin', this)">Editar Calendário</button>
+          <button class="admin-tab-btn" onclick="switchAdminTab('msgs-admin', this)">Mensagens</button>
         </div>
+
+        <!-- Gerenciar Avisos -->
+        <div id="adm-avisos-admin" class="admin-tab-content active">
+          <h4 style="color: var(--blue-dark); font-size: 0.9rem; margin-bottom: 8px;">Publicar Novo Aviso</h4>
+          <form onsubmit="addNotice(event)" style="margin-bottom: 16px;">
+            <div class="form-group">
+              <label>Título do Aviso</label>
+              <input type="text" id="adm-notice-title" placeholder="Ex: Multirão de Combate à Dengue" required>
+            </div>
+            <div class="form-group">
+              <label>Conteúdo / Mensagem</label>
+              <textarea id="adm-notice-body" rows="3" placeholder="Digite os detalhes..." required></textarea>
+            </div>
+            <button type="submit" class="btn-submit">Publicar Aviso</button>
+          </form>
+
+          <h4 style="color: var(--blue-dark); font-size: 0.9rem; margin-bottom: 8px;">Avisos Atuais</h4>
+          <div id="adm-notices-manage"></div>
+        </div>
+
+        <!-- Gerenciar Quiz -->
+        <div id="adm-quiz-admin" class="admin-tab-content">
+          <h4 style="color: var(--blue-dark); font-size: 0.9rem; margin-bottom: 8px;">Adicionar Pergunta ao Quiz</h4>
+          <form onsubmit="addQuizQuestion(event)" style="margin-bottom: 16px;">
+            <div class="form-group">
+              <label>Pergunta</label>
+              <input type="text" id="adm-quiz-q" placeholder="Ex: Como está a sua alimentação hoje?" required>
+            </div>
+            <div class="form-group">
+              <label>Opções (separadas por vírgula)</label>
+              <input type="text" id="adm-quiz-opts" placeholder="Ex: Muito boa, Regular, Ruim" required>
+            </div>
+            <button type="submit" class="btn-submit">Adicionar Pergunta</button>
+          </form>
+
+          <h4 style="color: var(--blue-dark); font-size: 0.9rem; margin-bottom: 8px;">Perguntas Cadastradas</h4>
+          <div id="adm-quiz-manage"></div>
+        </div>
+
+        <!-- Gerenciar Calendário -->
+        <div id="adm-cal-admin" class="admin-tab-content">
+          <h4 style="color: var(--blue-dark); font-size: 0.9rem; margin-bottom: 8px;">Adicionar Evento / Médico no Calendário</h4>
+          <form onsubmit="addServiceEvent(event)" style="margin-bottom: 16px;">
+            <div class="form-group">
+              <label>Data</label>
+              <input type="date" id="admin-date" required>
+            </div>
+            <div class="form-group">
+              <label>Atendimento / Especialidade</label>
+              <input type="text" id="admin-title" placeholder="Ex: Pediatria Geral" required>
+            </div>
+            <button type="submit" class="btn-submit">Adicionar ao Calendário</button>
+          </form>
+        </div>
+
+        <!-- Gerenciar Mensagens -->
+        <div id="adm-msgs-admin" class="admin-tab-content">
+          <h4 style="color: var(--blue-dark); font-size: 0.9rem; margin-bottom: 8px;">Solicitações de Ajuda da População</h4>
+          <div id="admin-msg-list">
+            <div class="msg-item">Nenhuma solicitação no momento.</div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -873,7 +911,7 @@
     <div class="modal-content">
       <h3 style="color: var(--blue-dark); font-size: 1rem; margin-bottom: 6px;" id="modalTitle">Solicitar Orientações</h3>
       <p style="color: var(--text-light); font-size: 0.8rem; margin-bottom: 16px;" id="modalDesc"></p>
-      <form onsubmit="submitHelp(e)">
+      <form onsubmit="submitHelp(event)">
         <div class="form-group">
           <label>Seu Nome (Opcional)</label>
           <input type="text" id="helpName" placeholder="Como deseja ser chamado(a)">
@@ -895,8 +933,23 @@
     let currentHelpOption = '';
     const quizAnswers = {};
     const messages = [];
+
+    // Dados Iniciais das Abas
+    let notices = [
+      { id: 1, title: 'Combate à Dengue em Várzea Branca', body: 'A equipe de agentes de endemias estará vistoriando as residências no bairro Centro esta semana. Mantenha caixas d\'água tampadas.', date: '22/08/2026' },
+      { id: 2, title: 'Agendamento de Exames de Imagem', body: 'Os agendamentos para ultrassonografias para o próximo mês abrem na próxima segunda-feira na UBS Central.', date: '20/08/2026' }
+    ];
+
+    let quizQuestions = [
+      { id: 1, text: '😄 Como você está se sentindo hoje?', options: ['Muito bem', 'Tranquilo(a)', 'Cansado(a)', 'Sobrecarregado(a)'] },
+      { id: 2, text: '⚡ Como está sua energia para o dia?', options: ['Alta', 'Média', 'Baixa'] },
+      { id: 3, text: '💤 Como foi seu descanso na última noite?', options: ['Renovador', 'Suficiente', 'Ruim / Incompleto'] }
+    ];
+
     const events = {
-      '2026-08-23': ['Pediatria Geral']
+      '2026-08-23': ['Pediatria Geral'],
+      '2026-08-25': ['Exames de Sangue'],
+      '2026-08-28': ['Atendimento Odontológico']
     };
 
     function toggleSidebar() {
@@ -934,6 +987,105 @@
       }
     }
 
+    /* RENDERIZAR AVISOS */
+    function renderNotices() {
+      const list = document.getElementById('notices-list');
+      const admList = document.getElementById('adm-notices-manage');
+      
+      if (notices.length === 0) {
+        list.innerHTML = '<p style="color: var(--text-light);">Nenhum aviso no momento.</p>';
+        admList.innerHTML = '<p style="color: var(--text-light);">Nenhum aviso cadastrado.</p>';
+        return;
+      }
+
+      list.innerHTML = notices.map(n => `
+        <div class="notice-card">
+          <h4>${n.title}</h4>
+          <p>${n.body}</p>
+          <div class="date">Publicado em: ${n.date}</div>
+        </div>
+      `).join('');
+
+      admList.innerHTML = notices.map(n => `
+        <div class="msg-item">
+          <button class="btn-delete" onclick="deleteNotice(${n.id})">Excluir</button>
+          <strong>${n.title}</strong>
+          <p>${n.body}</p>
+        </div>
+      `).join('');
+    }
+
+    function addNotice(e) {
+      e.preventDefault();
+      const title = document.getElementById('adm-notice-title').value;
+      const body = document.getElementById('adm-notice-body').value;
+      
+      notices.unshift({
+        id: Date.now(),
+        title: title,
+        body: body,
+        date: new Date().toLocaleDateString('pt-BR')
+      });
+
+      document.getElementById('adm-notice-title').value = '';
+      document.getElementById('adm-notice-body').value = '';
+      renderNotices();
+      alert('Aviso publicado com sucesso!');
+    }
+
+    function deleteNotice(id) {
+      notices = notices.filter(n => n.id !== id);
+      renderNotices();
+    }
+
+    /* RENDERIZAR QUIZ */
+    function renderQuiz() {
+      const container = document.getElementById('quiz-questions-container');
+      const admContainer = document.getElementById('adm-quiz-manage');
+
+      container.innerHTML = quizQuestions.map((q, idx) => `
+        <div class="quiz-question">
+          <p>${q.text}</p>
+          <div class="quiz-options">
+            ${q.options.map(opt => `
+              <button class="quiz-opt-btn" onclick="selectOpt(this, 'q${q.id}', '${opt}')">${opt}</button>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+
+      admContainer.innerHTML = quizQuestions.map(q => `
+        <div class="msg-item">
+          <button class="btn-delete" onclick="deleteQuizQuestion(${q.id})">Excluir</button>
+          <strong>${q.text}</strong>
+          <p><small>Opções: ${q.options.join(', ')}</small></p>
+        </div>
+      `).join('');
+    }
+
+    function addQuizQuestion(e) {
+      e.preventDefault();
+      const qText = document.getElementById('adm-quiz-q').value;
+      const qOpts = document.getElementById('adm-quiz-opts').value.split(',').map(s => s.trim());
+
+      quizQuestions.push({
+        id: Date.now(),
+        text: qText,
+        options: qOpts
+      });
+
+      document.getElementById('adm-quiz-q').value = '';
+      document.getElementById('adm-quiz-opts').value = '';
+      renderQuiz();
+      alert('Pergunta adicionada ao quiz!');
+    }
+
+    function deleteQuizQuestion(id) {
+      quizQuestions = quizQuestions.filter(q => q.id !== id);
+      renderQuiz();
+    }
+
+    /* CALENDÁRIO */
     function renderCalendar() {
       const grid = document.getElementById('calendar-grid');
       const monthYearTitle = document.getElementById('calendar-month-year');
@@ -984,6 +1136,32 @@
       renderCalendar();
     }
 
+    function addServiceEvent(e) {
+      e.preventDefault();
+      const dateVal = document.getElementById('admin-date').value;
+      const titleVal = document.getElementById('admin-title').value;
+
+      if (!events[dateVal]) {
+        events[dateVal] = [];
+      }
+      events[dateVal].push(titleVal);
+
+      document.getElementById('admin-title').value = '';
+      document.getElementById('admin-date').value = '';
+      renderCalendar();
+      alert('Evento adicionado ao calendário!');
+    }
+
+    /* TROCA DE ABAS ADMIN */
+    function switchAdminTab(tabId, btn) {
+      document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+
+      document.getElementById('adm-' + tabId).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    /* AUXILIARES DE RESPOSTA E MODAL */
     function selectOpt(btn, group, val) {
       const parent = btn.parentElement;
       parent.querySelectorAll('.quiz-opt-btn').forEach(b => b.classList.remove('selected'));
@@ -992,27 +1170,20 @@
     }
 
     function generateWellbeingProfile() {
-      if (Object.keys(quizAnswers).length < 3) {
-        alert('Responda a pelo menos algumas perguntas para gerar seu perfil.');
+      if (Object.keys(quizAnswers).length === 0) {
+        alert('Responda às perguntas para gerar o perfil.');
         return;
       }
 
-      const profiles = [
-        { title: '🌱 Perfil: Buscando Equilíbrio', desc: 'Sua energia pode estar um pouco baixa no momento. Tente reservar alguns minutos do seu dia para descansar, beber água e fazer pausas curtas durante as tarefas.' },
-        { title: '⚡ Perfil: Com Boa Energia', desc: 'Você apresenta boa disposição! Aproveite este momento para manter seus hábitos saudáveis, praticar atividades ao ar livre e apoiar quem está ao seu redor.' }
-      ];
-
-      const result = (quizAnswers.q1 === 'cansado' || quizAnswers.q1 === 'sobrecarregado' || quizAnswers.q2 === 'baixa') ? profiles[0] : profiles[1];
-
-      document.getElementById('result-title').innerText = result.title;
-      document.getElementById('result-desc').innerText = result.desc;
+      document.getElementById('result-title').innerText = '🌱 Perfil de Autocuidado Gerado';
+      document.getElementById('result-desc').innerText = 'Obrigado por responder. Lembre-se de reservar momentos do dia para descansar, praticar atividades físicas e beber água regularmente.';
       document.getElementById('quiz-result').style.display = 'block';
     }
 
     function openHelpModal(option) {
       currentHelpOption = option;
       document.getElementById('modalTitle').innerText = option;
-      document.getElementById('modalDesc').innerText = 'Deixe seu contato para retornarmos com orientações sobre: ' + option;
+      document.getElementById('modalDesc').innerText = 'Deixe seu contato para que a equipe da UBS retorne sobre: ' + option;
       document.getElementById('helpModal').style.display = 'flex';
     }
 
@@ -1036,13 +1207,13 @@
       closeModal();
       document.getElementById('helpName').value = '';
       document.getElementById('helpPhone').value = '';
-      alert('Solicitação enviada com sucesso!');
+      alert('Solicitação enviada! A equipe entrará em contato.');
     }
 
     function updateAdminMessages() {
       const container = document.getElementById('admin-msg-list');
       if (messages.length === 0) {
-        container.innerHTML = '<div class="msg-item">Nenhuma mensagem pendente.</div>';
+        container.innerHTML = '<div class="msg-item">Nenhuma solicitação no momento.</div>';
         return;
       }
       container.innerHTML = messages.map(m => `
@@ -1053,22 +1224,9 @@
       `).join('');
     }
 
-    function addServiceEvent(e) {
-      e.preventDefault();
-      const dateVal = document.getElementById('admin-date').value;
-      const titleVal = document.getElementById('admin-title').value;
-
-      if (!events[dateVal]) {
-        events[dateVal] = [];
-      }
-      events[dateVal].push(titleVal);
-
-      document.getElementById('admin-title').value = '';
-      document.getElementById('admin-date').value = '';
-      renderCalendar();
-      alert('Atendimento adicionado ao calendário!');
-    }
-
+    // Inicialização
+    renderNotices();
+    renderQuiz();
     renderCalendar();
   </script>
 </body>
