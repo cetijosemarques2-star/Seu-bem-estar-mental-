@@ -321,12 +321,12 @@
       margin-top: 6px;
     }
 
-    /* Calendário */
+    /* Calendário Responsivo */
     .calendar-container {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
       border-radius: 12px;
-      padding: 20px;
+      padding: 16px;
     }
 
     .calendar-header {
@@ -353,7 +353,7 @@
     .calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 6px;
+      gap: 4px;
       text-align: center;
     }
 
@@ -361,21 +361,25 @@
       font-weight: 600;
       font-size: 0.75rem;
       color: var(--text-light);
-      padding: 6px 0;
+      padding: 4px 0;
     }
 
     .cal-day {
-      padding: 8px 4px;
-      border-radius: 6px;
+      padding: 6px 2px;
+      border-radius: 8px;
       border: 1px solid var(--border-color);
-      min-height: 60px;
+      min-height: 52px;
       display: flex;
       flex-direction: column;
       align-items: center;
       cursor: pointer;
       font-size: 0.8rem;
       background: #fff;
-      position: relative;
+      transition: background 0.2s;
+    }
+
+    .cal-day:hover {
+      background-color: var(--blue-light);
     }
 
     .cal-day.empty {
@@ -386,8 +390,17 @@
 
     .cal-day.today {
       border-color: var(--blue-main);
+      background-color: var(--blue-light);
       font-weight: 700;
       color: var(--blue-main);
+    }
+
+    .event-dot {
+      width: 6px;
+      height: 6px;
+      background-color: var(--blue-main);
+      border-radius: 50%;
+      margin-top: 4px;
     }
 
     .event-tag {
@@ -402,6 +415,20 @@
       overflow: hidden;
       text-overflow: ellipsis;
       font-weight: 600;
+    }
+
+    .selected-day-details {
+      margin-top: 16px;
+      padding: 12px;
+      background: var(--bg-primary);
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .selected-day-details h4 {
+      font-size: 0.85rem;
+      color: var(--blue-dark);
+      margin-bottom: 8px;
     }
 
     /* Modal / Form */
@@ -594,6 +621,12 @@
         margin-left: 0 !important;
         padding-top: 72px;
       }
+      .event-tag {
+        display: none;
+      }
+      .cal-day {
+        min-height: 44px;
+      }
     }
   </style>
 </head>
@@ -716,7 +749,7 @@
         <p style="color: var(--text-light); font-size: 0.8rem; margin-bottom: 16px;">Responda rápido para gerar seu perfil de autocuidado do momento.</p>
         
         <div id="quiz-questions-container">
-          <!-- As perguntas serão geradas dinamicamente -->
+          <!-- Gerado via JS -->
         </div>
 
         <button class="btn-submit" onclick="generateWellbeingProfile()">Ver Perfil do Momento</button>
@@ -752,51 +785,31 @@
           <div class="card-title">Pronto Atendimento / Urgência</div>
           <div class="card-desc">
             <strong>📍 Endereço:</strong> Anexo à UBS Central<br>
-            <strong>⏰ Horário:</strong> 24 Horas (Todos os dias)<br><br>
-            <strong>Serviços:</strong> Urgências, primeiros socorros, estabilização de pacientes e encaminhamento de emergências.
+            <strong>⏰ Horário:</strong> 24 Horas (Todos os dias)<br>
+            <strong>📞 Contato:</strong> 192 ou (89) 3584-0001<br><br>
+            <strong>Serviços:</strong> Casos de urgência, pequenas cirurgias, suturas, estabilização de pacientes e transferências.
           </div>
         </div>
-
-        <div class="card" style="cursor: default;">
-          <div class="card-icon">🩺</div>
-          <div class="card-title">Posto de Saúde da Zona Rural</div>
-          <div class="card-desc">
-            <strong>📍 Endereço:</strong> Povoado Lagoa da Roça<br>
-            <strong>⏰ Horário:</strong> Terças e Quintas, 08h às 13h<br><br>
-            <strong>Serviços:</strong> Atendimento itinerante, pesagem do Bolsa Família e aferição de pressão.
-          </div>
-        </div>
-        </div>
+      </div>
     </div>
 
     <!-- ABA VACINAÇÃO -->
     <div id="sec-vacinacao" class="section-view">
-      <div class="help-banner">
-        <h3>💉 Vacinação e Imunização em Várzea Branca</h3>
-        <p style="color: var(--text-light); font-size: 0.85rem; margin-bottom: 16px;">
-          Mantenha sua caderneta atualizada. Leve documento oficial com foto e o cartão do SUS ao vacinar-se.
-        </p>
+      <div class="today-card" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); margin-bottom: 20px;">
+        <h2>💉 Campanha de Vacinação Municipal</h2>
+        <p style="font-size: 0.85rem; opacity: 0.9;">Mantenha sua caderneta atualizada na UBS Central.</p>
+      </div>
 
-        <div style="margin-bottom: 16px;">
-          <h4 style="color: var(--blue-dark); font-size: 0.9rem; margin-bottom: 8px;">📌 Campanhas Ativas</h4>
-          <div class="notice-card" style="border-left-color: #2563eb;">
-            <h4>Vacina contra Influenza (Gripe)</h4>
-            <p>Disponível para idosos, gestantes, crianças de 6 meses a 6 anos, e profissionais da saúde e educação.</p>
-            <div class="date">Local: Sala de Vacinas - UBS Central (08h às 16h)</div>
-          </div>
-          <div class="notice-card" style="border-left-color: #10b981;">
-            <h4>Reforço COVID-19 Bivalente</h4>
-            <p>Disponível para toda a população acima de 12 anos que tomou a última dose há mais de 4 meses.</p>
-            <div class="date">Local: Sala de Vacinas - UBS Central</div>
-          </div>
-        </div>
+      <div class="notice-card">
+        <h4> Influenza (Gripe) - Liberado para Grupos Prioritários</h4>
+        <p>Idosos (60+), crianças de 6 meses a 5 anos, gestantes e profissionais da saúde podem vacinar-se na sala de vacinas da UBS Central.</p>
+        <p class="date">📅 Atualizado recentemente</p>
+      </div>
 
-        <h4 style="color: var(--blue-dark); font-size: 0.9rem; margin-bottom: 8px;">📋 Documentos Necessários</h4>
-        <ul style="margin-left: 20px; color: var(--text-dark); font-size: 0.85rem; line-height: 1.6;">
-          <li>Cartão do SUS atualizado</li>
-          <li>Caderneta ou Cartão de Vacinação</li>
-          <li>CPF e Documento com foto</li>
-        </ul>
+      <div class="notice-card">
+        <h4> Vacinação Infantil de Rotina</h4>
+        <p>Acompanhamento de rotina do calendário infantil municipal de segunda a sexta, das 08h às 16h.</p>
+        <p class="date">📍 Sala de Vacinas - UBS Central</p>
       </div>
     </div>
 
@@ -804,100 +817,103 @@
     <div id="sec-calendario" class="section-view">
       <div class="calendar-container">
         <div class="calendar-header">
-          <button class="calendar-btn" onclick="changeMonth(-1)">◀ Anterior</button>
-          <h3 id="calendar-month-year"></h3>
-          <button class="calendar-btn" onclick="changeMonth(1)">Próximo ▶</button>
+          <button class="calendar-btn" onclick="changeMonth(-1)">❮ Anterior</button>
+          <h3 id="calendar-month-year">Mês Ano</h3>
+          <button class="calendar-btn" onclick="changeMonth(1)">Próximo ❯</button>
         </div>
-        <div class="calendar-grid" id="calendar-grid">
-          <!-- Gerado via JS -->
+
+        <div class="calendar-grid" id="calendar-days-header">
+          <div class="cal-day-name">Dom</div>
+          <div class="cal-day-name">Seg</div>
+          <div class="cal-day-name">Ter</div>
+          <div class="cal-day-name">Qua</div>
+          <div class="cal-day-name">Qui</div>
+          <div class="cal-day-name">Sex</div>
+          <div class="cal-day-name">Sáb</div>
+        </div>
+
+        <div class="calendar-grid" id="calendar-days-container" style="margin-top: 4px;">
+          <!-- Dias inseridos via JS -->
+        </div>
+
+        <div class="selected-day-details" id="selected-day-info">
+          <h4>📌 Selecione um dia no calendário para ver a programação da saúde.</h4>
         </div>
       </div>
     </div>
 
     <!-- ABA AVISOS -->
     <div id="sec-avisos" class="section-view">
-      <div class="help-banner">
-        <h3>📢 Avisos da Secretaria de Saúde</h3>
-        <p style="color: var(--text-light); font-size: 0.85rem; margin-bottom: 16px;">
-          Fique por dentro das notícias, campanhas e comunicados de Várzea Branca.
-        </p>
-        <div id="notices-list">
-          <!-- Avisos renderizados via JS -->
-        </div>
+      <h3 style="color: var(--blue-dark); font-size: 1.1rem; margin-bottom: 16px;">📢 Quadro de Avisos à Comunidade</h3>
+      <div id="notices-container">
+        <!-- Inserido dinamicamente via JS -->
       </div>
     </div>
 
     <!-- ABA ADMINISTRADOR -->
     <div id="sec-admin" class="section-view">
       <div class="admin-section">
-        <h3 style="color: var(--blue-dark); margin-bottom: 16px;">⚙️ Painel de Controle e Edição</h3>
+        <h3 style="color: var(--blue-dark); font-size: 1rem; margin-bottom: 12px;">⚙️ Painel de Gestão do VB CUIDA</h3>
         
         <div class="admin-tab-buttons">
-          <button class="admin-tab-btn active" onclick="switchAdminTab('avisos-admin', this)">Editar Avisos</button>
-          <button class="admin-tab-btn" onclick="switchAdminTab('quiz-admin', this)">Editar Quiz</button>
-          <button class="admin-tab-btn" onclick="switchAdminTab('cal-admin', this)">Editar Calendário</button>
-          <button class="admin-tab-btn" onclick="switchAdminTab('msgs-admin', this)">Mensagens</button>
+          <button class="admin-tab-btn active" onclick="showAdminTab('tab-hoje', this)">Hoje no Município</button>
+          <button class="admin-tab-btn" onclick="showAdminTab('tab-avisos', this)">Avisos</button>
+          <button class="admin-tab-btn" onclick="showAdminTab('tab-eventos', this)">Calendário</button>
+          <button class="admin-tab-btn" onclick="showAdminTab('tab-mensagens', this)">Solicitações</button>
+        </div>
+
+        <!-- Gerenciar "Hoje em VB" -->
+        <div id="tab-hoje" class="admin-tab-content active">
+          <div class="form-group">
+            <label>Especialidade / Evento de Hoje</label>
+            <input type="text" id="admin-today-title" value="Pediatria Geral">
+          </div>
+          <div class="form-group">
+            <label>Local do Atendimento</label>
+            <input type="text" id="admin-today-location" value="UBS Central - Centro">
+          </div>
+          <div class="form-group">
+            <label>Horário</label>
+            <input type="text" id="admin-today-time" value="08:00 às 12:00">
+          </div>
+          <button class="btn-submit" onclick="updateTodayBanner()">Atualizar Destaque Inicial</button>
         </div>
 
         <!-- Gerenciar Avisos -->
-        <div id="adm-avisos-admin" class="admin-tab-content active">
-          <h4 style="color: var(--blue-dark); font-size: 0.9rem; margin-bottom: 8px;">Publicar Novo Aviso</h4>
-          <form onsubmit="addNotice(event)" style="margin-bottom: 16px;">
-            <div class="form-group">
-              <label>Título do Aviso</label>
-              <input type="text" id="adm-notice-title" placeholder="Ex: Multirão de Combate à Dengue" required>
-            </div>
-            <div class="form-group">
-              <label>Conteúdo / Mensagem</label>
-              <textarea id="adm-notice-body" rows="3" placeholder="Digite os detalhes..." required></textarea>
-            </div>
-            <button type="submit" class="btn-submit">Publicar Aviso</button>
-          </form>
-
-          <h4 style="color: var(--blue-dark); font-size: 0.9rem; margin-bottom: 8px;">Avisos Atuais</h4>
-          <div id="adm-notices-manage"></div>
-        </div>
-
-        <!-- Gerenciar Quiz -->
-        <div id="adm-quiz-admin" class="admin-tab-content">
-          <h4 style="color: var(--blue-dark); font-size: 0.9rem; margin-bottom: 8px;">Adicionar Pergunta ao Quiz</h4>
-          <form onsubmit="addQuizQuestion(event)" style="margin-bottom: 16px;">
-            <div class="form-group">
-              <label>Pergunta</label>
-              <input type="text" id="adm-quiz-q" placeholder="Ex: Como está a sua alimentação hoje?" required>
-            </div>
-            <div class="form-group">
-              <label>Opções (separadas por vírgula)</label>
-              <input type="text" id="adm-quiz-opts" placeholder="Ex: Muito boa, Regular, Ruim" required>
-            </div>
-            <button type="submit" class="btn-submit">Adicionar Pergunta</button>
-          </form>
-
-          <h4 style="color: var(--blue-dark); font-size: 0.9rem; margin-bottom: 8px;">Perguntas Cadastradas</h4>
-          <div id="adm-quiz-manage"></div>
+        <div id="tab-avisos" class="admin-tab-content">
+          <div class="form-group">
+            <label>Título do Aviso</label>
+            <input type="text" id="admin-notice-title" placeholder="Ex: Mutirão de Exames">
+          </div>
+          <div class="form-group">
+            <label>Conteúdo / Descrição</label>
+            <textarea id="admin-notice-desc" rows="3" placeholder="Informações completas para a população..."></textarea>
+          </div>
+          <button class="btn-submit" onclick="addNotice()">Publicar Aviso</button>
         </div>
 
         <!-- Gerenciar Calendário -->
-        <div id="adm-cal-admin" class="admin-tab-content">
-          <h4 style="color: var(--blue-dark); font-size: 0.9rem; margin-bottom: 8px;">Adicionar Evento / Médico no Calendário</h4>
-          <form onsubmit="addServiceEvent(event)" style="margin-bottom: 16px;">
-            <div class="form-group">
-              <label>Data</label>
-              <input type="date" id="admin-date" required>
-            </div>
-            <div class="form-group">
-              <label>Atendimento / Especialidade</label>
-              <input type="text" id="admin-title" placeholder="Ex: Pediatria Geral" required>
-            </div>
-            <button type="submit" class="btn-submit">Adicionar ao Calendário</button>
-          </form>
+        <div id="tab-eventos" class="admin-tab-content">
+          <div class="form-group">
+            <label>Data</label>
+            <input type="date" id="admin-event-date">
+          </div>
+          <div class="form-group">
+            <label>Médico / Especialidade / Atendimento</label>
+            <input type="text" id="admin-event-title" placeholder="Ex: Cardiologista">
+          </div>
+          <div class="form-group">
+            <label>Local e Detalhes</label>
+            <input type="text" id="admin-event-desc" placeholder="Ex: UBS Central - 20 Vagas">
+          </div>
+          <button class="btn-submit" onclick="addCalendarEvent()">Adicionar Evento na Agenda</button>
         </div>
 
-        <!-- Gerenciar Mensagens -->
-        <div id="adm-msgs-admin" class="admin-tab-content">
-          <h4 style="color: var(--blue-dark); font-size: 0.9rem; margin-bottom: 8px;">Solicitações de Ajuda da População</h4>
-          <div id="admin-msg-list">
-            <div class="msg-item">Nenhuma solicitação no momento.</div>
+        <!-- Gerenciar Mensagens / Solicitações dos Usuários -->
+        <div id="tab-mensagens" class="admin-tab-content">
+          <h4 style="font-size: 0.85rem; margin-bottom: 8px;">Mensagens Recebidas ("Preciso de ajuda"):</h4>
+          <div id="admin-messages-list">
+            <p style="color: var(--text-light); font-size: 0.8rem;">Nenhuma solicitação enviada ainda.</p>
           </div>
         </div>
 
@@ -906,52 +922,100 @@
 
   </main>
 
-  <!-- Modal Pedido de Ajuda -->
+  <!-- MODAL DE SOLICITAÇÃO -->
   <div class="modal" id="helpModal">
     <div class="modal-content">
-      <h3 style="color: var(--blue-dark); font-size: 1rem; margin-bottom: 6px;" id="modalTitle">Solicitar Orientações</h3>
-      <p style="color: var(--text-light); font-size: 0.8rem; margin-bottom: 16px;" id="modalDesc"></p>
-      <form onsubmit="submitHelp(event)">
-        <div class="form-group">
-          <label>Seu Nome (Opcional)</label>
-          <input type="text" id="helpName" placeholder="Como deseja ser chamado(a)">
-        </div>
-        <div class="form-group">
-          <label>Telefone / WhatsApp</label>
-          <input type="tel" id="helpPhone" placeholder="(89) 9____-____" required>
-        </div>
-        <div style="display: flex; gap: 8px; margin-top: 16px;">
-          <button type="button" class="btn-help" style="flex: 1;" onclick="closeModal()">Cancelar</button>
-          <button type="submit" class="btn-submit" style="flex: 1;">Enviar</button>
-        </div>
-      </form>
+      <h3 style="color: var(--blue-dark); font-size: 1rem; margin-bottom: 8px;" id="modal-title">Preciso de ajuda</h3>
+      <p style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 12px;">Preencha seus dados para que a equipe de saúde municipal possa te orientar.</p>
+      
+      <div class="form-group">
+        <label>Nome Completo</label>
+        <input type="text" id="help-name" placeholder="Seu nome">
+      </div>
+      <div class="form-group">
+        <label>Telefone / WhatsApp</label>
+        <input type="tel" id="help-phone" placeholder="(89) 9....-....">
+      </div>
+      <div class="form-group">
+        <label>Detalhes ou Dúvida</label>
+        <textarea id="help-details" rows="3" placeholder="Como podemos ajudar você hoje?"></textarea>
+      </div>
+
+      <button class="btn-submit" onclick="submitHelpRequest()" style="margin-bottom: 8px;">Enviar Solicitação</button>
+      <button class="btn-submit" onclick="closeHelpModal()" style="background-color: var(--text-light);">Cancelar</button>
     </div>
   </div>
 
   <script>
+    // --- ESTADO DO APLICATIVO ---
     let currentDate = new Date();
-    let currentHelpOption = '';
-    const quizAnswers = {};
-    const messages = [];
+    let selectedHelpType = '';
 
-    // Dados Iniciais das Abas
+    // Dados de exemplo predefinidos
     let notices = [
-      { id: 1, title: 'Combate à Dengue em Várzea Branca', body: 'A equipe de agentes de endemias estará vistoriando as residências no bairro Centro esta semana. Mantenha caixas d\'água tampadas.', date: '22/08/2026' },
-      { id: 2, title: 'Agendamento de Exames de Imagem', body: 'Os agendamentos para ultrassonografias para o próximo mês abrem na próxima segunda-feira na UBS Central.', date: '20/08/2026' }
+      {
+        id: 1,
+        title: "Atendimento Odontológico na UBS Central",
+        desc: "Triagem para novos atendimentos odontológicos realizada todas as segundas-feiras no período da manhã.",
+        date: "23/08/2026"
+      },
+      {
+        id: 2,
+        title: "Campanha do Agasalho e Saúde Familiar",
+        desc: "Ponto de coleta de doações e consultas multidisciplinares disponíveis durante toda esta semana.",
+        date: "20/08/2026"
+      }
     ];
 
-    let quizQuestions = [
-      { id: 1, text: '😄 Como você está se sentindo hoje?', options: ['Muito bem', 'Tranquilo(a)', 'Cansado(a)', 'Sobrecarregado(a)'] },
-      { id: 2, text: '⚡ Como está sua energia para o dia?', options: ['Alta', 'Média', 'Baixa'] },
-      { id: 3, text: '💤 Como foi seu descanso na última noite?', options: ['Renovador', 'Suficiente', 'Ruim / Incompleto'] }
-    ];
-
-    const events = {
-      '2026-08-23': ['Pediatria Geral'],
-      '2026-08-25': ['Exames de Sangue'],
-      '2026-08-28': ['Atendimento Odontológico']
+    let events = {
+      "2026-08-25": [{ title: "Cardiologista", desc: "UBS Central - 15 vagas - A partir das 08h" }],
+      "2026-08-28": [{ title: "Ultrassom Geral", desc: "UBS Central - Atendimento por ordem de chegada" }]
     };
 
+    let userMessages = [];
+
+    // Quiz de Bem-Estar
+    const quizData = [
+      {
+        q: "Como está sua energia física hoje?",
+        opts: ["Alta", "Moderada", "Baixa / Cansado(a)"]
+      },
+      {
+        q: "Como você avalia a qualidade do seu sono na última noite?",
+        opts: ["Dormi bem", "Sono leve / Interrompido", "Dormi muito mal"]
+      },
+      {
+        q: "Qual o seu principal objetivo com sua saúde hoje?",
+        opts: ["Prevenção / Rotina", "Tratar um sintoma", "Buscar apoio psicológico/emocional"]
+      }
+    ];
+
+    let quizAnswers = {};
+
+    // --- INICIALIZAÇÃO ---
+    document.addEventListener("DOMContentLoaded", () => {
+      renderQuiz();
+      renderCalendar();
+      renderNotices();
+    });
+
+    // Navegação entre abas
+    function showSection(sectionId, element) {
+      document.querySelectorAll('.section-view').forEach(sec => sec.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+
+      document.getElementById(`sec-${sectionId}`).classList.add('active');
+      if (element) {
+        element.classList.add('active');
+      }
+
+      // Em dispositivos móveis, fecha o menu após o clique
+      if (window.innerWidth <= 768) {
+        document.getElementById('sidebar').classList.remove('open');
+      }
+    }
+
+    // Toggle da Sidebar Lateral
     function toggleSidebar() {
       const sidebar = document.getElementById('sidebar');
       const showBtn = document.getElementById('show-sidebar-btn');
@@ -960,174 +1024,110 @@
         sidebar.classList.toggle('open');
       } else {
         sidebar.classList.toggle('hidden');
-        showBtn.style.display = sidebar.classList.contains('hidden') ? 'block' : 'none';
+        showBtn.style.display = sidebar.classList.contains('hidden') ? 'inline-block' : 'none';
       }
     }
 
-    function showSection(sectionId, element) {
-      document.querySelectorAll('.section-view').forEach(sec => sec.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+    // --- QUIZ BEM-ESTAR ---
+    function renderQuiz() {
+      const container = document.getElementById('quiz-questions-container');
+      container.innerHTML = '';
 
-      const targetSection = document.getElementById('sec-' + sectionId);
-      if (targetSection) targetSection.classList.add('active');
+      quizData.forEach((item, qIdx) => {
+        const qDiv = document.createElement('div');
+        qDiv.className = 'quiz-question';
+        qDiv.innerHTML = `<p>${qIdx + 1}. ${item.q}</p>`;
 
-      if (element) {
-        element.classList.add('active');
-      } else {
-        const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach(item => {
-          if (item.getAttribute('onclick') && item.getAttribute('onclick').includes(sectionId)) {
-            item.classList.add('active');
-          }
+        const optsDiv = document.createElement('div');
+        optsDiv.className = 'quiz-options';
+
+        item.opts.forEach(opt => {
+          const btn = document.createElement('button');
+          btn.className = 'quiz-opt-btn';
+          btn.innerText = opt;
+          btn.onclick = () => {
+            Array.from(optsDiv.children).forEach(c => c.classList.remove('selected'));
+            btn.classList.add('selected');
+            quizAnswers[qIdx] = opt;
+          };
+          optsDiv.appendChild(btn);
         });
-      }
 
-      if (window.innerWidth <= 768) {
-        document.getElementById('sidebar').classList.remove('open');
-      }
+        qDiv.appendChild(optsDiv);
+        container.appendChild(qDiv);
+      });
     }
 
-    /* RENDERIZAR AVISOS */
-    function renderNotices() {
-      const list = document.getElementById('notices-list');
-      const admList = document.getElementById('adm-notices-manage');
-      
-      if (notices.length === 0) {
-        list.innerHTML = '<p style="color: var(--text-light);">Nenhum aviso no momento.</p>';
-        admList.innerHTML = '<p style="color: var(--text-light);">Nenhum aviso cadastrado.</p>';
+    function generateWellbeingProfile() {
+      const resultBox = document.getElementById('quiz-result');
+      const title = document.getElementById('result-title');
+      const desc = document.getElementById('result-desc');
+
+      if (Object.keys(quizAnswers).length < quizData.length) {
+        alert("Por favor, responda a todas as perguntas do teste.");
         return;
       }
 
-      list.innerHTML = notices.map(n => `
-        <div class="notice-card">
-          <h4>${n.title}</h4>
-          <p>${n.body}</p>
-          <div class="date">Publicado em: ${n.date}</div>
-        </div>
-      `).join('');
-
-      admList.innerHTML = notices.map(n => `
-        <div class="msg-item">
-          <button class="btn-delete" onclick="deleteNotice(${n.id})">Excluir</button>
-          <strong>${n.title}</strong>
-          <p>${n.body}</p>
-        </div>
-      `).join('');
-    }
-
-    function addNotice(e) {
-      e.preventDefault();
-      const title = document.getElementById('adm-notice-title').value;
-      const body = document.getElementById('adm-notice-body').value;
+      resultBox.style.display = 'block';
       
-      notices.unshift({
-        id: Date.now(),
-        title: title,
-        body: body,
-        date: new Date().toLocaleDateString('pt-BR')
-      });
-
-      document.getElementById('adm-notice-title').value = '';
-      document.getElementById('adm-notice-body').value = '';
-      renderNotices();
-      alert('Aviso publicado com sucesso!');
+      if (quizAnswers[0] === 'Baixa / Cansado(a)' || quizAnswers[1] === 'Dormi muito mal') {
+        title.innerText = "🌱 Priorize o Descanso e a Hidratação";
+        desc.innerText = "Seu corpo indica sinais de fadiga. Evite esforços excessivos, mantenha uma boa ingestão de água e, caso sinta outros sintomas físicos, procure a UBS Central para uma avaliação rápida.";
+      } else {
+        title.innerText = "✨ Perfil em Equilíbrio";
+        desc.innerText = "Você demonstra boa disposição hoje! Aproveite para manter a rotina de caminhadas leves e lembre-se de conferir sua carteira de vacinação.";
+      }
     }
 
-    function deleteNotice(id) {
-      notices = notices.filter(n => n.id !== id);
-      renderNotices();
-    }
-
-    /* RENDERIZAR QUIZ */
-    function renderQuiz() {
-      const container = document.getElementById('quiz-questions-container');
-      const admContainer = document.getElementById('adm-quiz-manage');
-
-      container.innerHTML = quizQuestions.map((q, idx) => `
-        <div class="quiz-question">
-          <p>${q.text}</p>
-          <div class="quiz-options">
-            ${q.options.map(opt => `
-              <button class="quiz-opt-btn" onclick="selectOpt(this, 'q${q.id}', '${opt}')">${opt}</button>
-            `).join('')}
-          </div>
-        </div>
-      `).join('');
-
-      admContainer.innerHTML = quizQuestions.map(q => `
-        <div class="msg-item">
-          <button class="btn-delete" onclick="deleteQuizQuestion(${q.id})">Excluir</button>
-          <strong>${q.text}</strong>
-          <p><small>Opções: ${q.options.join(', ')}</small></p>
-        </div>
-      `).join('');
-    }
-
-    function addQuizQuestion(e) {
-      e.preventDefault();
-      const qText = document.getElementById('adm-quiz-q').value;
-      const qOpts = document.getElementById('adm-quiz-opts').value.split(',').map(s => s.trim());
-
-      quizQuestions.push({
-        id: Date.now(),
-        text: qText,
-        options: qOpts
-      });
-
-      document.getElementById('adm-quiz-q').value = '';
-      document.getElementById('adm-quiz-opts').value = '';
-      renderQuiz();
-      alert('Pergunta adicionada ao quiz!');
-    }
-
-    function deleteQuizQuestion(id) {
-      quizQuestions = quizQuestions.filter(q => q.id !== id);
-      renderQuiz();
-    }
-
-    /* CALENDÁRIO */
+    // --- CALENDÁRIO ---
     function renderCalendar() {
-      const grid = document.getElementById('calendar-grid');
-      const monthYearTitle = document.getElementById('calendar-month-year');
-      
+      const monthYearText = document.getElementById('calendar-month-year');
+      const container = document.getElementById('calendar-days-container');
+      container.innerHTML = '';
+
       const year = currentDate.getFullYear();
       const month = currentDate.getMonth();
 
-      const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-      const dayNames = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+      const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+      monthYearText.innerText = `${monthNames[month]} ${year}`;
 
-      monthYearTitle.innerText = `${monthNames[month]} ${year}`;
-      grid.innerHTML = '';
-
-      dayNames.forEach(d => {
-        grid.innerHTML += `<div class="cal-day-name">${d}</div>`;
-      });
-
-      const firstDay = new Date(year, month, 1).getDay();
+      const firstDayOfMonth = new Date(year, month, 1).getDay();
       const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-      for (let i = 0; i < firstDay; i++) {
-        grid.innerHTML += `<div class="cal-day empty"></div>`;
+      // Preenchimento de dias vazios no início do mês
+      for (let i = 0; i < firstDayOfMonth; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = 'cal-day empty';
+        container.appendChild(emptyCell);
       }
 
-      const today = new Date();
-      for (let d = 1; d <= daysInMonth; d++) {
-        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-        const isToday = today.getFullYear() === year && today.getMonth() === month && today.getDate() === d;
+      const todayStr = new Date().toISOString().split('T')[0];
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dayCell = document.createElement('div');
+        dayCell.className = 'cal-day';
         
-        let eventHtml = '';
-        if (events[dateStr]) {
-          events[dateStr].forEach(e => {
-            eventHtml += `<div class="event-tag">${e}</div>`;
+        const mFormatted = String(month + 1).padStart(2, '0');
+        const dFormatted = String(day).padStart(2, '0');
+        const dateKey = `${year}-${mFormatted}-${dFormatted}`;
+
+        if (dateKey === todayStr) {
+          dayCell.classList.add('today');
+        }
+
+        dayCell.innerHTML = `<span>${day}</span>`;
+
+        if (events[dateKey]) {
+          events[dateKey].forEach(evt => {
+            const tag = document.createElement('div');
+            tag.className = 'event-tag';
+            tag.innerText = evt.title;
+            dayCell.appendChild(tag);
           });
         }
 
-        grid.innerHTML += `
-          <div class="cal-day ${isToday ? 'today' : ''}">
-            <span>${d}</span>
-            ${eventHtml}
-          </div>
-        `;
+        dayCell.onclick = () => selectCalendarDay(dateKey, day, monthNames[month]);
+        container.appendChild(dayCell);
       }
     }
 
@@ -1136,98 +1136,175 @@
       renderCalendar();
     }
 
-    function addServiceEvent(e) {
-      e.preventDefault();
-      const dateVal = document.getElementById('admin-date').value;
-      const titleVal = document.getElementById('admin-title').value;
+    function selectCalendarDay(dateKey, day, monthName) {
+      const detailsBox = document.getElementById('selected-day-info');
+      const dayEvents = events[dateKey];
 
-      if (!events[dateVal]) {
-        events[dateVal] = [];
+      if (dayEvents && dayEvents.length > 0) {
+        let html = `<h4>📅 Agenda para ${day} de ${monthName}:</h4>`;
+        dayEvents.forEach(e => {
+          html += `<p style="font-size: 0.85rem; margin-bottom: 4px;"><strong>👨‍⚕️ ${e.title}</strong></p>
+                   <p style="font-size: 0.8rem; color: var(--text-light);">${e.desc}</p>`;
+        });
+        detailsBox.innerHTML = html;
+      } else {
+        detailsBox.innerHTML = `<h4>📅 ${day} de ${monthName}</h4><p style="font-size: 0.8rem; color: var(--text-light);">Nenhum atendimento especial agendado para este dia até o momento.</p>`;
       }
-      events[dateVal].push(titleVal);
-
-      document.getElementById('admin-title').value = '';
-      document.getElementById('admin-date').value = '';
-      renderCalendar();
-      alert('Evento adicionado ao calendário!');
     }
 
-    /* TROCA DE ABAS ADMIN */
-    function switchAdminTab(tabId, btn) {
-      document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active'));
-      document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+    // --- AVISOS ---
+    function renderNotices() {
+      const container = document.getElementById('notices-container');
+      container.innerHTML = '';
 
-      document.getElementById('adm-' + tabId).classList.add('active');
-      btn.classList.add('active');
-    }
-
-    /* AUXILIARES DE RESPOSTA E MODAL */
-    function selectOpt(btn, group, val) {
-      const parent = btn.parentElement;
-      parent.querySelectorAll('.quiz-opt-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      quizAnswers[group] = val;
-    }
-
-    function generateWellbeingProfile() {
-      if (Object.keys(quizAnswers).length === 0) {
-        alert('Responda às perguntas para gerar o perfil.');
+      if (notices.length === 0) {
+        container.innerHTML = '<p style="color: var(--text-light); font-size: 0.85rem;">Nenhum aviso publicado.</p>';
         return;
       }
 
-      document.getElementById('result-title').innerText = '🌱 Perfil de Autocuidado Gerado';
-      document.getElementById('result-desc').innerText = 'Obrigado por responder. Lembre-se de reservar momentos do dia para descansar, praticar atividades físicas e beber água regularmente.';
-      document.getElementById('quiz-result').style.display = 'block';
+      notices.forEach(n => {
+        const card = document.createElement('div');
+        card.className = 'notice-card';
+        card.innerHTML = `
+          <h4>${n.title}</h4>
+          <p>${n.desc}</p>
+          <p class="date">📅 Publicado em: ${n.date}</p>
+        `;
+        container.appendChild(card);
+      });
     }
 
-    function openHelpModal(option) {
-      currentHelpOption = option;
-      document.getElementById('modalTitle').innerText = option;
-      document.getElementById('modalDesc').innerText = 'Deixe seu contato para que a equipe da UBS retorne sobre: ' + option;
+    // --- MODAL DE AJUDA ---
+    function openHelpModal(type) {
+      selectedHelpType = type;
+      document.getElementById('modal-title').innerText = `Ajuda: ${type}`;
       document.getElementById('helpModal').style.display = 'flex';
     }
 
-    function closeModal() {
+    function closeHelpModal() {
       document.getElementById('helpModal').style.display = 'none';
+      document.getElementById('help-name').value = '';
+      document.getElementById('help-phone').value = '';
+      document.getElementById('help-details').value = '';
     }
 
-    function submitHelp(e) {
-      e.preventDefault();
-      const name = document.getElementById('helpName').value;
-      const phone = document.getElementById('helpPhone').value;
-      
-      messages.unshift({
-        option: currentHelpOption,
-        name: name || 'Anônimo',
-        phone: phone,
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      });
+    function submitHelpRequest() {
+      const name = document.getElementById('help-name').value;
+      const phone = document.getElementById('help-phone').value;
+      const details = document.getElementById('help-details').value;
 
-      updateAdminMessages();
-      closeModal();
-      document.getElementById('helpName').value = '';
-      document.getElementById('helpPhone').value = '';
-      alert('Solicitação enviada! A equipe entrará em contato.');
-    }
-
-    function updateAdminMessages() {
-      const container = document.getElementById('admin-msg-list');
-      if (messages.length === 0) {
-        container.innerHTML = '<div class="msg-item">Nenhuma solicitação no momento.</div>';
+      if (!name || !phone) {
+        alert("Por favor, preencha pelo menos o seu nome e telefone para contato.");
         return;
       }
-      container.innerHTML = messages.map(m => `
-        <div class="msg-item">
-          <strong>${m.option}</strong> - ${m.name} (${m.phone})
-          <br><small style="color:var(--text-light)">Recebido às ${m.time}</small>
-        </div>
-      `).join('');
+
+      userMessages.push({
+        type: selectedHelpType,
+        name,
+        phone,
+        details,
+        date: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      });
+
+      renderAdminMessages();
+      closeHelpModal();
+      alert("Sua mensagem foi registrada com sucesso! A equipe de atendimento retornará em breve.");
     }
 
-    // Inicialização
-    renderNotices();
-    renderQuiz();
-    renderCalendar();
+    // --- PAINEL ADMIN ---
+    function showAdminTab(tabId, btn) {
+      document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+
+      document.getElementById(tabId).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    function updateTodayBanner() {
+      const title = document.getElementById('admin-today-title').value;
+      const location = document.getElementById('admin-today-location').value;
+      const time = document.getElementById('admin-today-time').value;
+
+      const bannerContent = document.getElementById('today-banner-content');
+      bannerContent.innerHTML = `
+        <p><strong>📅 Atendimento Especial:</strong> ${title}</p>
+        <p><strong>📍 Local:</strong> ${location}</p>
+        <p><strong>🕐 Horário:</strong> ${time}</p>
+      `;
+
+      alert("Destaque da página inicial atualizado com sucesso!");
+    }
+
+    function addNotice() {
+      const title = document.getElementById('admin-notice-title').value;
+      const desc = document.getElementById('admin-notice-desc').value;
+
+      if (!title || !desc) {
+        alert("Preencha o título e a descrição do aviso.");
+        return;
+      }
+
+      const today = new Date();
+      const dateStr = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
+
+      notices.unshift({ id: Date.now(), title, desc, date: dateStr });
+      renderNotices();
+
+      document.getElementById('admin-notice-title').value = '';
+      document.getElementById('admin-notice-desc').value = '';
+
+      alert("Aviso publicado na plataforma!");
+    }
+
+    function addCalendarEvent() {
+      const dateKey = document.getElementById('admin-event-date').value;
+      const title = document.getElementById('admin-event-title').value;
+      const desc = document.getElementById('admin-event-desc').value;
+
+      if (!dateKey || !title) {
+        alert("Selecione a data e informe a especialidade/evento.");
+        return;
+      }
+
+      if (!events[dateKey]) {
+        events[dateKey] = [];
+      }
+
+      events[dateKey].push({ title, desc });
+      renderCalendar();
+
+      document.getElementById('admin-event-date').value = '';
+      document.getElementById('admin-event-title').value = '';
+      document.getElementById('admin-event-desc').value = '';
+
+      alert("Atendimento incluído no calendário!");
+    }
+
+    function renderAdminMessages() {
+      const list = document.getElementById('admin-messages-list');
+      list.innerHTML = '';
+
+      if (userMessages.length === 0) {
+        list.innerHTML = '<p style="color: var(--text-light); font-size: 0.8rem;">Nenhuma solicitação enviada ainda.</p>';
+        return;
+      }
+
+      userMessages.forEach((msg, idx) => {
+        const div = document.createElement('div');
+        div.className = 'msg-item';
+        div.innerHTML = `
+          <button class="btn-delete" onclick="deleteMessage(${idx})">Remover</button>
+          <strong>${msg.type}</strong> - ${msg.name} (${msg.phone})<br>
+          <span style="color: var(--text-light);">${msg.details || "Sem observações adicionais."}</span>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    function deleteMessage(index) {
+      userMessages.splice(index, 1);
+      renderAdminMessages();
+    }
   </script>
 </body>
 </html>
