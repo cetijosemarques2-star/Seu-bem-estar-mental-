@@ -3,26 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VB Saúde - Várzea Branca PI</title>
+  <title>VB CUIDA - Várzea Branca PI</title>
   <style>
     :root {
-      --bg-primary: #f0f7ff;
+      --bg-primary: #f4f7fa;
       --card-bg: #ffffff;
-      --blue-light: #e1f0ff;
-      --blue-main: #3182ce;
-      --blue-dark: #1a365d;
-      --text-dark: #2d3748;
-      --text-light: #718096;
-      --alert-bg: #fff5f5;
-      --alert-border: #feb2b2;
-      --alert-text: #c53030;
+      --blue-light: #eef6ff;
+      --blue-main: #2563eb;
+      --blue-hover: #1d4ed8;
+      --blue-dark: #1e293b;
+      --text-dark: #334155;
+      --text-light: #64748b;
+      --border-color: #e2e8f0;
+      --alert-bg: #fef2f2;
+      --alert-border: #fecaca;
+      --alert-text: #991b1b;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     }
 
     body {
@@ -30,124 +32,157 @@
       color: var(--text-dark);
       display: flex;
       min-height: 100vh;
+      font-size: 14px;
+    }
+
+    /* Topbar Mobile */
+    .mobile-header {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 56px;
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border-color);
+      align-items: center;
+      padding: 0 16px;
+      z-index: 90;
     }
 
     /* Sidebar Navegação */
     .sidebar {
-      width: 260px;
+      width: 240px;
       background-color: var(--card-bg);
-      border-right: 1px solid var(--blue-light);
+      border-right: 1px solid var(--border-color);
       display: flex;
       flex-direction: column;
-      transition: all 0.3s ease;
+      transition: transform 0.3s ease, margin-left 0.3s ease;
       position: fixed;
       height: 100vh;
       z-index: 100;
     }
 
-    .sidebar.collapsed {
-      width: 70px;
+    .sidebar.hidden {
+      margin-left: -240px;
     }
 
     .sidebar-header {
-      padding: 20px;
+      padding: 16px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid var(--blue-light);
+      border-bottom: 1px solid var(--border-color);
     }
 
     .logo-text {
-      font-size: 1.3rem;
-      font-weight: bold;
+      font-size: 1.1rem;
+      font-weight: 700;
       color: var(--blue-main);
-      white-space: nowrap;
-      overflow: hidden;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .toggle-btn {
       background: none;
       border: none;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       cursor: pointer;
-      color: var(--blue-dark);
-      padding: 5px;
+      color: var(--text-light);
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    .toggle-btn:hover {
+      background-color: var(--bg-primary);
+      color: var(--text-dark);
     }
 
     .nav-list {
       list-style: none;
-      padding: 10px 0;
+      padding: 12px 8px;
     }
 
     .nav-item {
-      padding: 15px 20px;
+      padding: 10px 12px;
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 12px;
       cursor: pointer;
       color: var(--text-dark);
-      transition: background 0.2s;
-      white-space: nowrap;
+      border-radius: 8px;
+      margin-bottom: 4px;
+      transition: all 0.2s;
+      font-weight: 500;
     }
 
-    .nav-item:hover, .nav-item.active {
+    .nav-item:hover {
+      background-color: var(--bg-primary);
+    }
+
+    .nav-item.active {
       background-color: var(--blue-light);
       color: var(--blue-main);
-      font-weight: bold;
+      font-weight: 600;
     }
 
     .nav-item .icon {
-      font-size: 1.2rem;
-      min-width: 25px;
+      font-size: 1rem;
+      width: 20px;
       text-align: center;
-    }
-
-    .sidebar.collapsed .link-text {
-      display: none;
     }
 
     /* Conteúdo Principal */
     .main-content {
-      margin-left: 260px;
+      margin-left: 240px;
       flex: 1;
-      padding: 20px;
+      padding: 24px;
       transition: margin-left 0.3s ease;
-      max-width: 1200px;
+      max-width: 1100px;
     }
 
-    .sidebar.collapsed + .main-content {
-      margin-left: 70px;
+    .sidebar.hidden + .main-content {
+      margin-left: 0;
+    }
+
+    .top-bar-trigger {
+      margin-bottom: 16px;
     }
 
     header {
       background-color: var(--card-bg);
-      padding: 20px;
+      padding: 16px 20px;
       border-radius: 12px;
       margin-bottom: 20px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      border: 1px solid var(--border-color);
     }
 
     .header-title {
       color: var(--blue-dark);
-      margin-bottom: 5px;
+      font-size: 1.3rem;
+      font-weight: 700;
     }
 
     .header-subtitle {
       color: var(--text-light);
-      font-size: 0.95rem;
+      font-size: 0.85rem;
+      margin-top: 2px;
     }
 
     /* Card Destaque "Hoje em Várzea Branca" */
     .today-card {
-      background: linear-gradient(135deg, #3182ce, #2b6cb0);
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
       color: white;
-      padding: 20px;
-      border-radius: 16px;
-      margin-bottom: 25px;
+      padding: 18px 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1);
     }
 
     .today-card h2 {
-      font-size: 1.2rem;
+      font-size: 1rem;
+      font-weight: 600;
       margin-bottom: 10px;
       display: flex;
       align-items: center;
@@ -155,87 +190,91 @@
     }
 
     .today-info {
-      background-color: rgba(255, 255, 255, 0.15);
-      padding: 15px;
+      background-color: rgba(255, 255, 255, 0.12);
+      padding: 12px 14px;
       border-radius: 8px;
-      margin-top: 10px;
+      font-size: 0.85rem;
+      line-height: 1.5;
     }
 
     /* Grid de Seções / Cards */
     .grid-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      margin-bottom: 25px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
     }
 
     .card {
       background-color: var(--card-bg);
-      padding: 20px;
-      border-radius: 16px;
-      border: 1px solid var(--blue-light);
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
       cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: border-color 0.2s, transform 0.1s;
     }
 
     .card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(49, 130, 206, 0.1);
+      border-color: var(--blue-main);
+      transform: translateY(-2px);
     }
 
     .card-icon {
-      font-size: 2rem;
-      margin-bottom: 10px;
+      font-size: 1.4rem;
+      margin-bottom: 8px;
     }
 
     .card-title {
       color: var(--blue-dark);
-      font-size: 1.1rem;
-      margin-bottom: 6px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 4px;
     }
 
     .card-desc {
       color: var(--text-light);
-      font-size: 0.88rem;
+      font-size: 0.8rem;
       line-height: 1.4;
     }
 
     /* Banner "Preciso de Ajuda" */
     .help-banner {
-      background-color: var(--blue-light);
-      border: 2px dashed var(--blue-main);
-      padding: 25px;
-      border-radius: 16px;
-      text-align: center;
-      margin-bottom: 25px;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
     }
 
     .help-banner h3 {
       color: var(--blue-dark);
-      margin-bottom: 15px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 12px;
     }
 
     .help-buttons {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
+      gap: 8px;
     }
 
     .btn-help {
-      background-color: var(--card-bg);
-      color: var(--blue-main);
-      border: 1px solid var(--blue-main);
-      padding: 10px 16px;
-      border-radius: 20px;
-      font-weight: 600;
+      background-color: var(--bg-primary);
+      color: var(--text-dark);
+      border: 1px solid var(--border-color);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 500;
       cursor: pointer;
       transition: all 0.2s;
     }
 
     .btn-help:hover {
-      background-color: var(--blue-main);
-      color: white;
+      background-color: var(--blue-light);
+      color: var(--blue-main);
+      border-color: var(--blue-main);
     }
 
     /* Alertas */
@@ -243,20 +282,104 @@
       background-color: var(--alert-bg);
       border: 1px solid var(--alert-border);
       color: var(--alert-text);
-      padding: 15px;
-      border-radius: 12px;
-      margin-bottom: 25px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      font-size: 0.85rem;
     }
 
-    /* Modal / Form de Atendimento */
+    /* Calendário */
+    .calendar-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .calendar-header h3 {
+      font-size: 1rem;
+      color: var(--blue-dark);
+    }
+
+    .calendar-btn {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      text-align: center;
+    }
+
+    .cal-day-name {
+      font-weight: 600;
+      font-size: 0.75rem;
+      color: var(--text-light);
+      padding: 6px 0;
+    }
+
+    .cal-day {
+      padding: 10px 4px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      min-height: 52px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      font-size: 0.8rem;
+      background: #fff;
+      position: relative;
+    }
+
+    .cal-day.empty {
+      background: transparent;
+      border: none;
+      cursor: default;
+    }
+
+    .cal-day.today {
+      border-color: var(--blue-main);
+      font-weight: 700;
+      color: var(--blue-main);
+    }
+
+    .event-tag {
+      background-color: var(--blue-light);
+      color: var(--blue-main);
+      font-size: 0.65rem;
+      padding: 2px 4px;
+      border-radius: 4px;
+      margin-top: 4px;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 600;
+    }
+
+    /* Modal / Form */
     .modal {
       display: none;
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background-color: rgba(0,0,0,0.5);
+      background-color: rgba(0,0,0,0.4);
       justify-content: center;
       align-items: center;
       z-index: 1000;
@@ -264,93 +387,124 @@
 
     .modal-content {
       background-color: white;
-      padding: 25px;
-      border-radius: 16px;
-      max-width: 500px;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 440px;
       width: 90%;
     }
 
     .form-group {
-      margin-bottom: 15px;
+      margin-bottom: 12px;
     }
 
     .form-group label {
       display: block;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
       font-weight: 600;
+      font-size: 0.8rem;
       color: var(--blue-dark);
     }
 
     .form-group input, .form-group textarea, .form-group select {
       width: 100%;
-      padding: 10px;
-      border: 1px solid #cbd5e0;
-      border-radius: 8px;
+      padding: 8px 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 0.85rem;
     }
 
     .btn-submit {
       background-color: var(--blue-main);
       color: white;
       border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
+      padding: 10px;
+      border-radius: 6px;
       cursor: pointer;
       width: 100%;
-      font-weight: bold;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .btn-submit:hover {
+      background-color: var(--blue-hover);
     }
 
     /* Área Admin */
     .admin-section {
-      display: none;
       background-color: white;
       padding: 20px;
-      border-radius: 16px;
-      border: 2px solid var(--blue-dark);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .section-view {
+      display: none;
+    }
+
+    .section-view.active {
+      display: block;
+    }
+
+    .msg-item {
+      padding: 10px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.8rem;
     }
 
     @media (max-width: 768px) {
-      .sidebar {
-        width: 70px;
+      .mobile-header {
+        display: flex;
       }
-      .sidebar .link-text {
-        display: none;
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      .sidebar.open {
+        transform: translateX(0);
+        margin-left: 0;
       }
       .main-content {
-        margin-left: 70px;
+        margin-left: 0 !important;
+        padding-top: 72px;
       }
     }
   </style>
 </head>
 <body>
 
+  <!-- Topbar Mobile -->
+  <div class="mobile-header">
+    <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+    <span class="logo-text" style="margin-left: 12px;">🌿 VB CUIDA</span>
+  </div>
+
   <!-- Menu Lateral -->
   <nav class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <span class="logo-text">🌿 VB SAÚDE</span>
-      <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+      <span class="logo-text">🌿 VB CUIDA</span>
+      <button class="toggle-btn" onclick="toggleSidebar()" title="Ocultar Menu">✕</button>
     </div>
     <ul class="nav-list">
-      <li class="nav-item active" onclick="showSection('inicio')">
+      <li class="nav-item active" onclick="showSection('inicio', this)">
         <span class="icon">🏠</span>
         <span class="link-text">Início</span>
       </li>
-      <li class="nav-item" onclick="showSection('atendimento')">
+      <li class="nav-item" onclick="showSection('atendimento', this)">
         <span class="icon">🏥</span>
         <span class="link-text">Atendimento</span>
       </li>
-      <li class="nav-item" onclick="showSection('vacinacao')">
+      <li class="nav-item" onclick="showSection('vacinacao', this)">
         <span class="icon">💉</span>
         <span class="link-text">Vacinação</span>
       </li>
-      <li class="nav-item" onclick="showSection('calendario')">
+      <li class="nav-item" onclick="showSection('calendario', this)">
         <span class="icon">📅</span>
         <span class="link-text">Calendário</span>
       </li>
-      <li class="nav-item" onclick="showSection('avisos')">
+      <li class="nav-item" onclick="showSection('avisos', this)">
         <span class="icon">📢</span>
         <span class="link-text">Avisos</span>
       </li>
-      <li class="nav-item" onclick="showSection('admin')">
+      <li class="nav-item" onclick="showSection('admin', this)">
         <span class="icon">⚙️</span>
         <span class="link-text">Administrador</span>
       </li>
@@ -360,34 +514,35 @@
   <!-- Conteúdo Principal -->
   <main class="main-content">
     
+    <div class="top-bar-trigger">
+      <button class="toggle-btn" id="show-sidebar-btn" onclick="toggleSidebar()" style="display: none; background: var(--card-bg); border: 1px solid var(--border-color);">
+        ☰ Menu
+      </button>
+    </div>
+
     <header>
-      <h1 class="header-title">VB SAÚDE</h1>
+      <h1 class="header-title">VB CUIDA</h1>
       <p class="header-subtitle">Informação que cuida. Comunidade que participa. • Várzea Branca – PI</p>
     </header>
 
-    <!-- Alertas Importantes -->
-    <div class="alert-box">
-      <span style="font-size: 1.5rem;">🚨</span>
-      <div>
-        <strong>Alerta de Saúde:</strong> Vacinação contra Influenza disponível na UBS Central para idosos e crianças nesta semana.
-      </div>
-    </div>
-
-    <!-- Seção Início -->
-    <div id="sec-inicio">
-      
-      <!-- Card Hoje em Várzea Branca -->
-      <div class="today-card">
-        <h2>📌 Hoje em Várzea Branca</h2>
-        <div class="today-info">
-          <p><strong>📅 Atendimento Médico Especializado:</strong> Pediatria</p>
-          <p><strong>📍 Local:</strong> Unidade Básica de Saúde Central</p>
-          <p><strong>🕐 Horário:</strong> 08:00 às 13:00</p>
-          <p><strong>👥 Público-alvo:</strong> Crianças de 0 a 12 anos</p>
+    <!-- ABA INÍCIO -->
+    <div id="sec-inicio" class="section-view active">
+      <div class="alert-box">
+        <span>🚨</span>
+        <div>
+          <strong>Alerta de Saúde:</strong> Vacinação contra Influenza disponível na UBS Central para grupos prioritários.
         </div>
       </div>
 
-      <!-- Preciso de Ajuda -->
+      <div class="today-card">
+        <h2>📌 Hoje em Várzea Branca</h2>
+        <div class="today-info" id="today-banner-content">
+          <p><strong>📅 Atendimento:</strong> Pediatria Geral</p>
+          <p><strong>📍 Local:</strong> UBS Central</p>
+          <p><strong>🕐 Horário:</strong> 08:00 às 12:00</p>
+        </div>
+      </div>
+
       <div class="help-banner">
         <h3>💡 Preciso de ajuda</h3>
         <div class="help-buttons">
@@ -398,123 +553,226 @@
         </div>
       </div>
 
-      <!-- Grid de Módulos -->
       <div class="grid-container">
         <div class="card" onclick="showSection('atendimento')">
           <div class="card-icon">🏥</div>
           <div class="card-title">Onde buscar atendimento?</div>
-          <div class="card-desc">Localize postos de saúde, horários de funcionamento e serviços disponíveis.</div>
+          <div class="card-desc">Endereços e horários dos pontos de saúde do município.</div>
         </div>
-
         <div class="card" onclick="showSection('vacinacao')">
           <div class="card-icon">💉</div>
           <div class="card-title">Vacinação e campanhas</div>
-          <div class="card-desc">Confira as campanhas ativas, datas e locais de aplicação de vacinas.</div>
+          <div class="card-desc">Datas e orientações sobre imunização local.</div>
         </div>
-
         <div class="card" onclick="showSection('calendario')">
           <div class="card-icon">📅</div>
           <div class="card-title">Calendário da Saúde</div>
-          <div class="card-desc">Cronograma semanal de visitas de médicos, exames e especialidades.</div>
+          <div class="card-desc">Agenda atualizada de exames e consultas especializadas.</div>
         </div>
-
         <div class="card" onclick="showSection('avisos')">
-          <div class="card-icon">📚</div>
-          <div class="card-title">Prevenção e Cuidados</div>
-          <div class="card-desc">Dicas simples de saúde e orientações preventivas para o dia a dia.</div>
+          <div class="card-icon">📢</div>
+          <div class="card-title">Avisos da Comunidade</div>
+          <div class="card-desc">Comunicados oficiais da Secretaria de Saúde.</div>
         </div>
       </div>
-
     </div>
 
-    <!-- Área do Administrador (Restrita) -->
-    <div id="sec-admin" class="admin-section">
-      <h2>🔒 Painel Administrativo</h2>
-      <p style="margin-bottom: 15px; color: var(--text-light);">Gerencie os avisos, atualize o 'Hoje em Várzea Branca' e veja as mensagens recebidas.</p>
-      
-      <div class="form-group">
-        <label>Atualizar "Hoje em Várzea Branca"</label>
-        <input type="text" placeholder="Nome do evento/campanha">
+    <!-- ABA ATENDIMENTO -->
+    <div id="sec-atendimento" class="section-view">
+      <div class="help-banner">
+        <h3>📍 Locais de Atendimento em Várzea Branca</h3>
+        <p style="color: var(--text-light); margin-top: 6px;">• <strong>UBS Central:</strong> Rua Principal, S/N - Seg a Sex, 07h às 17h</p>
+        <p style="color: var(--text-light); margin-top: 6px;">• <strong>Posto Avançado Zazá:</strong> Povoado Zazá - Terças e Quintas, 08h às 12h</p>
       </div>
-      <div class="form-group">
-        <label>Local e Horário</label>
-        <input type="text" placeholder="Ex: UBS Central - 08h às 12h">
-      </div>
-      <button class="btn-submit" onclick="alert('Informações atualizadas com sucesso!')">Atualizar Informações</button>
+    </div>
 
-      <h3 style="margin-top: 25px; color: var(--blue-dark);">📩 Solicitações de Ajuda Recebidas</h3>
-      <ul style="margin-top: 10px; list-style: none;" id="admin-messages">
-        <li style="padding: 10px; border-bottom: 1px solid #eee;">
-          <strong>Opção selecionada:</strong> 🤒 Estou doente<br>
-          <small>Recebido hoje às 09:12</small>
-        </li>
-      </ul>
+    <!-- ABA VACINAÇÃO -->
+    <div id="sec-vacinacao" class="section-view">
+      <div class="help-banner">
+        <h3>💉 Campanhas Ativas</h3>
+        <p style="color: var(--text-light); margin-top: 6px;">• <strong>Campanha Influenza:</strong> UBS Central - Todos os dias úteis.</p>
+        <p style="color: var(--text-light); margin-top: 6px;">• <strong>Atualização de Caderneta Infantil:</strong> Procure a sala de vacinas com o documento da criança.</p>
+      </div>
+    </div>
+
+    <!-- ABA CALENDÁRIO -->
+    <div id="sec-calendario" class="section-view">
+      <div class="calendar-container">
+        <div class="calendar-header">
+          <button class="calendar-btn" onclick="changeMonth(-1)">❮ Anterior</button>
+          <h3 id="calendar-month-year"></h3>
+          <button class="calendar-btn" onclick="changeMonth(1)">Próximo ❯</button>
+        </div>
+        <div class="calendar-grid" id="calendar-grid">
+          <!-- Gerado via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA AVISOS -->
+    <div id="sec-avisos" class="section-view">
+      <div class="help-banner">
+        <h3>📢 Últimos Comunicados</h3>
+        <p style="color: var(--text-light); margin-top: 6px;">• Mutirão de exames laboratoriais agendado para o próximo mês. Fique atento às datas no calendário.</p>
+      </div>
+    </div>
+
+    <!-- ABA ADMINISTRADOR -->
+    <div id="sec-admin" class="section-view">
+      <div class="admin-section">
+        <h3 style="color: var(--blue-dark); margin-bottom: 12px;">⚙️ Painel de Gestão</h3>
+        
+        <form onsubmit="addServiceEvent(event)" style="margin-bottom: 24px;">
+          <h4 style="font-size: 0.85rem; margin-bottom: 8px; color: var(--text-dark);">Agendar Serviço no Calendário</h4>
+          <div class="form-group">
+            <label>Data do Serviço</label>
+            <input type="date" id="admin-date" required>
+          </div>
+          <div class="form-group">
+            <label>Título do Serviço / Atendimento</label>
+            <input type="text" id="admin-title" placeholder="Ex: Ortopedista" required>
+          </div>
+          <button type="submit" class="btn-submit">Cadastrar no Calendário</button>
+        </form>
+
+        <h4 style="font-size: 0.85rem; margin-bottom: 8px; color: var(--text-dark);">📩 Solicitações "Preciso de Ajuda"</h4>
+        <div id="admin-msg-list" style="background: var(--bg-primary); border-radius: 8px; padding: 8px;">
+          <div class="msg-item">Nenhuma mensagem pendente.</div>
+        </div>
+      </div>
     </div>
 
   </main>
 
-  <!-- Modal de Ajuda Interativo -->
+  <!-- Modal de Ajuda -->
   <div class="modal" id="helpModal">
     <div class="modal-content">
-      <h3 id="modalTitle" style="color: var(--blue-dark); margin-bottom: 10px;">Ajuda</h3>
-      <p id="modalDesc" style="margin-bottom: 15px; color: var(--text-dark);"></p>
+      <h3 id="modalTitle" style="color: var(--blue-dark); margin-bottom: 8px; font-size: 1rem;">Ajuda</h3>
+      <p id="modalDesc" style="margin-bottom: 12px; color: var(--text-light); font-size: 0.8rem;"></p>
 
       <form onsubmit="submitHelp(event)">
         <div class="form-group">
-          <label>Seu Nome (Opcional):</label>
-          <input type="text" id="helpName" placeholder="Digite seu nome">
+          <label>Nome (Opcional)</label>
+          <input type="text" id="helpName" placeholder="Seu nome">
         </div>
         <div class="form-group">
-          <label>Telefone para contato (Opcional):</label>
+          <label>Telefone para contato</label>
           <input type="tel" id="helpPhone" placeholder="(89) 9....">
         </div>
-        <button type="submit" class="btn-submit">Enviar Pedido de Orientação</button>
-        <button type="button" onclick="closeModal()" style="margin-top: 10px; background: none; border: none; width: 100%; cursor: pointer; color: var(--text-light);">Cancelar</button>
+        <button type="submit" class="btn-submit">Enviar</button>
+        <button type="button" onclick="closeModal()" style="margin-top: 8px; background: none; border: none; width: 100%; cursor: pointer; color: var(--text-light); font-size: 0.8rem;">Cancelar</button>
       </form>
     </div>
   </div>
 
   <script>
+    // Estado Global
+    let currentDate = new Date();
+    let events = {};
+    let messages = [];
+    let currentHelpOption = '';
+
     function toggleSidebar() {
       const sidebar = document.getElementById('sidebar');
-      sidebar.classList.toggle('collapsed');
-    }
-
-    function showSection(sectionId) {
-      // Oculta todas as seções dinâmicas
-      document.getElementById('sec-inicio').style.display = 'none';
-      document.getElementById('sec-admin').style.display = 'none';
-
-      // Remove classe ativa de todos os botões
-      const items = document.querySelectorAll('.nav-item');
-      items.forEach(item => item.classList.remove('active'));
-
-      // Exibe a seção escolhida
-      if (sectionId === 'inicio') {
-        document.getElementById('sec-inicio').style.display = 'block';
-      } else if (sectionId === 'admin') {
-        document.getElementById('sec-admin').style.display = 'block';
+      const showBtn = document.getElementById('show-sidebar-btn');
+      
+      if (window.innerWidth <= 768) {
+        sidebar.classList.toggle('open');
       } else {
-        alert('Navegando para a aba: ' + sectionId);
-        document.getElementById('sec-inicio').style.display = 'block';
+        sidebar.classList.toggle('hidden');
+        showBtn.style.display = sidebar.classList.contains('hidden') ? 'inline-block' : 'none';
       }
     }
 
+    function showSection(sectionId, element) {
+      document.querySelectorAll('.section-view').forEach(sec => sec.classList.remove('active'));
+      document.getElementById('sec-' + sectionId).classList.add('active');
+
+      if (element) {
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        element.classList.add('active');
+      }
+
+      if (window.innerWidth <= 768) {
+        document.getElementById('sidebar').classList.remove('open');
+      }
+
+      if (sectionId === 'calendario') {
+        renderCalendar();
+      }
+    }
+
+    // Lógica do Calendário Real
+    function renderCalendar() {
+      const monthYearText = document.getElementById('calendar-month-year');
+      const grid = document.getElementById('calendar-grid');
+      
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth();
+
+      const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+      monthYearText.innerText = `${monthNames[month]} ${year}`;
+
+          grid.innerHTML = '';
+
+      const dayNames = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+      dayNames.forEach(name => {
+        const el = document.createElement('div');
+        el.className = 'cal-day-name';
+        el.innerText = name;
+        grid.appendChild(el);
+      });
+
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      for (let i = 0; i < firstDay; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = 'cal-day empty';
+        grid.appendChild(emptyCell);
+      }
+
+      const today = new Date();
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const cell = document.createElement('div');
+        cell.className = 'cal-day';
+        
+        if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+          cell.classList.add('today');
+        }
+
+        cell.innerHTML = `<span>${day}</span>`;
+
+        // Formatação YYYY-MM-DD para busca de eventos
+        const monthFormatted = String(month + 1).padStart(2, '0');
+        const dayFormatted = String(day).padStart(2, '0');
+        const dateKey = `${year}-${monthFormatted}-${dayFormatted}`;
+
+        if (events[dateKey]) {
+          events[dateKey].forEach(evt => {
+            const tag = document.createElement('div');
+            tag.className = 'event-tag';
+            tag.innerText = evt;
+            cell.appendChild(tag);
+          });
+        }
+
+        grid.appendChild(cell);
+      }
+    }
+
+    function changeMonth(direction) {
+      currentDate.setMonth(currentDate.getMonth() + direction);
+      renderCalendar();
+    }
+
+    // Modal de Ajuda
     function openHelpModal(option) {
+      currentHelpOption = option;
       const modal = document.getElementById('helpModal');
-      const title = document.getElementById('modalTitle');
-      const desc = document.getElementById('modalDesc');
-
-      title.innerText = 'Ajuda: ' + option;
-
-      if (option === 'Estou doente') {
-        desc.innerText = 'Se os sintomas forem graves, procure a UBS imediatamente. Para sintomas leves, preencha abaixo para receber a orientação oficial do município.';
-      } else if (option === 'Quero me vacinar') {
-        desc.innerText = 'A vacinação de rotina ocorre de Segunda a Sexta na UBS Central, das 07:30 às 11:30.';
-      } else {
-        desc.innerText = 'Informe seus dados caso queira que a equipe da Secretaria de Saúde entre em contato com orientações.';
-      }
-
+      document.getElementById('modalTitle').innerText = 'Ajuda: ' + option;
+      document.getElementById('modalDesc').innerText = 'Envie seus dados para obter orientações da equipe da Secretaria de Saúde de Várzea Branca.';
       modal.style.display = 'flex';
     }
 
@@ -522,12 +780,56 @@
       document.getElementById('helpModal').style.display = 'none';
     }
 
-    function submitHelp(event) {
-      event.preventDefault();
-      alert('Sua mensagem foi enviada! A equipe de saúde de Várzea Branca responderá assim que possível.');
+    function submitHelp(e) {
+      e.preventDefault();
+      const phone = document.getElementById('helpPhone').value;
+      const name = document.getElementById('helpName').value || 'Anônimo';
+
+      messages.push({
+        option: currentHelpOption,
+        name: name,
+        phone: phone,
+        time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+      });
+
+      updateAdminMessages();
       closeModal();
+      document.getElementById('helpPhone').value = '';
+      document.getElementById('helpName').value = '';
     }
+
+    function updateAdminMessages() {
+      const container = document.getElementById('admin-msg-list');
+      if (messages.length === 0) {
+        container.innerHTML = '<div class="msg-item">Nenhuma mensagem pendente.</div>';
+        return;
+      }
+      container.innerHTML = messages.map(m => `
+        <div class="msg-item">
+          <strong>${m.option}</strong> - ${m.name} (${m.phone})
+          <br><small style="color:var(--text-light)">Recebido às ${m.time}</small>
+        </div>
+      `).join('');
+    }
+
+    // Cadastro Admin -> Calendário
+    function addServiceEvent(e) {
+      e.preventDefault();
+      const dateVal = document.getElementById('admin-date').value;
+      const titleVal = document.getElementById('admin-title').value;
+
+      if (!events[dateVal]) {
+        events[dateVal] = [];
+      }
+      events[dateVal].push(titleVal);
+
+      document.getElementById('admin-title').value = '';
+      renderCalendar();
+      showSection('calendario');
+    }
+
+    // Inicialização
+    renderCalendar();
   </script>
 </body>
-                                 </html>
-                                                                                                       
+</html>
