@@ -43,7 +43,7 @@
     }
 
     .hidden { display: none !important; }
-    .screen { width: 100vw; height: 100vh; display: flex; flex-direction: column; }
+    .screen { width: 100vw; height: 100vh; display: flex; flex-direction: column; position: absolute; inset: 0; }
 
     /* Aviso de Rotação para Celular */
     #orientation-warning {
@@ -72,6 +72,7 @@
       place-items: center;
       padding: 24px;
       background: radial-gradient(circle at 50% 20%, #102042 0, #03050a 75%);
+      z-index: 20;
     }
     .start-card {
       width: min(600px, 100%);
@@ -153,11 +154,11 @@
     input:focus, select:focus, textarea:focus { outline: 2px solid var(--neon-cyan); }
 
     /* Tela de Jogo 3D */
-    #game-screen { position: relative; }
+    #game-screen { position: relative; z-index: 10; }
     #canvas-container { position: absolute; inset: 0; z-index: 1; }
     
     .game-header {
-      position: absolute; top: 0; left: 0; right: 0; z-index: 10;
+      position: absolute; top: 0; left: 0; right: 0; z-index: 15;
       display: flex; align-items: center; justify-content: space-between;
       background: rgba(3, 5, 10, 0.85); backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border-glow);
@@ -169,7 +170,7 @@
     .small-button { padding: 8px 14px; background: rgba(0, 210, 255, 0.1); color: var(--neon-cyan); border: 1px solid rgba(0, 210, 255, 0.3); font-size: 0.8rem; }
 
     .game-hud {
-      position: absolute; bottom: 20px; left: 20px; right: 20px; z-index: 10;
+      position: absolute; bottom: 20px; left: 20px; right: 20px; z-index: 15;
       display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(300px, 0.8fr);
       gap: 20px; pointer-events: none;
     }
@@ -193,7 +194,7 @@
     .crosshair {
       position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
       width: 12px; height: 12px; border: 2px solid rgba(255, 255, 255, 0.6);
-      border-radius: 50%; z-index: 5; pointer-events: none;
+      border-radius: 50%; z-index: 12; pointer-events: none;
     }
     .crosshair::after {
       content: ""; position: absolute; top: 4px; left: 4px; width: 2px; height: 2px; background: var(--neon-cyan); border-radius: 50%;
@@ -243,7 +244,6 @@
       .avatar-preview { height: 180px; max-width: 180px; margin: auto; }
     }
   </style>
-  <!-- Importação do Three.js para renderização 3D em primeira pessoa -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
@@ -272,7 +272,7 @@
     </section>
 
     <!-- CRIAÇÃO DE PERSONAGEM -->
-    <section id="creator-screen" class="screen hidden" style="justify-content: center; padding: 20px;">
+    <section id="creator-screen" class="screen hidden" style="justify-content: center; padding: 20px; z-index: 20; background: var(--bg-dark);">
       <div class="panel">
         <p class="eyebrow">REGISTRO DE PESQUISADOR(A)</p>
         <h2>Configurar Identidade</h2>
@@ -320,7 +320,6 @@
         </div>
       </header>
 
-      <!-- Canvas onde o mundo 3D realista é renderizado -->
       <div id="canvas-container"></div>
       <div class="crosshair"></div>
 
@@ -436,29 +435,28 @@
       }
     };
 
-    // Variáveis do Motor 3D (Three.js)
     let scene, camera, renderer, roomMesh;
     let is3DInitialized = false;
+    let animationFrameId = null;
 
     function init3D() {
-      if (is3DInitialized) return;
       const container = document.getElementById('canvas-container');
+      container.innerHTML = ''; // Limpa instâncias anteriores para evitar congelamento
       
       scene = new THREE.Scene();
       scene.background = new THREE.Color(0x070b14);
-      scene.fog = new THREE.Fog      scene.fog = new THREE.FogExp2(0x070b14, 0.035);
+      scene.fog       scene.fog = new THREE.FogExp2(0x070b14, 0.035);
 
       camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
       camera.position.set(0, 1.6, 3);
 
-      renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
       renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.shadowMap.enabled = true;
       container.appendChild(renderer.domElement);
 
-      // Iluminação realista de laboratório / ambiente interno
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
       scene.add(ambientLight);
 
       const dirLight = new THREE.DirectionalLight(0x00d2ff, 0.8);
@@ -466,28 +464,32 @@
       dirLight.castShadow = true;
       scene.add(dirLight);
 
-      const pointLight = new THREE.PointLight(0x3b82f6, 1, 15);
+      const pointLight = new THREE.PointLight(0x3b82f6, 1.2, 15);
       pointLight.position.set(0, 4, 0);
       scene.add(pointLight);
 
-      buildRoomGeometry('classroom');
+      buildRoomGeometry(gameState.currentLocation);
 
-      // Suporte básico de rotação de câmera por arrastar o mouse/toque (primeira pessoa)
       let isDragging = false;
       let previousMousePosition = { x: 0, y: 0 };
       let cameraRotationY = 0;
       let cameraRotationX = 0;
 
-      window.addEventListener('mousedown', (e) => {
+      const onPointerDown = (e) => {
         if(e.target.tagName === 'BUTTON' || e.target.closest('.hud-card') || e.target.closest('.modal')) return;
         isDragging = true;
-        previousMousePosition = { x: e.clientX, y: e.clientY };
-      });
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        previousMousePosition = { x: clientX, y: clientY };
+      };
 
-      window.addEventListener('mousemove', (e) => {
+      const onPointerMove = (e) => {
         if (!isDragging) return;
-        const deltaX = e.clientX - previousMousePosition.x;
-        const deltaY = e.clientY - previousMousePosition.y;
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        
+        const deltaX = clientX - previousMousePosition.x;
+        const deltaY = clientY - previousMousePosition.y;
 
         cameraRotationY -= deltaX * 0.005;
         cameraRotationX -= deltaY * 0.005;
@@ -497,26 +499,36 @@
         camera.rotation.y = cameraRotationY;
         camera.rotation.x = cameraRotationX;
 
-        previousMousePosition = { x: e.clientX, y: e.clientY };
-      });
+        previousMousePosition = { x: clientX, y: clientY };
+      };
 
-      window.addEventListener('mouseup', () => { isDragging = false; });
+      const onPointerUp = () => { isDragging = false; };
+
+      window.addEventListener('mousedown', onPointerDown);
+      window.addEventListener('mousemove', onPointerMove);
+      window.addEventListener('mouseup', onPointerUp);
+
+      window.addEventListener('touchstart', onPointerDown, {passive: true});
+      window.addEventListener('touchmove', onPointerMove, {passive: true});
+      window.addEventListener('touchend', onPointerUp);
 
       window.addEventListener('resize', () => {
+        if(!camera || !renderer) return;
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
       });
 
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
       animate3D();
       is3DInitialized = true;
     }
 
     function buildRoomGeometry(locKey) {
+      if (!scene) return;
       if (roomMesh) scene.remove(roomMesh);
       roomMesh = new THREE.Group();
 
-      // Cores e materiais realistas baseados na localização
       let floorColor = 0x111827;
       let wallColor = 0x1e293b;
       let accentColor = 0x00d2ff;
@@ -531,7 +543,6 @@
         accentColor = 0x00f5a0;
       }
 
-      // Piso
       const floorGeo = new THREE.PlaneGeometry(20, 20);
       const floorMat = new THREE.MeshStandardMaterial({ color: floorColor, roughness: 0.8 });
       const floor = new THREE.Mesh(floorGeo, floorMat);
@@ -539,14 +550,11 @@
       floor.receiveShadow = true;
       roomMesh.add(floor);
 
-      // Paredes (Fundo e laterais)
       const wallMat = new THREE.MeshStandardMaterial({ color: wallColor, roughness: 0.9 });
-      
       const backWall = new THREE.Mesh(new THREE.PlaneGeometry(20, 10), wallMat);
       backWall.position.set(0, 5, -10);
       roomMesh.add(backWall);
 
-      // Mesa / Mobiliário Central 3D Realista
       const deskGeo = new THREE.BoxGeometry(2.5, 0.9, 1.2);
       const deskMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.5 });
       const desk = new THREE.Mesh(deskGeo, deskMat);
@@ -554,9 +562,8 @@
       desk.castShadow = true;
       roomMesh.add(desk);
 
-      // Objeto interativo / Computador ou modelo científico no cenário
       const pcGeo = new THREE.BoxGeometry(0.6, 0.4, 0.5);
-      const pcMat = new THREE.MeshStandardMaterial({ color: accentColor, emissive: accentColor, emissiveIntensity: 0.3 });
+      const pcMat = new THREE.MeshStandardMaterial({ color: accentColor, emissive: accentColor, emissiveIntensity: 0.4 });
       const pc = new THREE.Mesh(pcGeo, pcMat);
       pc.position.set(0, 1.1, -2);
       roomMesh.add(pc);
@@ -565,11 +572,12 @@
     }
 
     function animate3D() {
-      requestAnimationFrame(animate3D);
-      renderer.render(scene, camera);
+      animationFrameId = requestAnimationFrame(animate3D);
+      if (renderer && scene && camera) {
+        renderer.render(scene, camera);
+      }
     }
 
-    // Elementos da Interface
     const startScreen = document.getElementById('start-screen');
     const creatorScreen = document.getElementById('creator-screen');
     const gameScreen = document.getElementById('game-screen');
