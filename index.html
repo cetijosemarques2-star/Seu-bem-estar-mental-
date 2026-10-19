@@ -3,58 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0b1329">
-  <title>Código da Vida — RPG Científico</title>
+  <meta name="theme-color" content="#070b14">
+  <title>Código da Vida — 3D Realista (RPG Científico)</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Orbitron:wght@500;700;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@600;800;900&display=swap');
 
     :root {
-      --bg-space: #070b19;
-      --panel-bg: rgba(13, 22, 45, 0.85);
-      --panel-border: rgba(0, 242, 254, 0.25);
-      --primary-cyan: #00f2fe;
-      --primary-blue: #4facfe;
-      --accent-green: #00f5a0;
-      --accent-gold: #ffd700;
-      --text-main: #f0f4f8;
-      --text-muted: #8fa3bf;
-      --shadow-glow: 0 0 25px rgba(0, 242, 254, 0.15);
+      --bg-dark: #070b14;
+      --panel-bg: rgba(11, 18, 32, 0.88);
+      --border-glow: rgba(0, 210, 255, 0.3);
+      --neon-cyan: #00d2ff;
+      --neon-green: #00f5a0;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
     }
 
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: 'Plus Jakarta+Sans', sans-serif;
-      background: var(--bg-space);
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-dark);
       color: var(--text-main);
-      overflow-x: hidden;
+      overflow: hidden;
     }
 
     button, input, select, textarea { font: inherit; }
-    
     button {
       cursor: pointer;
       border: 0;
-      border-radius: 10px;
-      padding: 12px 18px;
+      border-radius: 8px;
+      padding: 12px 20px;
       font-weight: 700;
       transition: all 0.2s ease;
     }
     button:hover {
       filter: brightness(1.15);
       transform: translateY(-2px);
-      box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+      box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
     }
 
     .hidden { display: none !important; }
-    .screen { min-height: 100vh; display: flex; flex-direction: column; }
+    .screen { width: 100vw; height: 100vh; display: flex; flex-direction: column; }
 
     /* Aviso de Rotação para Celular */
     #orientation-warning {
       display: none;
       position: fixed;
       inset: 0;
-      background: #050814;
+      background: #03050a;
       color: white;
       z-index: 99999;
       flex-direction: column;
@@ -63,192 +59,157 @@
       text-align: center;
       padding: 24px;
     }
-    #orientation-warning h2 { font-family: 'Orbitron', sans-serif; color: var(--primary-cyan); margin-bottom: 12px; }
-    #orientation-warning p { color: var(--text-muted); max-width: 320px; font-size: 0.95rem; line-height: 1.6; }
+    #orientation-warning h2 { font-family: 'Orbitron', sans-serif; color: var(--neon-cyan); margin-bottom: 12px; }
+    #orientation-warning p { color: var(--text-muted); max-width: 340px; font-size: 0.95rem; line-height: 1.6; }
 
     @media screen and (max-width: 900px) and (orientation: portrait) {
       #orientation-warning { display: flex; }
     }
 
-    /* Tela Inicial RPG */
+    /* Tela Inicial */
     .start-screen {
       display: grid;
       place-items: center;
       padding: 24px;
-      background: radial-gradient(circle at 50% 20%, #1b2a5c 0, #070b19 70%);
-      position: relative;
+      background: radial-gradient(circle at 50% 20%, #102042 0, #03050a 75%);
     }
     .start-card {
-      position: relative;
-      z-index: 1;
-      width: min(620px, 100%);
+      width: min(600px, 100%);
       padding: clamp(30px, 6vw, 50px);
-      border: 1px solid var(--panel-border);
+      border: 1px solid var(--border-glow);
       background: var(--panel-bg);
-      backdrop-filter: blur(20px);
-      border-radius: 24px;
-      box-shadow: var(--shadow-glow);
+      backdrop-filter: blur(16px);
+      border-radius: 20px;
+      box-shadow: 0 0 40px rgba(0, 210, 255, 0.15);
       text-align: center;
     }
     .brand-mark {
-      width: 64px; height: 64px;
+      width: 60px; height: 60px;
       margin: 0 auto 20px auto;
       display: grid; place-items: center;
-      border-radius: 16px;
-      background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
-      color: var(--bg-space);
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--neon-cyan), #3b82f6);
+      color: #03050a;
       font-family: 'Orbitron', sans-serif;
       font-weight: 900;
       font-size: 1.2rem;
-      letter-spacing: -1px;
-      box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+      box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
     }
     .eyebrow {
       font-family: 'Orbitron', sans-serif;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       letter-spacing: 0.2em;
-      color: var(--primary-cyan);
+      color: var(--neon-cyan);
       margin-bottom: 10px;
     }
     h1, h2, h3 { font-family: 'Orbitron', sans-serif; margin-top: 0; }
-    h1 { font-size: clamp(2.2rem, 6vw, 3.8rem); line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 16px; }
-    h1 span { color: var(--primary-cyan); text-shadow: 0 0 20px rgba(0, 242, 254, 0.5); }
-    .intro { font-size: 1rem; line-height: 1.6; color: var(--text-muted); max-width: 480px; margin: 0 auto 30px auto; }
-    .start-actions { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 20px; }
-    .primary { background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue)); color: var(--bg-space); }
+    h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: 1.1; margin-bottom: 16px; }
+    h1 span { color: var(--neon-cyan); text-shadow: 0 0 20px rgba(0, 210, 255, 0.5); }
+    .intro { font-size: 0.98rem; line-height: 1.6; color: var(--text-muted); max-width: 440px; margin: 0 auto 30px auto; }
+    .start-actions { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; }
+    .primary { background: linear-gradient(135deg, var(--neon-cyan), #3b82f6); color: #03050a; }
     .secondary { background: rgba(255, 255, 255, 0.08); color: white; border: 1px solid rgba(255, 255, 255, 0.15); }
-    .small-note { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
+    .small-note { font-size: 0.78rem; color: var(--text-muted); margin: 0; }
 
     /* Criador de Personagem */
     .panel {
-      width: min(900px, calc(100% - 32px));
+      width: min(850px, calc(100% - 32px));
       margin: auto;
       background: var(--panel-bg);
-      border: 1px solid var(--panel-border);
+      border: 1px solid var(--border-glow);
       border-radius: 20px;
       padding: clamp(24px, 5vw, 40px);
-      box-shadow: var(--shadow-glow);
+      box-shadow: 0 0 40px rgba(0, 210, 255, 0.15);
     }
-    .creator-layout { display: grid; grid-template-columns: 220px 1fr; gap: 30px; align-items: center; margin-top: 20px; }
+    .creator-layout { display: grid; grid-template-columns: 200px 1fr; gap: 30px; align-items: center; margin-top: 20px; }
     .avatar-preview {
-      height: 260px;
-      border-radius: 16px;
-      background: radial-gradient(circle, #15264f 0, #091026 100%);
-      border: 1px solid var(--panel-border);
-      position: relative;
-      overflow: hidden;
+      height: 240px; border-radius: 14px;
+      background: radial-gradient(circle, #122247 0, #050914 100%);
+      border: 1px solid var(--border-glow);
+      position: relative; overflow: hidden;
     }
-    .avatar-head, .scene-avatar-head {
-      position: absolute; width: 64px; height: 76px;
+    .avatar-head {
+      position: absolute; width: 60px; height: 72px;
       border-radius: 45% 45% 40% 40%; background: #f1c7a5;
-      left: 50%; top: 60px; transform: translateX(-50%); z-index: 2;
+      left: 50%; top: 50px; transform: translateX(-50%); z-index: 2;
     }
-    .avatar-hair, .scene-avatar-hair {
-      position: absolute; width: 72px; height: 44px;
-      border-radius: 40px 40px 14px 14px; background: #221714;
-      left: 50%; top: 48px; transform: translateX(-50%); z-index: 3;
+    .avatar-hair {
+      position: absolute; width: 68px; height: 40px;
+      border-radius: 30px 30px 12px 12px; background: #221714;
+      left: 50%; top: 40px; transform: translateX(-50%); z-index: 3;
     }
     .avatar-body {
-      position: absolute; width: 110px; height: 110px;
-      border-radius: 28px 28px 0 0; background: #4facfe;
-      left: 50%; top: 135px; transform: translateX(-50%);
+      position: absolute; width: 100px; height: 100px;
+      border-radius: 24px 24px 0 0; background: #3b82f6;
+      left: 50%; top: 120px; transform: translateX(-50%);
     }
     #creator-form { display: grid; gap: 10px; }
     label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); }
     input, select, textarea {
       width: 100%; border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 8px; padding: 12px; background: rgba(5, 9, 20, 0.8);
+      border-radius: 8px; padding: 12px; background: rgba(3, 5, 10, 0.8);
       color: white; font-size: 0.95rem;
     }
-    input:focus, select:focus, textarea:focus { outline: 2px solid var(--primary-cyan); }
+    input:focus, select:focus, textarea:focus { outline: 2px solid var(--neon-cyan); }
 
-    /* Tela de Jogo / HUD */
+    /* Tela de Jogo 3D */
+    #game-screen { position: relative; }
+    #canvas-container { position: absolute; inset: 0; z-index: 1; }
+    
     .game-header {
+      position: absolute; top: 0; left: 0; right: 0; z-index: 10;
       display: flex; align-items: center; justify-content: space-between;
-      background: rgba(7, 11, 25, 0.95);
-      border-bottom: 1px solid var(--panel-border);
+      background: rgba(3, 5, 10, 0.85); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-glow);
       padding: 12px 24px;
     }
-    .game-header strong { font-family: 'Orbitron', sans-serif; font-size: 1rem; color: var(--primary-cyan); }
-    .game-header span { font-size: 0.78rem; color: var(--text-muted); }
+    .game-header strong { font-family: 'Orbitron', sans-serif; font-size: 0.95rem; color: var(--neon-cyan); }
+    .game-header span { font-size: 0.75rem; color: var(--text-muted); }
     .header-actions { display: flex; gap: 8px; }
-    .small-button { padding: 8px 14px; background: rgba(0, 242, 254, 0.1); color: var(--primary-cyan); border: 1px solid rgba(0, 242, 254, 0.3); font-size: 0.8rem; }
+    .small-button { padding: 8px 14px; background: rgba(0, 210, 255, 0.1); color: var(--neon-cyan); border: 1px solid rgba(0, 210, 255, 0.3); font-size: 0.8rem; }
 
-    .game-layout {
-      display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(300px, 0.9fr);
-      gap: 20px; padding: 20px; max-width: 1500px; margin: auto; width: 100%;
+    .game-hud {
+      position: absolute; bottom: 20px; left: 20px; right: 20px; z-index: 10;
+      display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(300px, 0.8fr);
+      gap: 20px; pointer-events: none;
     }
-    .scene {
-      height: min(65vh, 580px); min-height: 380px;
-      position: relative; overflow: hidden; border-radius: 20px;
-      background: linear-gradient(180deg, #0f1d3f 0, #080e1e 100%);
-      border: 1px solid var(--panel-border);
-      box-shadow: var(--shadow-glow);
+    .game-hud > * { pointer-events: auto; }
+
+    .hud-card {
+      background: var(--panel-bg); backdrop-filter: blur(14px);
+      border: 1px solid var(--border-glow); border-radius: 16px; padding: 18px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
-    .scene-sky { position: absolute; inset: 0 0 40%; background: radial-gradient(circle at 50% 30%, #1a3263 0, transparent 70%); }
-    .scene-window { position: absolute; top: 10%; left: 8%; width: 22%; height: 30%; background: rgba(0, 242, 254, 0.1); border: 8px solid rgba(255, 255, 255, 0.15); }
-    .window-cross { position: absolute; left: 47%; top: 0; bottom: 0; width: 6px; background: rgba(255, 255, 255, 0.15); }
-    .window-cross:after { content: ""; position: absolute; top: 47%; left: -150%; width: 400%; height: 6px; background: rgba(255, 255, 255, 0.15); }
+    .hud-card h3 { font-size: 1rem; margin-bottom: 8px; color: white; }
+    .hud-card p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; margin: 0 0 12px 0; }
     
-    .scene-board {
-      position: absolute; top: 10%; right: 7%; width: 36%; height: 20%;
-      background: rgba(10, 20, 38, 0.9); border: 4px solid var(--primary-cyan);
-      border-radius: 8px; color: white; display: flex; flex-direction: column;
-      justify-content: center; align-items: center; gap: 4px; text-align: center;
-      box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+    .progress-track { height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; overflow: hidden; margin: 10px 0 6px; }
+    .progress-track div { height: 100%; width: 0; background: linear-gradient(90deg, #3b82f6, var(--neon-green)); transition: width 0.3s ease; }
+    
+    .interaction-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .interaction-actions button { font-size: 0.8rem; padding: 10px 14px; }
+
+    /* Retícula (Crosshair) 3D em Primeira Pessoa */
+    .crosshair {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 12px; height: 12px; border: 2px solid rgba(255, 255, 255, 0.6);
+      border-radius: 50%; z-index: 5; pointer-events: none;
     }
-    .scene-board span { font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: clamp(0.75rem, 1.5vw, 1.2rem); color: var(--primary-cyan); }
-    .scene-board small { font-size: 0.65rem; color: var(--text-muted); }
-
-    .scene-floor { position: absolute; bottom: 0; left: 0; right: 0; height: 40%; background: linear-gradient(180deg, #09132b, #040814); border-top: 1px solid var(--panel-border); }
-    .scene-desk { position: absolute; z-index: 3; width: 22%; height: 8%; background: #182848; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); transform: skewY(-3deg); }
-    .desk-one { left: 8%; bottom: 26%; }
-    .desk-two { left: 38%; bottom: 32%; transform: scale(0.8) skewY(-3deg); }
-    .desk-three { right: 8%; bottom: 25%; transform: scale(0.9) skewY(-3deg); }
-
-    .avatar-in-scene { position: absolute; z-index: 4; bottom: 16%; left: 47%; width: 100px; height: 160px; transition: left 0.4s ease; }
-    .scene-avatar-head { top: 20px; width: 38px; height: 46px; }
-    .scene-avatar-hair { top: 12px; width: 44px; height: 26px; }
-    .scene-avatar-body { position: absolute; top: 62px; left: 50%; transform: translateX(-50%); height: 90px; width: 66px; background: #4facfe; border-radius: 20px 20px 4px 4px; }
-
-    .scene-caption {
-      position: absolute; bottom: 0; left: 0; right: 0; z-index: 5;
-      display: flex; justify-content: space-between; gap: 10px; padding: 12px 16px;
-      background: linear-gradient(transparent, rgba(5, 9, 20, 0.95)); color: white; align-items: flex-end;
+    .crosshair::after {
+      content: ""; position: absolute; top: 4px; left: 4px; width: 2px; height: 2px; background: var(--neon-cyan); border-radius: 50%;
     }
-    .scene-caption span:first-child { font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: var(--primary-cyan); }
-    .scene-caption span:last-child { font-size: 0.75rem; color: var(--text-muted); text-align: right; }
 
-    .scene-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-    .destination { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); color: var(--text-main); font-size: 0.85rem; }
-    .destination.active { background: var(--primary-cyan); color: var(--bg-space); border-color: var(--primary-cyan); font-weight: 800; box-shadow: 0 0 10px rgba(0, 242, 254, 0.4); }
-
-    /* Painéis Laterais RPG */
-    .side-panel { display: flex; flex-direction: column; gap: 14px; }
-    .objective-card, .interaction-card, .quick-status {
-      background: var(--panel-bg); border: 1px solid var(--panel-border);
-      border-radius: 16px; padding: 18px; box-shadow: var(--shadow-glow);
-    }
-    .objective-card h3, .interaction-card h3 { font-size: 1rem; margin-bottom: 8px; color: white; }
-    .objective-card p:not(.eyebrow), .interaction-card p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; }
-    .progress-track { height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; overflow: hidden; margin: 14px 0 6px; }
-    .progress-track div { height: 100%; width: 0; background: linear-gradient(90deg, var(--primary-blue), var(--accent-green)); transition: width 0.3s ease; }
-    .objective-card small { font-size: 0.75rem; color: var(--text-muted); }
-    .interaction-options { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-    .interaction-options button { font-size: 0.8rem; padding: 10px 14px; }
-    .quick-status { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--text-muted); }
-
-    /* Modais Estilizados */
+    /* Modais */
     .modal {
       position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center;
-      padding: 18px; background: rgba(3, 6, 15, 0.8); backdrop-filter: blur(8px);
+      padding: 18px; background: rgba(3, 5, 10, 0.85); backdrop-filter: blur(10px);
     }
     .modal-card {
-      position: relative; background: #0d162d; border: 1px solid var(--panel-border);
-      width: min(540px, 100%); max-height: 90vh; overflow: auto; border-radius: 20px;
-      padding: clamp(24px, 5vw, 32px); box-shadow: 0 0 40px rgba(0, 242, 254, 0.2);
+      position: relative; background: #0b1220; border: 1px solid var(--border-glow);
+      width: min(520px, 100%); max-height: 90vh; overflow: auto; border-radius: 20px;
+      padding: clamp(24px, 5vw, 32px); box-shadow: 0 0 40px rgba(0, 210, 255, 0.2);
     }
-    .modal-card h2 { font-size: 1.4rem; color: var(--primary-cyan); margin-bottom: 12px; }
+    .modal-card h2 { font-size: 1.4rem; color: var(--neon-cyan); margin-bottom: 12px; }
     .modal-card p { line-height: 1.6; color: var(--text-muted); font-size: 0.92rem; }
     .close-button {
       position: absolute; right: 14px; top: 12px; background: rgba(255, 255, 255, 0.08);
@@ -256,12 +217,12 @@
       display: grid; place-items: center;
     }
     .choice-list { display: grid; gap: 8px; margin-top: 16px; }
-    .choice-list button { text-align: left; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-main); font-weight: 600; }
-    .choice-list button:hover { background: rgba(0, 242, 254, 0.15); border-color: var(--primary-cyan); }
+    .choice-list button { text-align: left; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: white; font-weight: 600; }
+    .choice-list button:hover { background: rgba(0, 210, 255, 0.15); border-color: var(--neon-cyan); }
 
     .journal-content { display: grid; gap: 10px; margin: 16px 0; }
     .journal-entry { padding: 12px; border-radius: 10px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); }
-    .journal-entry strong { display: block; color: var(--primary-cyan); margin-bottom: 4px; font-size: 0.85rem; font-family: 'Orbitron', sans-serif; }
+    .journal-entry strong { display: block; color: var(--neon-cyan); margin-bottom: 4px; font-size: 0.85rem; font-family: 'Orbitron', sans-serif; }
     .journal-entry p { margin: 0; font-size: 0.88rem; color: var(--text-muted); }
 
     .map-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
@@ -272,27 +233,26 @@
     .feedback { padding: 12px; border-radius: 8px; background: rgba(255, 255, 255, 0.05); margin-top: 12px; font-weight: 600; font-size: 0.9rem; }
     .toast {
       position: fixed; z-index: 9999; left: 50%; bottom: 24px; transform: translateX(-50%);
-      background: #0d162d; border: 1px solid var(--primary-cyan); color: white; padding: 12px 20px;
-      border-radius: 12px; box-shadow: 0 0 20px rgba(0, 242, 254, 0.3); font-size: 0.9rem; font-weight: 600;
+      background: #0b1220; border: 1px solid var(--neon-cyan); color: white; padding: 12px 20px;
+      border-radius: 12px; box-shadow: 0 0 20px rgba(0, 210, 255, 0.3); font-size: 0.9rem; font-weight: 600;
     }
 
     @media(max-width: 850px) {
-      .game-layout { grid-template-columns: 1fr; padding: 12px; }
-      .scene { height: 44vh; min-height: 320px; }
-      .side-panel { display: grid; grid-template-columns: 1fr 1fr; }
-      .quick-status { grid-column: 1/-1; }
+      .game-hud { grid-template-columns: 1fr; bottom: 10px; left: 10px; right: 10px; gap: 10px; }
       .creator-layout { grid-template-columns: 1fr; }
-      .avatar-preview { height: 200px; max-width: 200px; margin: auto; }
+      .avatar-preview { height: 180px; max-width: 180px; margin: auto; }
     }
   </style>
+  <!-- Importação do Three.js para renderização 3D em primeira pessoa -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
 
-  <!-- Aviso de rotação para dispositivos móveis -->
+  <!-- Aviso de Rotação para Celular -->
   <div id="orientation-warning">
     <div class="brand-mark" style="margin: 0 auto 16px auto;">DNA</div>
     <h2>Gire o seu dispositivo</h2>
-    <p>Para vivenciar a experiência completa de RPG científico da SNCT 2026 — Código da Vida, posicione o celular na horizontal (modo paisagem).</p>
+    <p>Para jogar em ambiente 3D imersivo na SNCT 2026 — Código da Vida, posicione o celular na horizontal (modo paisagem).</p>
   </div>
 
   <div id="app">
@@ -302,9 +262,9 @@
         <div class="brand-mark">DNA</div>
         <p class="eyebrow">RPG CIENTÍFICO 3D · SNCT 2026</p>
         <h1>Código da <span>Vida</span></h1>
-        <p class="intro">Entre no laboratório, investigue a ciência de ponta e descubra o legado das mulheres que transformaram a pesquisa.</p>
+        <p class="intro">Explore laboratórios realistas em primeira pessoa, investigue dados genéticos e descubra o legado das pioneiras da ciência.</p>
         <div class="start-actions">
-          <button id="new-game" class="primary">Novo Jogo</button>
+          <button id="new-game" class="primary">Novo Jogo 3D</button>
           <button id="continue-game" class="secondary">Continuar</button>
         </div>
         <p class="small-note">Progresso salvo localmente no navegador</p>
@@ -312,10 +272,10 @@
     </section>
 
     <!-- CRIAÇÃO DE PERSONAGEM -->
-    <section id="creator-screen" class="screen hidden">
-      <div class="panel" style="margin-top: 40px;">
+    <section id="creator-screen" class="screen hidden" style="justify-content: center; padding: 20px;">
+      <div class="panel">
         <p class="eyebrow">REGISTRO DE PESQUISADOR(A)</p>
-        <h2>Configurar Perfil</h2>
+        <h2>Configurar Identidade</h2>
         <div class="creator-layout">
           <div id="avatar-preview" class="avatar-preview">
             <div class="avatar-hair"></div><div class="avatar-head"></div><div class="avatar-body"></div>
@@ -338,21 +298,21 @@
             </select>
             <label for="outfit">Uniforme de Campo</label>
             <select id="outfit">
-              <option value="#4facfe">Azul Científico</option>
+              <option value="#3b82f6">Azul Científico</option>
               <option value="#00f5a0">Verde Bio</option>
               <option value="#9b51e0">Roxo Genoma</option>
-              <option value="#2d3748">Cinza Estéril</option>
+              <option value="#334155">Cinza Estéril</option>
             </select>
-            <button class="primary" type="submit" style="margin-top: 10px;">Iniciar Missão</button>
+            <button class="primary" type="submit" style="margin-top: 10px;">Entrar no Laboratório 3D</button>
           </form>
         </div>
       </div>
     </section>
 
-    <!-- TELA PRINCIPAL DE JOGO -->
+    <!-- TELA DE JOGO 3D -->
     <section id="game-screen" class="screen hidden">
       <header class="game-header">
-        <div><strong>Código da Vida</strong><span id="area-label">Escola</span></div>
+        <div><strong>Código da Vida [3D]</strong><span id="area-label">Sala de Aula</span></div>
         <div class="header-actions">
           <button id="journal-button" class="small-button">Diário</button>
           <button id="map-button" class="small-button">Mapa</button>
@@ -360,50 +320,32 @@
         </div>
       </header>
 
-      <main class="game-layout">
-        <div class="scene-wrap">
-          <div id="scene" class="scene">
-            <div class="scene-sky"></div>
-            <div class="scene-window"><div class="window-cross"></div></div>
-            <div class="scene-board"><span>CIÊNCIA DELAS</span><small>Investigação & Inovação</small></div>
-            <div class="scene-floor"></div>
-            <div class="scene-desk desk-one"></div><div class="scene-desk desk-two"></div><div class="scene-desk desk-three"></div>
-            <div id="avatar-in-scene" class="avatar-in-scene"><div class="scene-avatar-hair"></div><div class="scene-avatar-head"></div><div class="scene-avatar-body"></div></div>
-            <div class="scene-caption"><span id="scene-location">Sala de aula</span><span id="scene-hint">Selecione um ponto para explorar</span></div>
-          </div>
-          <div class="scene-controls">
-            <button data-destination="classroom" class="destination active">Sala de aula</button>
-            <button data-destination="library" class="destination">Biblioteca</button>
-            <button data-destination="courtyard" class="destination">Pátio</button>
-          </div>
+      <!-- Canvas onde o mundo 3D realista é renderizado -->
+      <div id="canvas-container"></div>
+      <div class="crosshair"></div>
+
+      <div class="game-hud">
+        <div class="hud-card">
+          <p class="eyebrow" style="margin-bottom: 4px;">OBJETIVO ATUAL</p>
+          <h3 id="objective-title">Conheça a missão</h3>
+          <p id="objective-text">Converse com a Professora Helena para iniciar sua investigação sobre o genoma.</p>
+          <div class="progress-track"><div id="progress-fill"></div></div>
+          <small id="progress-label" style="color: var(--text-muted); font-size: 0.75rem;">0 de 3 pistas catalogadas</small>
         </div>
 
-        <aside class="side-panel">
-          <div class="objective-card">
-            <p class="eyebrow">MISSÃO ATUAL</p>
-            <h3 id="objective-title">Conheça a missão</h3>
-            <p id="objective-text">Converse com a professora Helena para iniciar sua investigação.</p>
-            <div class="progress-track"><div id="progress-fill"></div></div>
-            <small id="progress-label">0 de 3 pistas encontradas</small>
+        <div class="hud-card">
+          <h3 id="interaction-title">Professora Helena</h3>
+          <p id="interaction-text">“Vamos investigar a trajetória da cientista Jaqueline Góes de Jesus e compreender o impacto do sequenciamento genômico.”</p>
+          <div class="interaction-actions">
+            <button id="talk-button" class="primary">Conversar</button>
+            <button id="inspect-button" class="secondary">Examinar Elemento</button>
           </div>
-          <div class="interaction-card">
-            <h3 id="interaction-title">Professora Helena</h3>
-            <p id="interaction-text">“Vamos investigar a trajetória da cientista Jaqueline Góes de Jesus e descobrir como a pesquisa científica funciona.”</p>
-            <div id="interaction-options" class="interaction-options">
-              <button id="talk-button" class="primary">Conversar</button>
-              <button id="inspect-button" class="secondary">Examinar</button>
-            </div>
-          </div>
-          <div class="quick-status">
-            <span>Status: Ativo</span><span id="save-status">Salvo localmente          <div class="quick-status">
-            <span>Status: Ativo</span><span id="save-status">Salvo localmente</span>
-          </div>
-        </aside>
-      </main>
+        </div>
+      </div>
     </section>
   </div>
 
-  <!-- MODAIS DE DIÁLOGO E DESAFIOS -->
+  <!-- MODAIS -->
   <div id="dialogue-modal" class="modal hidden" role="dialog" aria-modal="true">
     <div class="modal-card">
       <button class="close-button" data-close="dialogue-modal" aria-label="Fechar">×</button>
@@ -429,13 +371,13 @@
   <div id="map-modal" class="modal hidden" role="dialog" aria-modal="true">
     <div class="modal-card">
       <button class="close-button" data-close="map-modal" aria-label="Fechar">×</button>
-      <p class="eyebrow">NAVEGAÇÃO</p>
+      <p class="eyebrow">NAVEGAÇÃO 3D</p>
       <h2>Mapa do Complexo</h2>
       <div class="map-grid">
-        <button data-map-destination="classroom">Sala de aula <small>Missão principal</small></button>
+        <button data-map-destination="classroom">Sala de Aula <small>Missão principal</small></button>
         <button data-map-destination="library">Biblioteca <small>Pesquisa bibliográfica</small></button>
-        <button data-map-destination="courtyard">Pátio <small>Análise biológica</small></button>
-        <button id="locked-lab" disabled>Laboratório Genômico <small>Bloqueado (Próxima fase)</small></button>
+        <button data-map-destination="courtyard">Pátio Externo <small>Análise biológica</small></button>
+        <button id="locked-lab" disabled>Lab. Genômico <small>Bloqueado (Próxima fase)</small></button>
       </div>
     </div>
   </div>
@@ -462,7 +404,7 @@
       playerName: '',
       skin: '#f1c7a5',
       hair: 'short',
-      outfit: '#4facfe',
+      outfit: '#3b82f6',
       currentLocation: 'classroom',
       cluesFound: 0,
       cluesList: [],
@@ -472,7 +414,7 @@
 
     const locations = {
       classroom: {
-        name: 'Sala de aula',
+        name: 'Sala de Aula',
         hint: 'Interaja com a Professora Helena ou examine a lousa.',
         character: 'Professora Helena',
         charText: '“Vamos investigar a trajetória da cientista Jaqueline Góes de Jesus e compreender o impacto do sequenciamento genômico no Brasil.”',
@@ -486,7 +428,7 @@
         actionLabel: 'Verificar Arquivo'
       },
       courtyard: {
-        name: 'Pátio',
+        name: 'Pátio Externo',
         hint: 'Observe os espécimes e a biodiversidade local.',
         character: 'Colega Bia',
         charText: '“A diversidade genética na natureza é fascinante. Já registrou suas primeiras observações no diário?”',
@@ -494,6 +436,140 @@
       }
     };
 
+    // Variáveis do Motor 3D (Three.js)
+    let scene, camera, renderer, roomMesh;
+    let is3DInitialized = false;
+
+    function init3D() {
+      if (is3DInitialized) return;
+      const container = document.getElementById('canvas-container');
+      
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x070b14);
+      scene.fog = new THREE.Fog      scene.fog = new THREE.FogExp2(0x070b14, 0.035);
+
+      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.set(0, 1.6, 3);
+
+      renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.shadowMap.enabled = true;
+      container.appendChild(renderer.domElement);
+
+      // Iluminação realista de laboratório / ambiente interno
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+      scene.add(ambientLight);
+
+      const dirLight = new THREE.DirectionalLight(0x00d2ff, 0.8);
+      dirLight.position.set(5, 10, 5);
+      dirLight.castShadow = true;
+      scene.add(dirLight);
+
+      const pointLight = new THREE.PointLight(0x3b82f6, 1, 15);
+      pointLight.position.set(0, 4, 0);
+      scene.add(pointLight);
+
+      buildRoomGeometry('classroom');
+
+      // Suporte básico de rotação de câmera por arrastar o mouse/toque (primeira pessoa)
+      let isDragging = false;
+      let previousMousePosition = { x: 0, y: 0 };
+      let cameraRotationY = 0;
+      let cameraRotationX = 0;
+
+      window.addEventListener('mousedown', (e) => {
+        if(e.target.tagName === 'BUTTON' || e.target.closest('.hud-card') || e.target.closest('.modal')) return;
+        isDragging = true;
+        previousMousePosition = { x: e.clientX, y: e.clientY };
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const deltaX = e.clientX - previousMousePosition.x;
+        const deltaY = e.clientY - previousMousePosition.y;
+
+        cameraRotationY -= deltaX * 0.005;
+        cameraRotationX -= deltaY * 0.005;
+        cameraRotationX = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, cameraRotationX));
+
+        camera.rotation.order = 'YXZ';
+        camera.rotation.y = cameraRotationY;
+        camera.rotation.x = cameraRotationX;
+
+        previousMousePosition = { x: e.clientX, y: e.clientY };
+      });
+
+      window.addEventListener('mouseup', () => { isDragging = false; });
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      animate3D();
+      is3DInitialized = true;
+    }
+
+    function buildRoomGeometry(locKey) {
+      if (roomMesh) scene.remove(roomMesh);
+      roomMesh = new THREE.Group();
+
+      // Cores e materiais realistas baseados na localização
+      let floorColor = 0x111827;
+      let wallColor = 0x1e293b;
+      let accentColor = 0x00d2ff;
+
+      if(locKey === 'library') {
+        floorColor = 0x1c1917;
+        wallColor = 0x292524;
+        accentColor = 0xf59e0b;
+      } else if(locKey === 'courtyard') {
+        floorColor = 0x064e3b;
+        wallColor = 0x0f172a;
+        accentColor = 0x00f5a0;
+      }
+
+      // Piso
+      const floorGeo = new THREE.PlaneGeometry(20, 20);
+      const floorMat = new THREE.MeshStandardMaterial({ color: floorColor, roughness: 0.8 });
+      const floor = new THREE.Mesh(floorGeo, floorMat);
+      floor.rotation.x = -Math.PI / 2;
+      floor.receiveShadow = true;
+      roomMesh.add(floor);
+
+      // Paredes (Fundo e laterais)
+      const wallMat = new THREE.MeshStandardMaterial({ color: wallColor, roughness: 0.9 });
+      
+      const backWall = new THREE.Mesh(new THREE.PlaneGeometry(20, 10), wallMat);
+      backWall.position.set(0, 5, -10);
+      roomMesh.add(backWall);
+
+      // Mesa / Mobiliário Central 3D Realista
+      const deskGeo = new THREE.BoxGeometry(2.5, 0.9, 1.2);
+      const deskMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.5 });
+      const desk = new THREE.Mesh(deskGeo, deskMat);
+      desk.position.set(0, 0.45, -2);
+      desk.castShadow = true;
+      roomMesh.add(desk);
+
+      // Objeto interativo / Computador ou modelo científico no cenário
+      const pcGeo = new THREE.BoxGeometry(0.6, 0.4, 0.5);
+      const pcMat = new THREE.MeshStandardMaterial({ color: accentColor, emissive: accentColor, emissiveIntensity: 0.3 });
+      const pc = new THREE.Mesh(pcGeo, pcMat);
+      pc.position.set(0, 1.1, -2);
+      roomMesh.add(pc);
+
+      scene.add(roomMesh);
+    }
+
+    function animate3D() {
+      requestAnimationFrame(animate3D);
+      renderer.render(scene, camera);
+    }
+
+    // Elementos da Interface
     const startScreen = document.getElementById('start-screen');
     const creatorScreen = document.getElementById('creator-screen');
     const gameScreen = document.getElementById('game-screen');
@@ -505,8 +581,6 @@
     const outfitSelect = document.getElementById('outfit');
 
     const areaLabel = document.getElementById('area-label');
-    const sceneLocation = document.getElementById('scene-location');
-    const sceneHint = document.getElementById('scene-hint');
     const objectiveTitle = document.getElementById('objective-title');
     const objectiveText = document.getElementById('objective-text');
     const progressFill = document.getElementById('progress-fill');
@@ -516,7 +590,6 @@
     const interactionText = document.getElementById('interaction-text');
     const talkButton = document.getElementById('talk-button');
     const inspectButton = document.getElementById('inspect-button');
-    const saveStatus = document.getElementById('save-status');
 
     const dialogueModal = document.getElementById('dialogue-modal');
     const dialogueSpeaker = document.getElementById('dialogue-speaker');
@@ -543,12 +616,8 @@
     function updateAvatarVisuals(skinVal, outfitVal) {
       const head = document.querySelector('.avatar-head');
       const body = document.querySelector('.avatar-body');
-      const sHead = document.querySelector('.scene-avatar-head');
-      const sBody = document.querySelector('.scene-avatar-body');
       if(head) head.style.background = skinVal;
-      if(sHead) sHead.style.background = skinVal;
       if(body) body.style.background = outfitVal;
-      if(sBody) sBody.style.background = outfitVal;
     }
 
     skinSelect.addEventListener('change', () => updateAvatarVisuals(skinSelect.value, outfitSelect.value));
@@ -560,13 +629,14 @@
     });
 
     document.getElementById('continue-game').addEventListener('click', () => {
-      const saved = localStorage.getItem('codigo_da_vida_rpg_save');
+      const saved = localStorage.getItem('codigo_da_vida_3d_save');
       if(saved) {
         try {
           const data = JSON.parse(saved);
           Object.assign(gameState, data);
           startScreen.classList.add('hidden');
           gameScreen.classList.remove('hidden');
+          init3D();
           updateGameUI();
           showToast('Progresso sincronizado com sucesso!');
         } catch(e) {
@@ -586,21 +656,15 @@
       
       creatorScreen.classList.add('hidden');
       gameScreen.classList.remove('hidden');
+      init3D();
       updateGameUI();
       saveGame();
-      showToast('Bem-vindo(a) ao laboratório, ' + gameState.playerName + '!');
+      showToast('Bem-vindo(a) ao laboratório 3D, ' + gameState.playerName + '!');
     });
 
     function saveGame() {
-      localStorage.setItem('codigo_da_vida_rpg_save', JSON.stringify(gameState));
-      saveStatus.textContent = 'Dados salvos';
+      localStorage.setItem('codigo_da_vida_3d_save', JSON.stringify(gameState));
     }
-
-    document.querySelectorAll('.destination').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        changeLocation(e.target.getAttribute('data-destination'));
-      });
-    });
 
     document.querySelectorAll('[data-map-destination]').forEach(btn => {
       btn.addEventListener('click', (e) => {
@@ -611,22 +675,15 @@
 
     function changeLocation(locKey) {
       gameState.currentLocation = locKey;
-      document.querySelectorAll('.destination').forEach(b => {
-        b.classList.toggle('active', b.getAttribute('data-destination') === locKey);
-      });
       const info = locations[locKey];
       areaLabel.textContent = info.name;
-      sceneLocation.textContent = info.name;
-      sceneHint.textContent = info.hint;
       interactionTitle.textContent = info.character;
       interactionText.textContent = info.charText;
       inspectButton.textContent = info.actionLabel;
 
-      const avatarInScene = document.getElementById('avatar-in-scene');
-      if(locKey === 'classroom') avatarInScene.style.left = '47%';
-      else if(locKey === 'library') avatarInScene.style.left = '25%';
-      else if(locKey === 'courtyard') avatarInScene.style.left = '70%';
-
+      if(is3DInitialized) {
+        buildRoomGeometry(locKey);
+      }
       saveGame();
     }
 
@@ -688,7 +745,7 @@
         quizFeedback.classList.remove('hidden');
         if(choice === 'b') {
           quizFeedback.textContent = '✔ Correto! Publicações institucionais revisadas garantem validade científica.';
-          quizFeedback.style.color = 'var(--accent-green)';
+          quizFeedback.style.color = 'var(--neon-green)';
           gameState.quizCompleted = true;
           addClue('Critério metodológico de confiabilidade de fontes.');
           setTimeout(() => {
@@ -698,7 +755,7 @@
           }, 2000);
         } else {
           quizFeedback.textContent = '✖ Incorreto. Fontes sem comprovação técnica não possuem validade científica.';
-          quizFeedback.style.color = '#ff6b6b';
+          quizFeedback.style.color = '#ef4444';
         }
       });
     });
@@ -716,17 +773,16 @@
     }
 
     function updateGameUI() {
-      updateAvatarVisuals(gameState.skin, gameState.outfit);
       const progressPercent = Math.min(100, (gameState.cluesFound / 3) * 100);
       progressFill.style.width = progressPercent + '%';
       progressLabel.textContent = `${gameState.cluesFound} de 3 pistas catalogadas`;
 
       if(gameState.cluesFound >= 3) {
         objectiveTitle.textContent = 'Missão Concluída!';
-        objectiveText.textContent = 'Parabéns! Todas as pistas foram validadas. O Laboratório Genômico será desbloqueado em breve.';
+        objectiveText.textContent = 'Parabéns! Todas as pistas foram validadas. O Laboratório Genômico 3D será desbloqueado em breve.';
       } else {
         objectiveTitle.textContent = 'Investigação em Andamento';
-        objectiveText.textContent = 'Explore a biblioteca e o pátio, interaja com a equipe e resolva os protocolos de análise.';
+        objectiveText.textContent = 'Explore os ambientes 3D, interaja com os personagens e resolva os desafios analíticos.';
       }
     }
 
@@ -778,4 +834,4 @@
     function openModal(modalElement) { modalElement.classList.remove('hidden'); }
   </script>
 </body>
-        </html.
+</html>
