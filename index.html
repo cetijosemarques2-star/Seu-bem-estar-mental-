@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#070b14">
-  <title>Código da Vida — 3D Realista (RPG Científico)</title>
+  <title>Código da Vida — Visual Novel RPG (SNCT 2026)</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@600;800;900&display=swap');
 
     :root {
       --bg-dark: #070b14;
-      --panel-bg: rgba(11, 18, 32, 0.92);
-      --border-glow: rgba(0, 210, 255, 0.3);
+      --panel-bg: rgba(11, 18, 32, 0.94);
+      --border-glow: rgba(0, 210, 255, 0.35);
       --neon-cyan: #00d2ff;
       --neon-green: #00f5a0;
       --text-main: #f1f5f9;
@@ -22,9 +22,12 @@
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      background: var(--bg-dark);
+      background: radial-gradient(circle at 50% 20%, #102042 0, var(--bg-dark) 80%);
       color: var(--text-main);
-      overflow: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
     }
 
     button, input, select, textarea { font: inherit; }
@@ -45,33 +48,11 @@
     .hidden { display: none !important; }
     .screen { width: 100vw; height: 100vh; display: flex; flex-direction: column; position: absolute; inset: 0; }
 
-    /* Aviso de Rotação para Celular */
-    #orientation-warning {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: #03050a;
-      color: white;
-      z-index: 99999;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 24px;
-    }
-    #orientation-warning h2 { font-family: 'Orbitron', sans-serif; color: var(--neon-cyan); margin-bottom: 12px; }
-    #orientation-warning p { color: var(--text-muted); max-width: 340px; font-size: 0.95rem; line-height: 1.6; }
-
-    @media screen and (max-width: 900px) and (orientation: portrait) {
-      #orientation-warning { display: flex; }
-    }
-
     /* Tela Inicial */
     .start-screen {
       display: grid;
       place-items: center;
       padding: 24px;
-      background: radial-gradient(circle at 50% 20%, #102042 0, #03050a 75%);
       z-index: 20;
     }
     .start-card {
@@ -153,52 +134,79 @@
     }
     input:focus, select:focus, textarea:focus { outline: 2px solid var(--neon-cyan); }
 
-    /* Tela de Jogo 3D */
-    #game-screen { position: relative; z-index: 10; }
-    #canvas-container { position: absolute; inset: 0; z-index: 1; }
-    
+    /* Tela de Jogo Estilo Visual Novel / RPG 2D */
+    #game-screen {
+      position: relative;
+      z-index: 10;
+      padding: 20px;
+      justify-content: space-between;
+    }
     .game-header {
-      position: absolute; top: 0; left: 0; right: 0; z-index: 15;
       display: flex; align-items: center; justify-content: space-between;
-      background: rgba(3, 5, 10, 0.85); backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border-glow);
-      padding: 12px 24px;
+      background: var(--panel-bg); backdrop-filter: blur(10px);
+      border: 1px solid var(--border-glow);
+      border-radius: 14px;
+      padding: 14px 24px;
+      width: min(900px, 100%);
+      margin: 0 auto;
     }
     .game-header strong { font-family: 'Orbitron', sans-serif; font-size: 0.95rem; color: var(--neon-cyan); }
-    .game-header span { font-size: 0.75rem; color: var(--text-muted); }
+    .game-header span { font-size: 0.75rem; color: var(--text-muted); display: block; }
     .header-actions { display: flex; gap: 8px; }
     .small-button { padding: 8px 14px; background: rgba(0, 210, 255, 0.1); color: var(--neon-cyan); border: 1px solid rgba(0, 210, 255, 0.3); font-size: 0.8rem; }
 
-    .game-hud {
-      position: absolute; bottom: 20px; left: 20px; right: 20px; z-index: 15;
-      display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(300px, 0.8fr);
-      gap: 20px; pointer-events: none;
+    .game-main-container {
+      width: min(900px, 100%);
+      margin: auto;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
     }
-    .game-hud > * { pointer-events: auto; }
+
+    .scene-viewport {
+      background: linear-gradient(135deg, #0f172a 0%, #0b1220 100%);
+      border: 1px solid var(--border-glow);
+      border-radius: 16px;
+      padding: 30px;
+      min-height: 380px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+    .scene-graphic {
+      height: 120px;
+      border-radius: 10px;
+      background: radial-gradient(circle at 50% 50%, rgba(0, 210, 255, 0.15) 0, transparent 70%);
+      border: 1px dashed rgba(0, 210, 255, 0.2);
+      display: grid;
+      place-items: center;
+      font-family: 'Orbitron', sans-serif;
+      color: var(--neon-cyan);
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 20px;
+    }
+    .dialogue-box h3 { color: white; margin-bottom: 6px; font-size: 1.1rem; }
+    .dialogue-box p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin: 0 0 20px 0; }
+    .scene-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .sidebar-panel {
+      display: grid;
+      gap: 16px;
+    }
 
     .hud-card {
       background: var(--panel-bg); backdrop-filter: blur(14px);
       border: 1px solid var(--border-glow); border-radius: 16px; padding: 18px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
-    .hud-card h3 { font-size: 1rem; margin-bottom: 8px; color: white; }
-    .hud-card p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; margin: 0 0 12px 0; }
+    .hud-card h3 { font-size: 0.95rem; margin-bottom: 6px; color: white; }
+    .hud-card p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.4; margin: 0 0 10px 0; }
     
-    .progress-track { height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; overflow: hidden; margin: 10px 0 6px; }
+    .progress-track { height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; overflow: hidden; margin: 8px 0 4px; }
     .progress-track div { height: 100%; width: 0; background: linear-gradient(90deg, #3b82f6, var(--neon-green)); transition: width 0.3s ease; }
-    
-    .interaction-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-    .interaction-actions button { font-size: 0.8rem; padding: 10px 14px; }
-
-    /* Retícula (Crosshair) 3D em Primeira Pessoa */
-    .crosshair {
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      width: 12px; height: 12px; border: 2px solid rgba(255, 255, 255, 0.6);
-      border-radius: 50%; z-index: 12; pointer-events: none;
-    }
-    .crosshair::after {
-      content: ""; position: absolute; top: 4px; left: 4px; width: 2px; height: 2px; background: var(--neon-cyan); border-radius: 50%;
-    }
 
     /* Modais */
     .modal {
@@ -239,35 +247,27 @@
     }
 
     @media(max-width: 850px) {
-      .game-hud { grid-template-columns: 1fr; bottom: 10px; left: 10px; right: 10px; gap: 10px; }
+      .game-main-container { grid-template-columns: 1fr; }
       .creator-layout { grid-template-columns: 1fr; }
       .avatar-preview { height: 180px; max-width: 180px; margin: auto; }
     }
   </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
-
-  <!-- Aviso de Rotação para Celular -->
-  <div id="orientation-warning">
-    <div class="brand-mark" style="margin: 0 auto 16px auto;">DNA</div>
-    <h2>Gire o seu dispositivo</h2>
-    <p>Para jogar em ambiente 3D imersivo na SNCT 2026 — Código da Vida, posicione o celular na horizontal (modo paisagem).</p>
-  </div>
 
   <div id="app">
     <!-- TELA INICIAL -->
     <section id="start-screen" class="screen start-screen">
       <div class="start-card">
         <div class="brand-mark">DNA</div>
-        <p class="eyebrow">RPG CIENTÍFICO 3D · SNCT 2026</p>
+        <p class="eyebrow">RPG CIENTÍFICO VISUAL · SNCT 2026</p>
         <h1>Código da <span>Vida</span></h1>
-        <p class="intro">Explore laboratórios realistas em primeira pessoa, investigue dados genéticos e descubra o legado das pioneiras da ciência.</p>
+        <p class="intro">Investigue sequenciamentos genômicos, descubra o legado das pioneiras da ciência e desvende mistérios moleculares em uma aventura interativa fluida e estável.</p>
         <div class="start-actions">
-          <button id="new-game" class="primary">Novo Jogo 3D</button>
+          <button id="new-game" class="primary">Novo Jogo</button>
           <button id="continue-game" class="secondary">Continuar</button>
         </div>
-        <p class="small-note">Progresso salvo localmente no navegador</p>
+        <p class="small-note">Progresso guardado de forma segura no navegador</p>
       </div>
     </section>
 
@@ -303,16 +303,19 @@
               <option value="#9b51e0">Roxo Genoma</option>
               <option value="#334155">Cinza Estéril</option>
             </select>
-            <button class="primary" type="submit" style="margin-top: 10px;">Entrar no Laboratório 3D</button>
+            <button class="primary" type="submit" style="margin-top: 10px;">Entrar na Aventura</button>
           </form>
         </div>
       </div>
     </section>
 
-    <!-- TELA DE JOGO 3D -->
+    <!-- TELA DE JOGO RPG 2D / VISUAL NOVEL -->
     <section id="game-screen" class="screen hidden">
       <header class="game-header">
-        <div><strong>Código da Vida [3D]</strong><span id="area-label">Sala de Aula</span></div>
+        <div>
+          <strong>Código da Vida [Visual RPG]</strong>
+          <span id="area-label">Sala de Aula</span>
+        </div>
         <div class="header-actions">
           <button id="journal-button" class="small-button">Diário</button>
           <button id="map-button" class="small-button">Mapa</button>
@@ -320,24 +323,34 @@
         </div>
       </header>
 
-      <div id="canvas-container"></div>
-      <div class="crosshair"></div>
-
-      <div class="game-hud">
-        <div class="hud-card">
-          <p class="eyebrow" style="margin-bottom: 4px;">OBJETIVO ATUAL</p>
-          <h3 id="objective-title">Conheça a missão</h3>
-          <p id="objective-text">Converse com a Professora Helena para iniciar sua investigação sobre o genoma.</p>
-          <div class="progress-track"><div id="progress-fill"></div></div>
-          <small id="progress-label" style="color: var(--text-muted); font-size: 0.75rem;">0 de 3 pistas catalogadas</small>
+      <div class="game-main-container">
+        <!-- Viewport Principal da História -->
+        <div class="scene-viewport">
+          <div id="scene-graphic" class="scene-graphic">SETOR: SALA DE AULA DE BIOLOGIA MOLECULAR</div>
+          <div class="dialogue-box">
+            <h3 id="character-name">Professora Helena</h3>
+            <p id="dialogue-text">“Vamos investigar a trajetória da cientista Jaqueline Góes de Jesus e compreender o impacto do sequenciamento genômico no Brasil.”</p>
+          </div>
+          <div class="scene-actions">
+            <button id="talk-button" class="primary">Conversar / Investigar</button>
+            <button id="inspect-button" class="secondary">Examinar Bancada</button>
+          </div>
         </div>
 
-        <div class="hud-card">
-          <h3 id="interaction-title">Professora Helena</h3>
-          <p id="interaction-text">“Vamos investigar a trajetória da cientista Jaqueline Góes de Jesus e compreender o impacto do sequenciamento genômico.”</p>
-          <div class="interaction-actions">
-            <button id="talk-button" class="primary">Conversar</button>
-            <button id="inspect-button" class="secondary">Examinar Elemento</button>
+        <!-- Painel Lateral / HUD -->
+        <div class="sidebar-panel">
+          <div class="hud-card">
+            <p class="eyebrow" style="margin-bottom: 4px;">MISSÃO ATUAL</p>
+            <h3 id="objective-title">Investigação Inicial</h3>
+            <p id="objective-text">Converse com a Professora Helena e valide as primeiras fontes científicas.</p>
+            <div class="progress-track"><div id="progress-fill"></div></div>
+            <small id="progress-label" style="color: var(--text-muted); font-size: 0.75rem;">0 de 3 pistas catalogadas</small>
+          </div>
+
+          <div class="hud-card">
+            <p class="eyebrow" style="margin-bottom: 4px;">PESQUISADOR(A)</p>
+            <h3 id="player-display-name">Cientista</h3>
+            <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted);">Nível 1 · Investigador de Genoma</p>
           </div>
         </div>
       </div>
@@ -348,9 +361,9 @@
   <div id="dialogue-modal" class="modal hidden" role="dialog" aria-modal="true">
     <div class="modal-card">
       <button class="close-button" data-close="dialogue-modal" aria-label="Fechar">×</button>
-      <p class="eyebrow" id="dialogue-speaker">TRANSMISSÃO DE DIÁLOGO</p>
-      <h2 id="dialogue-title">Professora Helena</h2>
-      <p id="dialogue-body"></p>
+      <p class="eyebrow" id="dialogue-speaker">INTERAÇÃO</p>
+      <h2 id="modal-title">Diálogo</h2>
+      <p id="modal-body"></p>
       <div id="dialogue-choices" class="choice-list"></div>
     </div>
   </div>
@@ -370,7 +383,7 @@
   <div id="map-modal" class="modal hidden" role="dialog" aria-modal="true">
     <div class="modal-card">
       <button class="close-button" data-close="map-modal" aria-label="Fechar">×</button>
-      <p class="eyebrow">NAVEGAÇÃO 3D</p>
+      <p class="eyebrow">NAVEGAÇÃO</p>
       <h2>Mapa do Complexo</h2>
       <div class="map-grid">
         <button data-map-destination="classroom">Sala de Aula <small>Missão principal</small></button>
@@ -400,7 +413,7 @@
 
   <script>
     const gameState = {
-      playerName: '',
+      playerName: 'Pesquisador(a)',
       skin: '#f1c7a5',
       hair: 'short',
       outfit: '#3b82f6',
@@ -411,174 +424,29 @@
       quizCompleted: false
     };
 
-    const locations = {
+    const locationsData = {
       classroom: {
         name: 'Sala de Aula',
-        hint: 'Interaja com a Professora Helena ou examine a lousa.',
+        graphicTitle: 'SETOR: SALA DE AULA DE BIOLOGIA MOLECULAR',
         character: 'Professora Helena',
-        charText: '“Vamos investigar a trajetória da cientista Jaqueline Góes de Jesus e compreender o impacto do sequenciamento genômico no Brasil.”',
+        text: '“A ciência exige rigor e método. Jaqueline Góes de Jesus coordenou o sequenciamento genômico do vírus em tempo recorde no Brasil. Compreende o papel fundamental do DNA?”',
         actionLabel: 'Examinar Lousa'
       },
       library: {
         name: 'Biblioteca',
-        hint: 'Pesquise nos terminais por arquivos de biologia molecular.',
+        graphicTitle: 'SETOR: BIBLIOTECA DIGITAL DE GENÉTICA',
         character: 'Bibliotecário Carlos',
-        charText: '“Nossos servidores contam com publicações cruciais sobre genética e pioneiras da ciência. Sinta-se livre para consultar.”',
+        text: '“Nossos servidores contam com publicações cruciais sobre genética e pioneiras da ciência. Sinta-se livre para consultar os arquivos.”',
         actionLabel: 'Verificar Arquivo'
       },
       courtyard: {
         name: 'Pátio Externo',
-        hint: 'Observe os espécimes e a biodiversidade local.',
+        graphicTitle: 'SETOR: LABORATÓRIO DE CAMPO E BIODIVERSIDADE',
         character: 'Colega Bia',
-        charText: '“A diversidade genética na natureza é fascinante. Já registrou suas primeiras observações no diário?”',
+        text: '“A diversidade genética na natureza é fascinante. Já registrou suas primeiras observações no diário de campo?”',
         actionLabel: 'Analisar Amostra'
       }
     };
-
-    let scene = null, camera = null, renderer = null, roomGroup = null;
-    let is3DInitialized = false;
-    let animationFrameId = null;
-
-    function init3D() {
-      const container = document.getElementById('canvas-container');
-      container.innerHTML = ''; 
-
-      scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x070b14);
-
-      camera = new THREE.PerspectiveCamera(75,       camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.set(0, 1.6, 3);
-
-      renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: "high-performance" });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(1);
-      container.appendChild(renderer.domElement);
-
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
-      scene.add(ambientLight);
-
-      const dirLight = new THREE.DirectionalLight(0x00d2ff, 1.2);
-      dirLight.position.set(5, 10, 5);
-      scene.add(dirLight);
-
-      buildRealisticRoom(gameState.currentLocation);
-
-      let isDragging = false;
-      let previousMousePosition = { x: 0, y: 0 };
-      let cameraRotationY = 0;
-      let cameraRotationX = 0;
-
-      const onPointerDown = (e) => {
-        if(e.target.tagName === 'BUTTON' || e.target.closest('.hud-card') || e.target.closest('.modal')) return;
-        isDragging = true;
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        previousMousePosition = { x: clientX, y: clientY };
-      };
-
-      const onPointerMove = (e) => {
-        if (!isDragging) return;
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        
-        const deltaX = clientX - previousMousePosition.x;
-        const deltaY = clientY - previousMousePosition.y;
-
-        cameraRotationY -= deltaX * 0.003;
-        cameraRotationX -= deltaY * 0.003;
-        cameraRotationX = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, cameraRotationX));
-
-        camera.rotation.order = 'YXZ';
-        camera.rotation.y = cameraRotationY;
-        camera.rotation.x = cameraRotationX;
-
-        previousMousePosition = { x: clientX, y: clientY };
-      };
-
-      const onPointerUp = () => { isDragging = false; };
-
-      window.addEventListener('mousedown', onPointerDown);
-      window.addEventListener('mousemove', onPointerMove);
-      window.addEventListener('mouseup', onPointerUp);
-
-      window.addEventListener('touchstart', onPointerDown, {passive: true});
-      window.addEventListener('touchmove', onPointerMove, {passive: true});
-      window.addEventListener('touchend', onPointerUp);
-
-      window.addEventListener('resize', () => {
-        if(!camera || !renderer) return;
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-      });
-
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
-      animate3D();
-      is3DInitialized = true;
-    }
-
-    function buildRealisticRoom(locKey) {
-      if (!scene) return;
-      if (roomGroup) scene.remove(roomGroup);
-      roomGroup = new THREE.Group();
-
-      let floorColor = 0x1e293b;
-      let wallColor = 0x0f172a;
-      let accentColor = 0x00d2ff;
-
-      if(locKey === 'library') {
-        floorColor = 0x292524;
-        wallColor = 0x1c1917;
-        accentColor = 0xf59e0b;
-      } else if(locKey === 'courtyard') {
-        floorColor = 0x064e3b;
-        wallColor = 0x022c22;
-        accentColor = 0x00f5a0;
-      }
-
-      const floorGeo = new THREE.PlaneGeometry(30, 30);
-      const floorMat = new THREE.MeshStandardMaterial({ color: floorColor, roughness: 0.4 });
-      const floor = new THREE.Mesh(floorGeo, floorMat);
-      floor.rotation.x = -Math.PI / 2;
-      roomGroup.add(floor);
-
-      const wallMat = new THREE.MeshStandardMaterial({ color: wallColor, roughness: 0.9 });
-      
-      const backWall = new THREE.Mesh(new THREE.PlaneGeometry(30, 15), wallMat);
-      backWall.position.set(0, 7.5, -15);
-      roomGroup.add(backWall);
-
-      const leftWall = new THREE.Mesh(new THREE.PlaneGeometry(30, 15), wallMat);
-      leftWall.rotation.y = Math.PI / 2;
-      leftWall.position.set(-15, 7.5, 0);
-      roomGroup.add(leftWall);
-
-      const rightWall = new THREE.Mesh(new THREE.PlaneGeometry(30, 15), wallMat);
-      rightWall.rotation.y = -Math.PI / 2;
-      rightWall.position.set(15, 7.5, 0);
-      roomGroup.add(rightWall);
-
-      const benchGeo = new THREE.BoxGeometry(4, 1, 1.8);
-      const benchMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.3 });
-      const bench = new THREE.Mesh(benchGeo, benchMat);
-      bench.position.set(0, 0.5, -4);
-      roomGroup.add(bench);
-
-      const monitorGeo = new THREE.BoxGeometry(1.2, 0.8, 0.2);
-      const monitorMat = new THREE.MeshStandardMaterial({ color: accentColor, emissive: accentColor, emissiveIntensity: 0.8 });
-      const monitor = new THREE.Mesh(monitorGeo, monitorMat);
-      monitor.position.set(0, 1.4, -4);
-      roomGroup.add(monitor);
-
-      scene.add(roomGroup);
-    }
-
-    function animate3D() {
-      animationFrameId = requestAnimationFrame(animate3D);
-      if (renderer && scene && camera) {
-        renderer.render(scene, camera);
-      }
-    }
 
     const startScreen = document.getElementById('start-screen');
     const creatorScreen = document.getElementById('creator-screen');
@@ -586,25 +454,26 @@
     const creatorForm = document.getElementById('creator-form');
     
     const playerNameInput = document.getElementById('player-name');
-    const skinSelect = document.getElementById('skin');
+    const skinS    const skinSelect = document.getElementById('skin');
     const hairSelect = document.getElementById('hair');
     const outfitSelect = document.getElementById('outfit');
 
     const areaLabel = document.getElementById('area-label');
+    const sceneGraphic = document.getElementById('scene-graphic');
+    const characterName = document.getElementById('character-name');
+    const dialogueText = document.getElementById('dialogue-text');
+    const talkButton = document.getElementById('talk-button');
+    const inspectButton = document.getElementById('inspect-button');
+
     const objectiveTitle = document.getElementById('objective-title');
     const objectiveText = document.getElementById('objective-text');
     const progressFill = document.getElementById('progress-fill');
     const progressLabel = document.getElementById('progress-label');
-    
-    const interactionTitle = document.getElementById('interaction-title');
-    const interactionText = document.getElementById('interaction-text');
-    const talkButton = document.getElementById('talk-button');
-    const inspectButton = document.getElementById('inspect-button');
+    const playerDisplayName = document.getElementById('player-display-name');
 
     const dialogueModal = document.getElementById('dialogue-modal');
-    const dialogueSpeaker = document.getElementById('dialogue-speaker');
-    const dialogueTitle = document.getElementById('dialogue-title');
-    const dialogueBody = document.getElementById('dialogue-body');
+    const modalTitle = document.getElementById('modal-title');
+    const modalBody = document.getElementById('modal-body');
     const dialogueChoices = document.getElementById('dialogue-choices');
 
     const journalModal = document.getElementById('journal-modal');
@@ -639,14 +508,13 @@
     });
 
     document.getElementById('continue-game').addEventListener('click', () => {
-      const saved = localStorage.getItem('codigo_da_vida_3d_save');
+      const saved = localStorage.getItem('codigo_da_vida_2d_save');
       if(saved) {
         try {
           const data = JSON.parse(saved);
           Object.assign(gameState, data);
           startScreen.classList.add('hidden');
           gameScreen.classList.remove('hidden');
-          setTimeout(init3D, 50);
           updateGameUI();
           showToast('Progresso sincronizado com sucesso!');
         } catch(e) {
@@ -659,21 +527,21 @@
 
     creatorForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      gameState.playerName = playerNameInput.value.trim();
+      gameState.playerName = playerNameInput.value.trim() || 'Pesquisador(a)';
       gameState.skin = skinSelect.value;
       gameState.hair = hairSelect.value;
       gameState.outfit = outfitSelect.value;
       
       creatorScreen.classList.add('hidden');
       gameScreen.classList.remove('hidden');
-      setTimeout(init3D, 50);
+      playerDisplayName.textContent = gameState.playerName;
       updateGameUI();
       saveGame();
-      showToast('Bem-vindo(a) ao laboratório 3D, ' + gameState.playerName + '!');
+      showToast('Bem-vindo(a) ao laboratório, ' + gameState.playerName + '!');
     });
 
     function saveGame() {
-      localStorage.setItem('codigo_da_vida_3d_save', JSON.stringify(gameState));
+      localStorage.setItem('codigo_da_vida_2d_save', JSON.stringify(gameState));
     }
 
     document.querySelectorAll('[data-map-destination]').forEach(btn => {
@@ -685,53 +553,49 @@
 
     function changeLocation(locKey) {
       gameState.currentLocation = locKey;
-      const info = locations[locKey];
+      const info = locationsData[locKey];
       areaLabel.textContent = info.name;
-      interactionTitle.textContent = info.character;
-      interactionText.textContent = info.charText;
+      sceneGraphic.textContent = info.graphicTitle;
+      characterName.textContent = info.character;
+      dialogueText.textContent = info.text;
       inspectButton.textContent = info.actionLabel;
-
-      if(is3DInitialized) {
-        buildRealisticRoom(locKey);
-      }
       saveGame();
     }
 
     talkButton.addEventListener('click', () => {
       const loc = gameState.currentLocation;
-      dialogueSpeaker.textContent = 'TRANSMISSÃO DE DIÁLOGO';
-      dialogueTitle.textContent = locations[loc].character;
+      modalTitle.textContent = locationsData[loc].character;
       dialogueChoices.innerHTML = '';
 
       if(loc === 'classroom') {
-        dialogueBody.textContent = '“A ciência exige rigor e método. Jaqueline Góes de Jesus coordenou o sequenciamento genômico do vírus em tempo recorde no Brasil. Compreende o papel fundamental do DNA?”';
+        modalBody.textContent = '“A ciência exige rigor e método. Jaqueline Góes de Jesus coordenou o sequenciamento genômico do vírus em tempo recorde no Brasil. Compreende o papel fundamental do DNA?”';
         const btnOpt = document.createElement('button');
         btnOpt.textContent = 'Sim, é a estrutura molecular responsável pelo código genético!';
         btnOpt.onclick = () => {
-          closeModal(dialogueModal);
+          dialogueModal.classList.add('hidden');
           addClue('Conceito fundamental de DNA e sequenciamento genômico.');
         };
         dialogueChoices.appendChild(btnOpt);
       } else if(loc === 'library') {
-        dialogueBody.textContent = '“Os registros históricos demonstram que grandes avanços nascem da colaboração entre pesquisadoras e pesquisadores.”';
+        modalBody.textContent = '“Os registros históricos demonstram que grandes avanços nascem da colaboração entre pesquisadoras e pesquisadores.”';
         const btnOpt = document.createElement('button');
         btnOpt.textContent = 'Registrar importância das referências científicas.';
         btnOpt.onclick = () => {
-          closeModal(dialogueModal);
+          dialogueModal.classList.add('hidden');
           addClue('Relevância de fontes e referências históricas verificáveis.');
         };
         dialogueChoices.appendChild(btnOpt);
       } else {
-        dialogueBody.textContent = '“Através da observação biológica no pátio, identificamos padrões de adaptação e diversidade genética.”';
+        modalBody.textContent = '“Através da observação biológica no pátio, identificamos padrões de adaptação e diversidade genética.”';
         const btnOpt = document.createElement('button');
         btnOpt.textContent = 'Analisar e registrar diversidade biológica.';
         btnOpt.onclick = () => {
-          closeModal(dialogueModal);
+          dialogueModal.classList.add('hidden');
           addClue('Análise de padrões e diversidade biológica natural.');
         };
         dialogueChoices.appendChild(btnOpt);
       }
-      openModal(dialogueModal);
+      dialogueModal.classList.remove('hidden');
     });
 
     inspectButton.addEventListener('click', () => {
@@ -783,16 +647,17 @@
     }
 
     function updateGameUI() {
+      playerDisplayName.textContent = gameState.playerName || 'Pesquisador(a)';
       const progressPercent = Math.min(100, (gameState.cluesFound / 3) * 100);
       progressFill.style.width = progressPercent + '%';
       progressLabel.textContent = `${gameState.cluesFound} de 3 pistas catalogadas`;
 
       if(gameState.cluesFound >= 3) {
         objectiveTitle.textContent = 'Missão Concluída!';
-        objectiveText.textContent = 'Parabéns! Todas as pistas foram validadas. O Laboratório Genômico 3D será desbloqueado em breve.';
+        objectiveText.textContent = 'Parabéns! Todas as pistas foram validadas. O Laboratório Genômico foi desbloqueado com sucesso.';
       } else {
         objectiveTitle.textContent = 'Investigação em Andamento';
-        objectiveText.textContent = 'Explore os ambientes 3D, interaja com os personagens e resolva os desafios analíticos.';
+        objectiveText.textContent = 'Explore as áreas, interaja com os personagens e resolva os desafios analíticos.';
       }
     }
 
@@ -839,9 +704,6 @@
         document.getElementById(e.target.getAttribute('data-close')).classList.add('hidden');
       });
     });
-
-    function closeModal(modalElement) { modalElement.classList.add('hidden'); }
-    function openModal(modalElement) { modalElement.classList.remove('hidden'); }
   </script>
 </body>
 </html>
