@@ -12,21 +12,30 @@
         .app { width: min(100%, 430px); }
         header { display: flex; justify-content: space-between; align-items: center; padding: 10px 4px 12px; }
         .logo { font-weight: 900; font-size: 15px; letter-spacing: 1px; color: #126477; }
-        .logo span { vertical-align: middle; }
         .scorebox { background: #fff; border: 3px solid #234e50; border-radius: 10px; padding: 6px 11px; font-size: 10px; font-weight: 900; box-shadow: 0 3px 0 #234e50; }
         .scorebox b { font-size: 19px; margin-left: 7px; }
         .game-wrap { position: relative; width: 100%; border: 4px solid #234e50; border-radius: 8px; overflow: hidden; box-shadow: 0 7px 0 #234e50; background: #70c9d4; }
         canvas { display: block; width: 100%; height: auto; aspect-ratio: 390/690; touch-action: manipulation; }
-        .overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 22px; background: rgba(21, 63, 72, 0.3); }
+        
+        .overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 18px; background: rgba(21, 63, 72, 0.45); z-index: 10; }
         .overlay.hidden { display: none; }
-        .card { width: 100%; text-align: center; background: #fff9df; border: 4px solid #234e50; border-radius: 15px; padding: 23px 17px; box-shadow: 0 7px 0 #234e50; }
-        .badge { display: inline-block; background: #d7f16a; border: 2px solid #234e50; padding: 5px 9px; border-radius: 5px; font-size: 10px; font-weight: 900; letter-spacing: 1px; }
-        h1 { font-size: 36px; line-height: .98; margin: 17px 0 12px; color: #183e48; text-shadow: 2px 2px #d7f16a; }
+        .card { width: 100%; text-align: center; background: #fff9df; border: 4px solid #234e50; border-radius: 15px; padding: 20px 15px; box-shadow: 0 7px 0 #234e50; }
+        .badge { display: inline-block; background: #d7f16a; border: 2px solid #234e50; padding: 4px 8px; border-radius: 5px; font-size: 10px; font-weight: 900; letter-spacing: 1px; }
+        h1 { font-size: 32px; line-height: 1; margin: 12px 0; color: #183e48; text-shadow: 2px 2px #d7f16a; }
         h1 span { color: #36a84e; }
-        p { font-size: 14px; line-height: 1.45; margin: 0 auto 20px; max-width: 260px; }
-        button { border: 3px solid #234e50; border-radius: 8px; background: #8ee34d; color: #183e48; font-size: 16px; font-weight: 900; padding: 12px 24px; box-shadow: 0 4px 0 #234e50; cursor: pointer; }
-        button:active { transform: translateY(3px); box-shadow: 0 1px 0 #234e50; }
-        small { display: block; font-size: 10px; margin-top: 15px; color: #45666b; }
+        p { font-size: 13px; line-height: 1.4; margin: 0 auto 15px; max-width: 280px; }
+        
+        /* Botões de Ação e Diálogo */
+        .btn-main { border: 3px solid #234e50; border-radius: 8px; background: #8ee34d; color: #183e48; font-size: 15px; font-weight: 900; padding: 12px 20px; box-shadow: 0 4px 0 #234e50; cursor: pointer; width: 100%; }
+        .btn-main:active { transform: translateY(3px); box-shadow: 0 1px 0 #234e50; }
+        
+        .options-grid { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+        .btn-option { border: 2px solid #234e50; border-radius: 8px; background: #ffffff; color: #183e48; font-size: 13px; font-weight: 700; padding: 10px; box-shadow: 0 3px 0 #234e50; cursor: pointer; text-align: left; transition: background 0.2s; }
+        .btn-option:hover { background: #eaf8ff; }
+        .btn-option:active { transform: translateY(2px); box-shadow: 0 1px 0 #234e50; }
+
+        .avatar-box { font-size: 36px; margin-bottom: 5px; }
+        small { display: block; font-size: 10px; margin-top: 12px; color: #45666b; }
         footer { display: flex; justify-content: center; gap: 10px; padding: 15px; font-size: 11px; font-weight: 900; letter-spacing: 1px; color: #267786; text-transform: uppercase; }
     </style>
 </head>
@@ -37,13 +46,15 @@
             <div class="scorebox">PONTOS <b id="score">0</b></div>
         </header>
         <section class="game-wrap">
-            <canvas id="game" width="390" height="690" aria-label="Jogo de voo: toque para subir e desvie dos tubos"></canvas>
+            <canvas id="game" width="390" height="690" aria-label="Jogo de voo científico"></canvas>
+            
+            <!-- Menu Inicial e de Game Over / Diálogo -->
             <div class="overlay" id="overlay">
-                <div class="card">
+                <div class="card" id="card-content">
                     <div class="badge">MISSÃO CIENTÍFICA</div>
                     <h1 id="overlay-title">Voe pela<br><span>ciência!</span></h1>
-                    <p id="overlay-text">Controle seu pesquisador, passe pelos obstáculos e colete moléculas de conhecimento.</p>
-                    <button id="start">COMEÇAR</button>
+                    <p id="overlay-text">Controle seu pesquisador, passe pelos obstáculos e colete descobertas no laboratório.</p>
+                    <button class="btn-main" id="start">COMEÇAR</button>
                     <small>Toque na tela ou aperte espaço para voar</small>
                 </div>
             </div>
@@ -61,62 +72,109 @@
         const startBtn = document.getElementById('start');
         const overlayTitle = document.getElementById('overlay-title');
         const overlayText = document.getElementById('overlay-text');
+        const cardContent = document.getElementById('card-content');
 
         let score = 0;
-        let gameState = 'START'; // START, PLAYING, GAMEOVER
+        let gameState = 'START'; // START, PLAYING, DIALOGUE, GAMEOVER
+        let hasShield = false;
+        let lastDialogueScore = 0;
+
+        // Banco de diálogos e perguntas científicas
+        const quizData = [
+            {
+                speaker: "Dra. Helena (Genetista)",
+                avatar: "👩‍🔬",
+                dialogue: "Encontramos uma amostra de DNA! Qual destas bases nitrogenadas NÃO pertence ao RNA?",
+                options: [
+                    { text: "A) Timina", correct: true },
+                    { text: "B) Uracila", correct: false },
+                    { text: "C) Adenina", correct: false }
+                ],
+                reward: "Escudo de Proteção ativado!"
+            },
+            {
+                speaker: "Dra. Helena (Genetista)",
+                avatar: "🧬",
+                dialogue: "Ótimo avanço! Qual organela celular é conhecida como a 'usina de energia' da célula?",
+                options: [
+                    { text: "A) Complexo de Golgi", correct: false },
+                    { text: "B) Mitocôndria", correct: true },
+                    { text: "C) Ribossomo", correct: false }
+                ],
+                reward: "+3 Pontos Bônus!"
+            },
+            {
+                speaker: "Dra. Helena (Genetista)",
+                avatar: "🔬",
+                dialogue: "A estrutura de dupla hélice do DNA foi revelada por imagens de difração de Raio-X obtidas por:",
+                options: [
+                    { text: "A) Rosalind Franklin", correct: true },
+                    { text: "B) Marie Curie", correct: false },
+                    { text: "C) Ada Lovelace", correct: false }
+                ],
+                reward: "Escudo de Proteção ativado!"
+            }
+        ];
+
+        let quizIndex = 0;
 
         const player = {
             x: 80,
             y: 250,
             radius: 16,
-            gravity: 0.5,
-            lift: -8,
+            gravity: 0.45,
+            lift: -7.5,
             velocity: 0
         };
 
         let pipes = [];
+        let molecules = [];
         let frameCount = 0;
 
         function resetGame() {
             player.y = 250;
             player.velocity = 0;
             pipes = [];
+            molecules = [];
             score = 0;
             frameCount = 0;
+            quizIndex = 0;
+            lastDialogueScore = 0;
+            hasShield = false;
             scoreEl.textContent = score;
         }
 
         function jump() {
             if (gameState === 'PLAYING') {
                 player.velocity = player.lift;
-            } else if (gameState === 'START' || gameState === 'GAMEOVER') {
-                resetGame();
-                gameState = 'PLAYING';
-                overlay.classList.add('hidden');
             }
         }
 
         window.addEventListener('keydown', e => {
-            if (e.code === 'Space' || e.code === 'ArrowUp') {
+            if ((e.code === 'Space' || e.code === 'ArrowUp') && gameState === 'PLAYING') {
                 e.preventDefault();
                 jump();
             }
         });
 
-        canvas.addEventListener('click', jump);
+        canvas.addEventListener('click', () => { if(gameState === 'PLAYING') jump(); });
         canvas.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            jump();
+            if(gameState === 'PLAYING') {
+                e.preventDefault();
+                jump();
+            }
         }, { passive: false });
 
-        startBtn.addEventListener('click', () => {
+        startBtn.addEventListener('click', startGame);
+
+        function startGame() {
             resetGame();
             gameState = 'PLAYING';
             overlay.classList.add('hidden');
-        });
+        }
 
         function spawnPipe() {
-            const gap = 170;
+            const gap = 175;
             const minHeight = 60;
             const maxHeight = canvas.height - gap - 60;
             const height = Math.floor(Math.random() * (maxHeight - minHeight + 1)) + minHeight;
@@ -127,7 +185,62 @@
                 bottom: canvas.height - height - gap,
                 passed: false
             });
+
+            // Adiciona molécula coletável no meio do vão com 50% de chance
+            if (Math.random() > 0.5) {
+                molecules.push({
+                    x: canvas.width + 25,
+                    y: height + gap / 2,
+                    collected: false
+                });
+            }
         }
+
+        function triggerDialogue() {
+            gameState = 'DIALOGUE';
+            const currentQuiz = quizData[quizIndex % quizData.length];
+
+            cardContent.innerHTML = `
+                <div class="badge">DIÁLOGO CIENTÍFICO</div>
+                <div class="avatar-box">${currentQuiz.avatar}</div>
+                <h3 style="margin: 5px 0; color: #183e48;">${currentQuiz.speaker}</h3>
+                <p style="margin-bottom: 10px;">"${currentQuiz.dialogue}"</p>
+                <div class="options-grid">
+                    ${currentQuiz.options.map((opt, idx) => `
+                        <button class="btn-option" onclick="handleAnswer(${opt.correct})">${opt.text}</button>
+                    `).join('')}
+                </div>
+            `;
+            overlay.classList.remove('hidden');
+        }
+
+        window.handleAnswer = function(isCorrect) {
+            quizIndex++;
+            if (isCorrect) {
+                score += 2;
+                hasShield = true;
+                scoreEl.textContent = score;
+                cardContent.innerHTML = `
+                    <div class="badge" style="background:#8ee34d;">RESPOSTA CORRETA!</div>
+                    <h1>🧬 Excelente!</h1>
+                    <p>Sua análise foi precisa. Você recebeu <b>+2 pontos</b> e um <b>Escudo de Proteção</b> para o próximo impacto!</p>
+                    <button class="btn-main" onclick="resumeGame()">CONTINUAR PESQUISA</button>
+                `;
+            } else {
+                cardContent.innerHTML = `
+                    <div class="badge" style="background:#ff9b9b;">QUASE LÁ!</div>
+                    <h1>🧪 Não desista!</h1>
+                    <p>A ciência é feita de tentativas. Vamos retomar o voo de exploração!</p>
+                    <button class="btn-main" onclick="resumeGame()">VOLTAR AO VOO</button>
+                `;
+            }
+        };
+
+        window.resumeGame = function() {
+            overlay.classList.add('hidden');
+            gameState = 'PLAYING';
+            player.velocity = 0; // Evita queda imediata após sair do menu
+        };
 
         function update() {
             if (gameState !== 'PLAYING') return;
@@ -135,37 +248,58 @@
             player.velocity += player.gravity;
             player.y += player.velocity;
 
-            // Limites do canvas (chão e teto)
+            // Limites superior/inferior
             if (player.y + player.radius >= canvas.height || player.y - player.radius <= 0) {
-                gameOver();
+                handleCollision();
             }
 
-            // Gerar tubos
-            if (frameCount % 100 === 0) {
+            // Gerar obstáculos
+            if (frameCount % 110 === 0) {
                 spawnPipe();
             }
 
-            // Mover e verificar colisão com tubos
-            for (let i = pipes.length - 1; i >= 0; i--) {
-                pipes[i].x -= 3;
+            // Mover e verificar moléculas
+            for (let i = molecules.length - 1; i >= 0; i--) {
+                let m = molecules[i];
+                m.x -= 2.8;
 
-                // Colisão
+                // Colisão com molécula
+                const dist = Math.hypot(player.x - m.x, player.y - m.y);
+                if (!m.collected && dist < player.radius + 12) {
+                    m.collected = true;
+                    score += 1;
+                    scoreEl.textContent = score;
+                }
+
+                if (m.x < -20) molecules.splice(i, 1);
+            }
+
+            // Mover e verificar tubos
+            for (let i = pipes.length - 1; i >= 0; i--) {
+                pipes[i].x -= 2.8;
+
+                // Colisão com tubo
                 if (
                     player.x + player.radius > pipes[i].x &&
                     player.x - player.radius < pipes[i].x + 60 &&
                     (player.y - player.radius < pipes[i].top || player.y + player.radius > canvas.height - pipes[i].bottom)
                 ) {
-                    gameOver();
+                    handleCollision();
                 }
 
-                // Pontuação
+                // Passou do tubo
                 if (!pipes[i].passed && pipes[i].x + 60 < player.x) {
                     score++;
                     scoreEl.textContent = score;
                     pipes[i].passed = true;
+
+                    // Gatilho de Diálogo a cada 4 pontos
+                    if (score > 0 && score - lastDialogueScore >= 4) {
+                        lastDialogueScore = score;
+                        triggerDialogue();
+                    }
                 }
 
-                // Remover tubos fora da tela
                 if (pipes[i].x + 60 < 0) {
                     pipes.splice(i, 1);
                 }
@@ -174,11 +308,24 @@
             frameCount++;
         }
 
+        function handleCollision() {
+            if (hasShield) {
+                hasShield = false; // Usa o escudo
+                player.y = 250;
+                player.velocity = -4; // Impulso de segurança
+            } else {
+                gameOver();
+            }
+        }
+
         function gameOver() {
             gameState = 'GAMEOVER';
-            overlayTitle.innerHTML = 'Fim de<br><span>Jogo!</span>';
-            overlayText.innerHTML = `Fizeste <b>${score}</b> pontos. Tenta novamente para avançar na ciência!`;
-            startBtn.textContent = 'JOGAR NOVAMENTE';
+            cardContent.innerHTML = `
+                <div class="badge">FIM DA EXPEDIÇÃO</div>
+                <h1>Pontuação:<br><span>${score} pts</span></h1>
+                <p>Sua contribuição para o laboratório foi registrada com sucesso.</p>
+                <button class="btn-main" onclick="startGame()">JOGAR NOVAMENTE</button>
+            `;
             overlay.classList.remove('hidden');
         }
 
@@ -187,36 +334,44 @@
             ctx.fillStyle = '#70c9d4';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Desenhar Tubos
+            // Tubos
             ctx.fillStyle = '#2d8a56';
             ctx.strokeStyle = '#234e50';
             ctx.lineWidth = 3;
 
             pipes.forEach(pipe => {
-                // Tubo Superior
                 ctx.fillRect(pipe.x, 0, 60, pipe.top);
                 ctx.strokeRect(pipe.x, 0, 60, pipe.top);
 
-                // Tubo Inferior
                 ctx.fillRect(pipe.x, canvas.height - pipe.bottom, 60, pipe.bottom);
                 ctx.strokeRect(pipe.x, canvas.height - pipe.bottom, 60, pipe.bottom);
             });
 
-            // Desenhar Jogador (Pesquisador / Molécula)
+            // Moléculas coletáveis
+            molecules.forEach(m => {
+                if (!m.collected) {
+                    ctx.font = '18px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText('🧬', m.x, m.y);
+                }
+            });
+
+            // Jogador
             ctx.beginPath();
             ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
-            ctx.fillStyle = '#fff9df';
+            ctx.fillStyle = hasShield ? '#d7f16a' : '#fff9df'; // Cor amarela se estiver com escudo
             ctx.fill();
-            ctx.lineWidth = 3;
-            ctx.strokeStyle = '#234e50';
+            ctx.lineWidth = hasShield ? 4 : 3;
+            ctx.strokeStyle = hasShield ? '#36a84e' : '#234e50';
             ctx.stroke();
             ctx.closePath();
 
-            // Ícone interno (🧬)
+            // Ícone interno
             ctx.font = '14px Arial';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText('🧬', player.x, player.y);
+            ctx.fillText(hasShield ? '🛡️' : '👩‍🔬', player.x, player.y);
         }
 
         function loop() {
