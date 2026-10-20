@@ -4,37 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="theme-color" content="#65c3d0">
-    <title>Código da Vida — Desafio Científico</title>
+    <title>Código da Vida — A Trajetória de Jaqueline Goes</title>
     <style>
         * { box-sizing: border-box; }
         html, body { margin: 0; min-height: 100%; font-family: Trebuchet MS, Arial, sans-serif; background: #e8f8f5; color: #12333b; }
         body { display: flex; justify-content: center; align-items: center; padding: 12px; }
         .app { width: min(100%, 430px); }
         header { display: flex; justify-content: space-between; align-items: center; padding: 10px 4px 12px; }
-        .logo { font-weight: 900; font-size: 15px; letter-spacing: 1px; color: #126477; }
+        .logo { font-weight: 900; font-size: 14px; letter-spacing: 1px; color: #126477; }
         .scorebox { background: #fff; border: 3px solid #234e50; border-radius: 10px; padding: 6px 11px; font-size: 10px; font-weight: 900; box-shadow: 0 3px 0 #234e50; }
         .scorebox b { font-size: 19px; margin-left: 7px; }
         .game-wrap { position: relative; width: 100%; border: 4px solid #234e50; border-radius: 8px; overflow: hidden; box-shadow: 0 7px 0 #234e50; background: #70c9d4; }
         canvas { display: block; width: 100%; height: auto; aspect-ratio: 390/690; touch-action: manipulation; }
         
-        .overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 18px; background: rgba(21, 63, 72, 0.45); z-index: 10; }
+        .overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 18px; background: rgba(21, 63, 72, 0.5); z-index: 10; }
         .overlay.hidden { display: none; }
-        .card { width: 100%; text-align: center; background: #fff9df; border: 4px solid #234e50; border-radius: 15px; padding: 20px 15px; box-shadow: 0 7px 0 #234e50; }
+        .card { width: 100%; text-align: center; background: #fff9df; border: 4px solid #234e50; border-radius: 15px; padding: 20px 15px; box-shadow: 0 7px 0 #234e50; max-height: 90vh; overflow-y: auto; }
         .badge { display: inline-block; background: #d7f16a; border: 2px solid #234e50; padding: 4px 8px; border-radius: 5px; font-size: 10px; font-weight: 900; letter-spacing: 1px; }
-        h1 { font-size: 32px; line-height: 1; margin: 12px 0; color: #183e48; text-shadow: 2px 2px #d7f16a; }
+        h1 { font-size: 28px; line-height: 1; margin: 12px 0; color: #183e48; text-shadow: 2px 2px #d7f16a; }
         h1 span { color: #36a84e; }
         p { font-size: 13px; line-height: 1.4; margin: 0 auto 15px; max-width: 280px; }
         
-        /* Botões de Ação e Diálogo */
         .btn-main { border: 3px solid #234e50; border-radius: 8px; background: #8ee34d; color: #183e48; font-size: 15px; font-weight: 900; padding: 12px 20px; box-shadow: 0 4px 0 #234e50; cursor: pointer; width: 100%; }
         .btn-main:active { transform: translateY(3px); box-shadow: 0 1px 0 #234e50; }
         
         .options-grid { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
-        .btn-option { border: 2px solid #234e50; border-radius: 8px; background: #ffffff; color: #183e48; font-size: 13px; font-weight: 700; padding: 10px; box-shadow: 0 3px 0 #234e50; cursor: pointer; text-align: left; transition: background 0.2s; }
+        .btn-option { border: 2px solid #234e50; border-radius: 8px; background: #ffffff; color: #183e48; font-size: 12px; font-weight: 700; padding: 10px; box-shadow: 0 3px 0 #234e50; cursor: pointer; text-align: left; transition: background 0.2s; }
         .btn-option:hover { background: #eaf8ff; }
         .btn-option:active { transform: translateY(2px); box-shadow: 0 1px 0 #234e50; }
 
-        .avatar-box { font-size: 36px; margin-bottom: 5px; }
+        .avatar-box { font-size: 36px; margin-bottom: 2px; }
         small { display: block; font-size: 10px; margin-top: 12px; color: #45666b; }
         footer { display: flex; justify-content: center; gap: 10px; padding: 15px; font-size: 11px; font-weight: 900; letter-spacing: 1px; color: #267786; text-transform: uppercase; }
     </style>
@@ -42,25 +41,24 @@
 <body>
     <main class="app">
         <header>
-            <div class="logo">🧬 <span>CÓDIGO DA VIDA</span></div>
+            <div class="logo">🧬 <span>JAQUELINE GOES</span></div>
             <div class="scorebox">PONTOS <b id="score">0</b></div>
         </header>
         <section class="game-wrap">
-            <canvas id="game" width="390" height="690" aria-label="Jogo de voo científico"></canvas>
+            <canvas id="game" width="390" height="690" aria-label="Jogo de trajetória científica"></canvas>
             
-            <!-- Menu Inicial e de Game Over / Diálogo -->
             <div class="overlay" id="overlay">
                 <div class="card" id="card-content">
                     <div class="badge">MISSÃO CIENTÍFICA</div>
-                    <h1 id="overlay-title">Voe pela<br><span>ciência!</span></h1>
-                    <p id="overlay-text">Controle seu pesquisador, passe pelos obstáculos e colete descobertas no laboratório.</p>
-                    <button class="btn-main" id="start">COMEÇAR</button>
-                    <small>Toque na tela ou aperte espaço para voar</small>
+                    <h1 id="overlay-title">A Jornada de<br><span>Jaqueline Goes</span></h1>
+                    <p id="overlay-text">Ajude a cientista baiana a avançar na pesquisa, desviar dos obstáculos e sequenciar o genoma viral!</p>
+                    <button class="btn-main" id="start">INICIAR JORNADA</button>
+                    <small>Toque na tela ou aperte espaço para guiar a cientista</small>
                 </div>
             </div>
         </section>
         <footer>
-            <span>Explore</span><span>•</span><span>Aprenda</span><span>•</span><span>Descubra</span>
+            <span>Estudo</span><span>•</span><span>Ciência</span><span>•</span><span>Superação</span>
         </footer>
     </main>
 
@@ -79,40 +77,37 @@
         let hasShield = false;
         let lastDialogueScore = 0;
 
-        // Banco de diálogos e perguntas científicas
+        // Perguntas baseadas na biografia e trajetória de Jaqueline Goes de Jesus
         const quizData = [
             {
-                speaker: "Dra. Helena (Genetista)",
+                speaker: "Dra. Jaqueline Goes",
                 avatar: "👩‍🔬",
-                dialogue: "Encontramos uma amostra de DNA! Qual destas bases nitrogenadas NÃO pertence ao RNA?",
+                dialogue: "Minha trajetória começou em Salvador, na Bahia, onde me formoni em Biomedicina. Qual foi o foco principal da nossa equipe no início de 2020?",
                 options: [
-                    { text: "A) Timina", correct: true },
-                    { text: "B) Uracila", correct: false },
-                    { text: "C) Adenina", correct: false }
-                ],
-                reward: "Escudo de Proteção ativado!"
+                    { text: "A) Sequenciar o genoma do SARS-CoV-2 em tempo recorde", correct: true },
+                    { text: "B) Estudar apenas bactérias resistentes a antibióticos", correct: false },
+                    { text: "C) Desenvolver vacinas contra a gripe aviária", correct: false }
+                ]
             },
             {
-                speaker: "Dra. Helena (Genetista)",
+                speaker: "Dra. Jaqueline Goes",
                 avatar: "🧬",
-                dialogue: "Ótimo avanço! Qual organela celular é conhecida como a 'usina de energia' da célula?",
+                dialogue: "Em 2016, participei do projeto ZIBRA investigando vírus transmitidos por mosquitos. Qual técnica aprendida lá foi vital para a COVID-19?",
                 options: [
-                    { text: "A) Complexo de Golgi", correct: false },
-                    { text: "B) Mitocôndria", correct: true },
-                    { text: "C) Ribossomo", correct: false }
-                ],
-                reward: "+3 Pontos Bônus!"
+                    { text: "A) Sequenciamento genético", correct: true },
+                    { text: "B) Radiografia de tórax de alta resolução", correct: false },
+                    { text: "C) Culturas de tecidos vegetais", correct: false }
+                ]
             },
             {
-                speaker: "Dra. Helena (Genetista)",
-                avatar: "🔬",
-                dialogue: "A estrutura de dupla hélice do DNA foi revelada por imagens de difração de Raio-X obtidas por:",
+                speaker: "Dra. Jaqueline Goes",
+                avatar: "🌟",
+                dialogue: "Em 2021, recebi uma homenagem marcante da Mattel que inspirou meninas e jovens negras na ciência. O que ganhei?",
                 options: [
-                    { text: "A) Rosalind Franklin", correct: true },
-                    { text: "B) Marie Curie", correct: false },
-                    { text: "C) Ada Lovelace", correct: false }
-                ],
-                reward: "Escudo de Proteção ativado!"
+                    { text: "A) Uma boneca Barbie inspirada na minha trajetória", correct: true },
+                    { text: "B) Um selo postal comemorativo nacional", correct: false },
+                    { text: "C) Uma estátua em praça pública em Salvador", correct: false }
+                ]
             }
         ];
 
@@ -186,8 +181,7 @@
                 passed: false
             });
 
-            // Adiciona molécula coletável no meio do vão com 50% de chance
-            if (Math.random() > 0.5) {
+            if (Math.random() > 0.4) {
                 molecules.push({
                     x: canvas.width + 25,
                     y: height + gap / 2,
@@ -201,12 +195,12 @@
             const currentQuiz = quizData[quizIndex % quizData.length];
 
             cardContent.innerHTML = `
-                <div class="badge">DIÁLOGO CIENTÍFICO</div>
+                <div class="badge">MARCO DA PESQUISA</div>
                 <div class="avatar-box">${currentQuiz.avatar}</div>
                 <h3 style="margin: 5px 0; color: #183e48;">${currentQuiz.speaker}</h3>
                 <p style="margin-bottom: 10px;">"${currentQuiz.dialogue}"</p>
                 <div class="options-grid">
-                    ${currentQuiz.options.map((opt, idx) => `
+                    ${currentQuiz.options.map((opt) => `
                         <button class="btn-option" onclick="handleAnswer(${opt.correct})">${opt.text}</button>
                     `).join('')}
                 </div>
@@ -217,21 +211,21 @@
         window.handleAnswer = function(isCorrect) {
             quizIndex++;
             if (isCorrect) {
-                score += 2;
+                score += 3;
                 hasShield = true;
                 scoreEl.textContent = score;
                 cardContent.innerHTML = `
                     <div class="badge" style="background:#8ee34d;">RESPOSTA CORRETA!</div>
                     <h1>🧬 Excelente!</h1>
-                    <p>Sua análise foi precisa. Você recebeu <b>+2 pontos</b> e um <b>Escudo de Proteção</b> para o próximo impacto!</p>
+                    <p>Avanço histórico confirmado! Ganhou <b>+3 pontos</b> e um <b>Escudo de Proteção</b> para o laboratório.</p>
                     <button class="btn-main" onclick="resumeGame()">CONTINUAR PESQUISA</button>
                 `;
             } else {
                 cardContent.innerHTML = `
-                    <div class="badge" style="background:#ff9b9b;">QUASE LÁ!</div>
-                    <h1>🧪 Não desista!</h1>
-                    <p>A ciência é feita de tentativas. Vamos retomar o voo de exploração!</p>
-                    <button class="btn-main" onclick="resumeGame()">VOLTAR AO VOO</button>
+                    <div class="badge" style="background:#ff9b9b;">CONTINUE TENTANDO</div>
+                    <h1>🔬 A ciência exige persistência!</h1>
+                    <p>O importante é a dedicação contínua aos estudos. Vamos voltar à missão!</p>
+                    <button class="btn-main" onclick="resumeGame()">RETOMAR JORNADA</button>
                 `;
             }
         };
@@ -239,7 +233,7 @@
         window.resumeGame = function() {
             overlay.classList.add('hidden');
             gameState = 'PLAYING';
-            player.velocity = 0; // Evita queda imediata após sair do menu
+            player.velocity = 0;
         };
 
         function update() {
@@ -248,22 +242,18 @@
             player.velocity += player.gravity;
             player.y += player.velocity;
 
-            // Limites superior/inferior
             if (player.y + player.radius >= canvas.height || player.y - player.radius <= 0) {
                 handleCollision();
             }
 
-            // Gerar obstáculos
             if (frameCount % 110 === 0) {
                 spawnPipe();
             }
 
-            // Mover e verificar moléculas
             for (let i = molecules.length - 1; i >= 0; i--) {
                 let m = molecules[i];
                 m.x -= 2.8;
 
-                // Colisão com molécula
                 const dist = Math.hypot(player.x - m.x, player.y - m.y);
                 if (!m.collected && dist < player.radius + 12) {
                     m.collected = true;
@@ -274,11 +264,9 @@
                 if (m.x < -20) molecules.splice(i, 1);
             }
 
-            // Mover e verificar tubos
             for (let i = pipes.length - 1; i >= 0; i--) {
                 pipes[i].x -= 2.8;
 
-                // Colisão com tubo
                 if (
                     player.x + player.radius > pipes[i].x &&
                     player.x - player.radius < pipes[i].x + 60 &&
@@ -287,14 +275,12 @@
                     handleCollision();
                 }
 
-                // Passou do tubo
                 if (!pipes[i].passed && pipes[i].x + 60 < player.x) {
                     score++;
                     scoreEl.textContent = score;
                     pipes[i].passed = true;
 
-                    // Gatilho de Diálogo a cada 4 pontos
-                    if (score > 0 && score - lastDialogueScore >= 4) {
+                    if (score > 0 && score - lastDialogueScore >= 5) {
                         lastDialogueScore = score;
                         triggerDialogue();
                     }
@@ -310,9 +296,9 @@
 
         function handleCollision() {
             if (hasShield) {
-                hasShield = false; // Usa o escudo
+                hasShield = false;
                 player.y = 250;
-                player.velocity = -4; // Impulso de segurança
+                player.velocity = -4;
             } else {
                 gameOver();
             }
@@ -323,18 +309,16 @@
             cardContent.innerHTML = `
                 <div class="badge">FIM DA EXPEDIÇÃO</div>
                 <h1>Pontuação:<br><span>${score} pts</span></h1>
-                <p>Sua contribuição para o laboratório foi registrada com sucesso.</p>
-                <button class="btn-main" onclick="startGame()">JOGAR NOVAMENTE</button>
+                <p>O legado de dedicação e ciência de Jaqueline Goes continua a inspirar gerações!</p>
+                <button class="btn-main" onclick="startGame()">TENTAR NOVAMENTE</button>
             `;
             overlay.classList.remove('hidden');
         }
 
         function draw() {
-            // Fundo
             ctx.fillStyle = '#70c9d4';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Tubos
             ctx.fillStyle = '#2d8a56';
             ctx.strokeStyle = '#234e50';
             ctx.lineWidth = 3;
@@ -347,7 +331,6 @@
                 ctx.strokeRect(pipe.x, canvas.height - pipe.bottom, 60, pipe.bottom);
             });
 
-            // Moléculas coletáveis
             molecules.forEach(m => {
                 if (!m.collected) {
                     ctx.font = '18px Arial';
@@ -357,17 +340,15 @@
                 }
             });
 
-            // Jogador
             ctx.beginPath();
             ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
-            ctx.fillStyle = hasShield ? '#d7f16a' : '#fff9df'; // Cor amarela se estiver com escudo
+            ctx.fillStyle = hasShield ? '#d7f16a' : '#fff9df';
             ctx.fill();
             ctx.lineWidth = hasShield ? 4 : 3;
             ctx.strokeStyle = hasShield ? '#36a84e' : '#234e50';
             ctx.stroke();
             ctx.closePath();
 
-            // Ícone interno
             ctx.font = '14px Arial';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
