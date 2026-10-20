@@ -2,97 +2,124 @@
 <html lang="pt-BR">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="theme-color" content="#123d4a">
-    <title>Código da Vida — Investigação de Laboratório (Estilo Good Pizza)</title>
+    <title>Código da Vida — Laboratório (Estilo Good Pizza)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
         :root{--ink:#17354a;--teal:#0d6677;--lime:#a7d94c;--cream:#fff9e4;--dark:#123d4a;--wood:#8b5a2b}
-        *{box-sizing:border-box}
-        body{margin:0;background:#102830;color:var(--ink);font-family:Nunito,system-ui,sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:10px}
-        .app{width:min(100%, 780px);background:#f4f9f6;border:6px solid #234c50;border-radius:20px;overflow:hidden;box-shadow:0 12px 0 #081d24}
+        *{box-sizing:event-box;box-sizing:border-box}
+        body{margin:0;background:#0b1d22;color:var(--ink);font-family:Nunito,system-ui,sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;overflow:hidden}
+
+        /* Aviso de rotação para celular na vertical */
+        #rotateWarning{position:fixed;inset:0;background:#102830;color:#fff;z-index:9999;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px}
+        #rotateWarning span{font-size:50px;margin-bottom:15px;animation:bounce 1.5s infinite}
+        @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+        /* Estrutura principal otimizada para 16:9 (horizontal) */
+        .app{width:100vw;height:100vh;max-width:960px;max-height:540px;background:#e9f6f4;border:4px solid #234c50;display:flex;flex-direction:column;position:relative;box-shadow:0 10px 0 #051014;overflow:hidden}
         
-        header{background:var(--dark);color:#fff;padding:12px 18px;display:flex;justify-content:space-between;align-items:center}
-        .brand{display:flex;align-items:center;gap:10px}
-        .brand b{font-size:15px;letter-spacing:1px}
-        .brand small{display:block;font-size:10px;color:#8abdc2}
-        .stats{background:#1b4f5c;padding:6px 12px;border-radius:10px;font-size:12px;font-weight:900;color:#d9f0b0}
+        /* Cabeçalho do laboratório */
+        header{background:var(--dark);color:#fff;padding:8px 16px;display:flex;justify-content:space-between;align-items:center;height:45px;border-bottom:3px solid #234c50}
+        .brand{display:flex;align-items:center;gap:8px}
+        .brand b{font-size:13px;letter-spacing:1px}
+        .brand small{display:block;font-size:9px;color:#8abdc2}
+        .stats{background:#1b4f5c;padding:4px 10px;border-radius:8px;font-size:11px;font-weight:900;color:#d9f0b0}
 
-        /* Balcão / Laboratório Estilo Good Pizza */
-        .counter-stage{position:relative;background:linear-gradient(to bottom, #62b3bd 60%, #8cd4dc 60%);height:330px;border-bottom:6px solid #234c50;display:flex;flex-direction:column;justify-content:space-between;padding:15px;overflow:hidden}
-        .client-box{display:flex;align-items:center;gap:15px;background:#fffef0;border:3px solid #234c50;border-radius:15px;padding:12px 16px;box-shadow:0 4px 0 #234c5040;max-width:92%}
-        .client-avatar{font-size:40px;background:#e5f5c9;padding:6px 12px;border-radius:12px;border:2px solid #234c50}
-        .client-dialogue b{font-size:13px;display:block;color:#0d6677}
-        .client-dialogue p{font-size:13px;margin:4px 0 0;line-height:1.4}
+        /* Parte Superior: Cenário 2D e Atendimento (Estilo balcão) */
+        .lab-stage{position:relative;flex:1;background:linear-gradient(to bottom, #5bb2bd 65%, #3d8892 65%);display:flex;flex-direction:column;justify-content:flex-end;padding:12px;border-bottom:4px solid #234c50;overflow:hidden}
         
-        .counter-wood{position:absolute;bottom:0;left:0;right:0;height:45px;background:#5a3818;border-top:5px solid #3d230e}
+        /* Decoração de fundo do laboratório (janela, prateleiras, microscópio) */
+        .lab-bg-decor{position:absolute;top:10px;left:20px;right:20px;display:flex;justify-content:space-between;opacity:0.35;pointer-events:none}
+        .shelf{width:120px;height:12px;background:#123d4a;border-radius:6px;position:relative}
+        .shelf::after{content:'🧪 🧬 🔬';position:absolute;top:-18px;left:10px;font-size:16px}
 
-        /* Bancada de Investigação / Ferramentas */
-        .bench{background:#fff9e4;border-top:6px solid #234c50;padding:14px;display:flex;flex-direction:column;gap:10px}
-        .bench-header{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:900;color:#234c50}
-        
-        .assembly-box{background:#e5f5c9;border:2px dashed #234c50;border-radius:12px;padding:10px;min-height:55px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-        .slot-tag{font-size:11px;font-weight:900;color:#526c75}
+        .client-container{display:flex;align-items:flex-end;gap:12px;z-index:2;margin-bottom:5px}
+        .client-avatar{font-size:36px;background:#fffef0;padding:6px 10px;border-radius:12px;border:3px solid #234c50;box-shadow:0 3px 0 #234c50}
+        .client-bubble{background:#fffef0;border:3px solid #234c50;border-radius:14px;padding:8px 14px;box-shadow:0 3px 0 #234c5040;max-width:70%}
+        .client-bubble b{font-size:11px;display:block;color:#0d6677;letter-spacing:.5px}
+        .client-bubble p{font-size:12px;margin:2px 0 0;line-height:1.35}
 
-        .tools-tray{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
-        .tool-btn{background:#fff;border:3px solid #234c50;border-radius:12px;padding:8px 12px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 0 #234c50;transition:all 0.1s;display:flex;align-items:center;gap:6px}
-        .tool-btn:hover{background:#eaf8ff}
-        .tool-btn:active{transform:translateY(2px);box-shadow:0 1px 0 #234c50}
+        /* Bancada inferior interativa de ferramentas */
+        .bench{background:#fff9e4;height:175px;padding:10px 14px;display:flex;flex-direction:column;justify-content:space-between}
+        .bench-top{display:flex;justify-content:space-between;align-items:center}
+        .bench-top span{font-size:10px;font-weight:900;color:#234c50;letter-spacing:1px}
 
-        .actions-bar{display:flex;gap:10px;margin-top:4px}
-        .btn{border:3px solid #234c50;border-radius:10px;padding:10px 16px;font:900 13px Nunito;cursor:pointer;box-shadow:0 4px 0 #234c50}
+        .assembly-area{background:#e5f5c9;border:2px dashed #234c50;border-radius:10px;padding:6px 10px;min-height:38px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+        .slot-tag{font-size:10px;font-weight:900;color:#526c75}
+        .protocol-badge{background:#d7f16a;border:2px solid #234c50;padding:2px 6px;border-radius:6px;font-size:10px;font-weight:800}
+
+        .tools-tray{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+        .tool-card{background:#fff;border:3px solid #234c50;border-radius:10px;padding:6px 10px;font-size:11px;font-weight:800;cursor:pointer;box-shadow:0 3px 0 #234c50;white-space:nowrap;transition:all 0.1s;flex-shrink:0}
+        .tool-card:hover{background:#eaf8ff}
+        .tool-card:active{transform:translateY(2px);box-shadow:0 1px 0 #234c50}
+
+        .bench-actions{display:flex;gap:8px}
+        .btn{border:3px solid #234c50;border-radius:8px;padding:8px 14px;font:900 11px Nunito;cursor:pointer;box-shadow:0 3px 0 #234c50}
         .btn-primary{background:var(--lime);color:var(--ink);flex:1}
         .btn-danger{background:#ff9b9b;color:var(--ink)}
-        .btn:active{transform:translateY(3px);box-shadow:0 1px 0 #234c50}
+        .btn:active{transform:translateY(2px);box-shadow:0 1px 0 #234c50}
 
         /* Ecrã de Capa / Relatórios */
-        .cover{position:absolute;inset:0;background:#102830f0;z-index:10;display:flex;align-items:center;justify-content:center;padding:20px;text-align:center}
-        .cover-card{background:#fff9e4;border:4px solid #fff;border-radius:20px;padding:24px;max-width:440px;box-shadow:0 8px 0 #0d6677}
-        .cover-card h1{font-size:28px;margin:10px 0;color:#123d4a}
+        .cover{position:absolute;inset:0;background:#102830f2;z-index:10;display:flex;align-items:center;justify-content:center;padding:15px;text-align:center}
+        .cover-card{background:#fff9e4;border:4px solid #fff;border-radius:18px;padding:20px;max-width:400px;box-shadow:0 6px 0 #0d6677}
+        .cover-card h1{font-size:24px;margin:8px 0;color:#123d4a}
         .cover-card h1 span{color:#138395}
-        .cover-card p{font-size:13px;line-height:1.5;margin-bottom:18px}
+        .cover-card p{font-size:12px;line-height:1.45;margin-bottom:14px}
         .hidden{display:none!important}
     </style>
 </head>
 <body>
+
+    <!-- Aviso para girar o telemóvel se estiver na vertical -->
+    <div id="rotateWarning">
+        <span>📱🔄</span>
+        <h2>Por favor, vire o telemóvel na horizontal!</h2>
+        <p>Este laboratório foi desenhado no formato 16:9 para uma melhor experiência de jogo.</p>
+    </div>
+
     <main class="app">
         <header>
             <div class="brand">
-                <span style="font-size:24px">🔬</span>
+                <span style="font-size:18px">🔬</span>
                 <div>
                     <b>LABORATÓRIO DE VIGILÂNCIA GENÓMICA</b>
-                    <small>Inspiração: O Protocolo de Jaqueline Góes</small>
+                    <small>Inspiração: Protocolo de Jaqueline Góes</small>
                 </div>
             </div>
             <div class="stats" id="scoreBox">Caso: <b id="caseProgress">1</b>/4</div>
         </header>
 
-        <!-- Balcão do Laboratório -->
-        <section class="counter-stage">
-            <div class="client-box">
+        <!-- Parte Superior: Cenário 2D e Atendimento do Cliente -->
+        <section class="lab-stage">
+            <div class="lab-bg-decor">
+                <div class="shelf"></div>
+                <div class="shelf"></div>
+            </div>
+
+            <div class="client-container">
                 <div class="client-avatar" id="clientAvatar">👩‍⚕️</div>
-                <div class="client-dialogue">
+                <div class="client-bubble">
                     <b id="clientName">Dra. Helena (Chefe de Equipa)</b>
-                    <p id="clientText">Alerta no laboratório! Uma nova estirpe viral misteriosa começou a circular pelo país. Precisamos de investigar as pistas iniciais. O que deves solicitar primeiro na bancada?</p>
+                    <p id="clientText">Alerta no laboratório! Uma nova estirpe viral misteriosa começou a circular. O que deves solicitar primeiro na bancada?</p>
                 </div>
             </div>
-            <div class="counter-wood"></div>
         </section>
 
-        <!-- Bancada de Resposta / Ferramentas -->
+        <!-- Parte Inferior: Bancada de Ferramentas Interativa -->
         <section class="bench">
-            <div class="bench-header">
-                <span id="instructionLabel">SELECIONE OS PROCEDIMENTOS E FERRAMENTAS ADEQUADOS:</span>
-                <span>Mesa de Análise</span>
+            <div class="bench-top">
+                <span>SELECIONE OS PROCEDIMENTOS DE BANCADA:</span>
+                <span style="color:#526c75;" id="hintText">Arraste ou clique nos itens</span>
             </div>
             
-            <div class="assembly-box" id="assemblyBox">
+            <div class="assembly-area" id="assemblyBox">
                 <span class="slot-tag">Protocolo escolhido:</span>
             </div>
 
             <div class="tools-tray" id="trayContainer"></div>
 
-            <div class="actions-bar">
+            <div class="bench-actions">
                 <button class="btn btn-danger" onclick="resetBench()">Limpar Protocolo</button>
                 <button class="btn btn-primary" onclick="submitInvestigation()">Executar Análise de Bancada</button>
             </div>
@@ -101,15 +128,27 @@
         <!-- Ecrã Inicial / Transição -->
         <div id="cover" class="cover">
             <div class="cover-card">
-                <span style="font-size:36px">🧬</span>
+                <span style="font-size:30px">🧬</span>
                 <h1>Plantão de <span>Emergência Viral</span></h1>
-                <p>Assume o comando da estação de análises genómicas! Pessoas, repórteres e médicos chegam ao teu balcão com crises de saúde pública. Segue os passos de <b>Jaqueline Góes de Jesus</b>: investiga pistas, usa a tecnologia correta e resolve surtos em tempo recorde.</p>
-                <button class="btn btn-primary" style="width:100%" onclick="startGame()">Entrar no Laboratório</button>
+                <p>Assume o comando da estação de análises genómicas no formato horizontal! Pessoas, médicos e repórteres chegam ao balcão com crises de saúde pública. Segue os passos de <b>Jaqueline Góes de Jesus</b> para investigar pistas e resolver surtos em tempo recorde.</p>
+                <button class="btn btn-primary" style="width:100%; padding:10px; font-size:12px;" onclick="startGame()">Entrar no Laboratório</button>
             </div>
         </div>
     </main>
 
     <script>
+        // Detetar orientação do ecrã para aviso em dispositivos móveis
+        function checkOrientation() {
+            const warning = document.getElementById('rotateWarning');
+            if (window.innerHeight > window.innerWidth && window.innerWidth < 768) {
+                warning.style.display = 'flex';
+            } else {
+                warning.style.display = 'none';
+            }
+        }
+        window.addEventListener('resize', checkOrientation);
+        window.addEventListener('load', checkOrientation);
+
         let currentCase = 0;
         let selectedTools = [];
 
@@ -183,7 +222,7 @@
 
             shuffledTray.forEach(tool => {
                 const btn = document.createElement('button');
-                btn.className = 'tool-btn';
+                btn.className = 'tool-card';
                 btn.textContent = `🔍 ${tool}`;
                 btn.onclick = () => addTool(tool);
                 tray.appendChild(btn);
@@ -204,12 +243,7 @@
             box.innerHTML = '<span class="slot-tag">Protocolo escolhido:</span>';
             selectedTools.forEach((item, index) => {
                 const tag = document.createElement('span');
-                tag.style.background = '#d7f16a';
-                tag.style.border = '2px solid #234c50';
-                tag.style.padding = '3px 8px';
-                tag.style.borderRadius = '8px';
-                tag.style.fontSize = '11px';
-                tag.style.fontWeight = '800';
+                tag.className = 'protocol-badge';
                 tag.textContent = `${index + 1}. ${item}`;
                 box.appendChild(tag);
             });
@@ -236,25 +270,25 @@
                 currentCase++;
                 if(currentCase < casesData.length) {
                     card.innerHTML = `
-                        <span style="font-size:36px">🎉</span>
+                        <span style="font-size:30px">🎉</span>
                         <h1>Análise Bem-Sucedida!</h1>
                         <p>O procedimento foi validado com sucesso pela equipa técnica. O laboratório deu mais um passo fundamental na contenção do surto!</p>
-                        <button class="btn btn-primary" style="width:100%" onclick="nextClient()">Atender Próximo Caso</button>
+                        <button class="btn btn-primary" style="width:100%; padding:10px; font-size:12px;" onclick="nextClient()">Atender Próximo Caso</button>
                     `;
                 } else {
                     card.innerHTML = `
-                        <span style="font-size:36px">🏆</span>
+                        <span style="font-size:30px">🏆</span>
                         <h1>Surtos Controlados com Sucesso!</h1>
                         <p>Parabéns! Concluíste todas as investigações do laboratório com o rigor de Jaqueline Góes de Jesus. O teu trabalho salvou vidas e demonstrou a força da ciência brasileira para o mundo!</p>
-                        <button class="btn btn-primary" style="width:100%" onclick="restartGame()">Reiniciar Plantão</button>
+                        <button class="btn btn-primary" style="width:100%; padding:10px; font-size:12px;" onclick="restartGame()">Reiniciar Plantão</button>
                     `;
                 }
             } else {
                 card.innerHTML = `
-                    <span style="font-size:36px">💡</span>
+                    <span style="font-size:30px">💡</span>
                     <h1>Atenção ao Protocolo!</h1>
                     <p>A seleção de ferramentas ou dados científicos não corresponde às exigências desta emergência sanitária. Vamos rever as pistas e tentar novamente?</p>
-                    <button class="btn btn-primary" style="width:100%" onclick="retryClient()">Tentar Novamente</button>
+                    <button class="btn btn-primary" style="width:100%; padding:10px; font-size:12px;" onclick="retryClient()">Tentar Novamente</button>
                 `;
             }
         }
