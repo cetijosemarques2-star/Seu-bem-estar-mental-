@@ -1,1093 +1,280 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#62c4d0">
-  <title>Código da Vida — Aventura 2D</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#123d4a">
+    <title>Código da Vida — Investigação de Laboratório (Estilo Good Pizza)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+        :root{--ink:#17354a;--teal:#0d6677;--lime:#a7d94c;--cream:#fff9e4;--dark:#123d4a;--wood:#8b5a2b}
+        *{box-sizing:border-box}
+        body{margin:0;background:#102830;color:var(--ink);font-family:Nunito,system-ui,sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:10px}
+        .app{width:min(100%, 780px);background:#f4f9f6;border:6px solid #234c50;border-radius:20px;overflow:hidden;box-shadow:0 12px 0 #081d24}
+        
+        header{background:var(--dark);color:#fff;padding:12px 18px;display:flex;justify-content:space-between;align-items:center}
+        .brand{display:flex;align-items:center;gap:10px}
+        .brand b{font-size:15px;letter-spacing:1px}
+        .brand small{display:block;font-size:10px;color:#8abdc2}
+        .stats{background:#1b4f5c;padding:6px 12px;border-radius:10px;font-size:12px;font-weight:900;color:#d9f0b0}
 
-    :root {
-      --ink: #17354a;
-      --teal: #0d6677;
-      --lime: #a7d94c;
-      --cream: #fff7dc;
-      --coral: #ff815f;
-    }
+        /* Balcão / Laboratório Estilo Good Pizza */
+        .counter-stage{position:relative;background:linear-gradient(to bottom, #62b3bd 60%, #8cd4dc 60%);height:330px;border-bottom:6px solid #234c50;display:flex;flex-direction:column;justify-content:space-between;padding:15px;overflow:hidden}
+        .client-box{display:flex;align-items:center;gap:15px;background:#fffef0;border:3px solid #234c50;border-radius:15px;padding:12px 16px;box-shadow:0 4px 0 #234c5040;max-width:92%}
+        .client-avatar{font-size:40px;background:#e5f5c9;padding:6px 12px;border-radius:12px;border:2px solid #234c50}
+        .client-dialogue b{font-size:13px;display:block;color:#0d6677}
+        .client-dialogue p{font-size:13px;margin:4px 0 0;line-height:1.4}
+        
+        .counter-wood{position:absolute;bottom:0;left:0;right:0;height:45px;background:#5a3818;border-top:5px solid #3d230e}
 
-    * {
-      box-sizing: border-box;
-    }
+        /* Bancada de Investigação / Ferramentas */
+        .bench{background:#fff9e4;border-top:6px solid #234c50;padding:14px;display:flex;flex-direction:column;gap:10px}
+        .bench-header{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:900;color:#234c50}
+        
+        .assembly-box{background:#e5f5c9;border:2px dashed #234c50;border-radius:12px;padding:10px;min-height:55px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+        .slot-tag{font-size:11px;font-weight:900;color:#526c75}
 
-    body {
-      margin: 0;
-      background: #e9f6f4;
-      color: var(--ink);
-      font-family: Nunito, system-ui, sans-serif;
-    }
+        .tools-tray{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+        .tool-btn{background:#fff;border:3px solid #234c50;border-radius:12px;padding:8px 12px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 0 #234c50;transition:all 0.1s;display:flex;align-items:center;gap:6px}
+        .tool-btn:hover{background:#eaf8ff}
+        .tool-btn:active{transform:translateY(2px);box-shadow:0 1px 0 #234c50}
 
-    .app {
-      max-width: 1100px;
-      margin: auto;
-      padding: 14px;
-    }
+        .actions-bar{display:flex;gap:10px;margin-top:4px}
+        .btn{border:3px solid #234c50;border-radius:10px;padding:10px 16px;font:900 13px Nunito;cursor:pointer;box-shadow:0 4px 0 #234c50}
+        .btn-primary{background:var(--lime);color:var(--ink);flex:1}
+        .btn-danger{background:#ff9b9b;color:var(--ink)}
+        .btn:active{transform:translateY(3px);box-shadow:0 1px 0 #234c50}
 
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .dna {
-      font-size: 32px;
-      background: #fff;
-      border-radius: 13px;
-      padding: 6px;
-    }
-
-    .brand b {
-      display: block;
-      font-size: 17px;
-      letter-spacing: 1px;
-    }
-
-    .brand small {
-      display: block;
-      font-size: 11px;
-      color: #567180;
-    }
-
-    .top-actions {
-      display: flex;
-      gap: 7px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .top-actions button,
-    .top-actions span {
-      border: 0;
-      border-radius: 10px;
-      padding: 10px 12px;
-      background: white;
-      color: var(--ink);
-      font: 700 12px Nunito;
-      box-shadow: 0 3px 0 #c4ddda;
-    }
-
-    .top-actions span {
-      background: #d9f0b0;
-    }
-
-    .stage-wrap {
-      position: relative;
-      border: 5px solid #fff;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 8px 0 #c9e4df;
-      background: #79d0dc;
-    }
-
-    canvas {
-      display: block;
-      width: 100%;
-      height: auto;
-      image-rendering: pixelated;
-    }
-
-    .hud {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      right: 12px;
-      background: #fffef0eF;
-      border: 2px solid #fff;
-      border-radius: 13px;
-      padding: 10px 13px;
-      display: grid;
-      grid-template-columns: 1fr 150px;
-      gap: 12px;
-      align-items: center;
-      pointer-events: none;
-      box-shadow: 0 4px 0 #234c5030;
-    }
-
-    .hud small {
-      display: block;
-      font-size: 9px;
-      font-weight: 900;
-      letter-spacing: 1.4px;
-      color: #71834d;
-    }
-
-    .hud b {
-      display: block;
-      font-size: 15px;
-    }
-
-    .hud span {
-      font-size: 11px;
-      color: #526c75;
-    }
-
-    .progress {
-      height: 9px;
-      background: #dce8d9;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    .progress i {
-      display: block;
-      width: 0;
-      height: 100%;
-      background: var(--lime);
-      transition: width .3s;
-    }
-
-    .dialogue {
-      position: absolute;
-      bottom: 16px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: min(590px, calc(100% - 24px));
-      padding: 15px 17px;
-      background: #fffdf1;
-      border: 4px solid #fff;
-      border-radius: 18px;
-      box-shadow: 0 6px 0 #234c5040;
-      z-index: 4;
-    }
-
-    .dialogue-head {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border-bottom: 1px solid #e6e7d5;
-      padding-bottom: 9px;
-    }
-
-    .dialogue-head > span {
-      font-size: 28px;
-      background: #e5f5c9;
-      padding: 4px 9px;
-      border-radius: 10px;
-    }
-
-    .dialogue-head small {
-      display: block;
-      font-size: 9px;
-      letter-spacing: 1.5px;
-      color: #7a8b54;
-      font-weight: 900;
-    }
-
-    .dialogue-head b {
-      font-size: 15px;
-    }
-
-    .dialogue-head button,
-    .x-close {
-      margin-left: auto;
-      border: 0;
-      background: #f0e9d1;
-      border-radius: 9px;
-      font-size: 23px;
-      width: 32px;
-      height: 32px;
-      cursor: pointer;
-    }
-
-    .dialogue p {
-      font-size: 14px;
-      line-height: 1.5;
-      margin: 12px 0;
-    }
-
-    .choices {
-      display: grid;
-      gap: 7px;
-      margin-bottom: 9px;
-    }
-
-    .choices button {
-      border: 2px solid #d6e4d2;
-      background: #f4f9e9;
-      padding: 9px 11px;
-      text-align: left;
-      border-radius: 10px;
-      color: var(--ink);
-      font: 700 12px Nunito;
-      cursor: pointer;
-    }
-
-    .choices button:hover {
-      border-color: #8dbd3b;
-    }
-
-    .primary {
-      background: var(--teal);
-      color: #fff;
-      border: 0;
-      border-radius: 11px;
-      padding: 11px 16px;
-      font: 900 13px Nunito;
-      cursor: pointer;
-      box-shadow: 0 4px 0 #084957;
-    }
-
-    .primary:hover {
-      filter: brightness(1.1);
-    }
-
-    .cover {
-      position: absolute;
-      inset: 0;
-      display: grid;
-      place-items: center;
-      background: #143f4cbb;
-      z-index: 8;
-      padding: 14px;
-    }
-
-    .cover-card {
-      width: min(440px, 100%);
-      background: #fff9e4;
-      border: 4px solid white;
-      border-radius: 22px;
-      padding: 24px;
-      box-shadow: 0 8px 0 #123d4a55;
-      position: relative;
-    }
-
-    .big-dna {
-      font-size: 38px;
-    }
-
-    .eyebrow {
-      font-size: 10px;
-      font-weight: 900;
-      letter-spacing: 1.5px;
-      color: #6e8b43;
-    }
-
-    .cover h1 {
-      font-size: clamp(34px, 6vw, 52px);
-      line-height: 1;
-      margin: 8px 0 12px;
-    }
-
-    .cover h1 em {
-      font-style: normal;
-      color: #138395;
-    }
-
-    .cover-card p:not(.eyebrow) {
-      font-size: 13px;
-      line-height: 1.55;
-    }
-
-    .cover label {
-      display: block;
-      font-size: 12px;
-      font-weight: 900;
-      margin: 14px 0;
-    }
-
-    .cover input,
-    .cover textarea {
-      display: block;
-      width: 100%;
-      margin-top: 6px;
-      padding: 11px;
-      border: 2px solid #d7e2c6;
-      border-radius: 10px;
-      font: 600 14px Nunito;
-      background: #fff;
-    }
-
-    .cover textarea {
-      min-height: 75px;
-      resize: vertical;
-    }
-
-    .cover .primary {
-      width: 100%;
-    }
-
-    .cover small {
-      display: block;
-      font-size: 10px;
-      color: #61777a;
-      margin-top: 13px;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .journal-card {
-      max-height: 90%;
-      overflow: auto;
-    }
-
-    .journal-card h2,
-    .cover h2 {
-      margin: 4px 0 12px;
-    }
-
-    .x-close {
-      position: absolute;
-      right: 12px;
-      top: 12px;
-    }
-
-    .journal-entry {
-      padding: 9px 10px;
-      background: #edf5dd;
-      border-radius: 9px;
-      margin: 7px 0;
-      font-size: 12px;
-    }
-
-    .journal-entry b {
-      display: block;
-    }
-
-    .touch-controls {
-      display: none;
-      justify-content: center;
-      gap: 12px;
-      margin: 12px auto;
-    }
-
-    .touch-controls button {
-      border: 0;
-      border-radius: 12px;
-      background: #fff;
-      color: var(--ink);
-      font-weight: 900;
-      padding: 14px 18px;
-      box-shadow: 0 4px 0 #c3ddda;
-      touch-action: none;
-    }
-
-    .touch-controls #interactBtn {
-      background: var(--teal);
-      color: white;
-      min-width: 130px;
-    }
-
-    footer {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      font-size: 11px;
-      font-weight: 900;
-      color: #6b8589;
-      padding: 13px 4px;
-    }
-
-    .save {
-      margin-left: auto;
-      font-weight: 600;
-      font-size: 10px;
-    }
-
-    .toast {
-      position: absolute;
-      top: 85px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 5;
-      background: #173e4b;
-      color: #fff;
-      padding: 10px 15px;
-      border-radius: 12px;
-      font-size: 12px;
-      font-weight: 800;
-      box-shadow: 0 4px 0 #0c2c36;
-    }
-
-    .cover ul {
-      padding-left: 20px;
-      font-size: 13px;
-      line-height: 1.8;
-    }
-
-    @media(max-width: 650px) {
-      .app {
-        padding: 8px;
-      }
-      .brand b {
-        font-size: 13px;
-      }
-      .brand small {
-        font-size: 9px;
-      }
-      .dna {
-        font-size: 25px;
-      }
-      .top-actions {
-        gap: 5px;
-      }
-      .top-actions button,
-      .top-actions span {
-        padding: 8px;
-        font-size: 10px;
-      }
-      .top-actions button:last-child {
-        display: none;
-      }
-      .hud {
-        grid-template-columns: 1fr;
-        gap: 5px;
-        top: 7px;
-        left: 7px;
-        right: 7px;
-        padding: 7px 9px;
-      }
-      .hud b {
-        font-size: 12px;
-      }
-      .hud span {
-        font-size: 9px;
-      }
-      .progress {
-        width: 100%;
-        height: 6px;
-      }
-      .dialogue {
-        bottom: 8px;
-        padding: 11px 12px;
-      }
-      .dialogue p {
-        font-size: 12px;
-        margin: 8px 0;
-      }
-      .touch-controls {
-        display: flex;
-      }
-      footer {
-        font-size: 9px;
-        gap: 6px;
-      }
-      .save {
-        max-width: 120px;
-        text-align: right;
-      }
-      .cover-card {
-        padding: 19px;
-      }
-      .cover h1 {
-        font-size: 38px;
-      }
-    }
-  </style>
+        /* Ecrã de Capa / Relatórios */
+        .cover{position:absolute;inset:0;background:#102830f0;z-index:10;display:flex;align-items:center;justify-content:center;padding:20px;text-align:center}
+        .cover-card{background:#fff9e4;border:4px solid #fff;border-radius:20px;padding:24px;max-width:440px;box-shadow:0 8px 0 #0d6677}
+        .cover-card h1{font-size:28px;margin:10px 0;color:#123d4a}
+        .cover-card h1 span{color:#138395}
+        .cover-card p{font-size:13px;line-height:1.5;margin-bottom:18px}
+        .hidden{display:none!important}
+    </style>
 </head>
 <body>
-  <main class="app">
-    <header>
-      <div class="brand">
-        <span class="dna">🧬</span>
-        <div>
-          <b>CÓDIGO DA VIDA</b>
-          <small>Uma aventura sobre ciência e descobertas</small>
+    <main class="app">
+        <header>
+            <div class="brand">
+                <span style="font-size:24px">🔬</span>
+                <div>
+                    <b>LABORATÓRIO DE VIGILÂNCIA GENÓMICA</b>
+                    <small>Inspiração: O Protocolo de Jaqueline Góes</small>
+                </div>
+            </div>
+            <div class="stats" id="scoreBox">Caso: <b id="caseProgress">1</b>/4</div>
+        </header>
+
+        <!-- Balcão do Laboratório -->
+        <section class="counter-stage">
+            <div class="client-box">
+                <div class="client-avatar" id="clientAvatar">👩‍⚕️</div>
+                <div class="client-dialogue">
+                    <b id="clientName">Dra. Helena (Chefe de Equipa)</b>
+                    <p id="clientText">Alerta no laboratório! Uma nova estirpe viral misteriosa começou a circular pelo país. Precisamos de investigar as pistas iniciais. O que deves solicitar primeiro na bancada?</p>
+                </div>
+            </div>
+            <div class="counter-wood"></div>
+        </section>
+
+        <!-- Bancada de Resposta / Ferramentas -->
+        <section class="bench">
+            <div class="bench-header">
+                <span id="instructionLabel">SELECIONE OS PROCEDIMENTOS E FERRAMENTAS ADEQUADOS:</span>
+                <span>Mesa de Análise</span>
+            </div>
+            
+            <div class="assembly-box" id="assemblyBox">
+                <span class="slot-tag">Protocolo escolhido:</span>
+            </div>
+
+            <div class="tools-tray" id="trayContainer"></div>
+
+            <div class="actions-bar">
+                <button class="btn btn-danger" onclick="resetBench()">Limpar Protocolo</button>
+                <button class="btn btn-primary" onclick="submitInvestigation()">Executar Análise de Bancada</button>
+            </div>
+        </section>
+
+        <!-- Ecrã Inicial / Transição -->
+        <div id="cover" class="cover">
+            <div class="cover-card">
+                <span style="font-size:36px">🧬</span>
+                <h1>Plantão de <span>Emergência Viral</span></h1>
+                <p>Assume o comando da estação de análises genómicas! Pessoas, repórteres e médicos chegam ao teu balcão com crises de saúde pública. Segue os passos de <b>Jaqueline Góes de Jesus</b>: investiga pistas, usa a tecnologia correta e resolve surtos em tempo recorde.</p>
+                <button class="btn btn-primary" style="width:100%" onclick="startGame()">Entrar no Laboratório</button>
+            </div>
         </div>
-      </div>
-      <div class="top-actions">
-        <span id="areaTag">ESCOLA</span>
-        <button id="journalBtn">📓 Diário <b id="clueCount">0/3</b></button>
-        <button id="helpBtn">Como jogar</button>
-      </div>
-    </header>
+    </main>
 
-    <section class="stage-wrap">
-      <canvas id="scene" width="960" height="520" aria-label="Aventura educativa 2D"></canvas>
+    <script>
+        let currentCase = 0;
+        let selectedTools = [];
 
-      <div class="hud">
-        <div>
-          <small>MISSÃO ATUAL</small>
-          <b id="missionTitle">Uma cientista para conhecer</b>
-          <span id="missionText">Converse com a professora Helena.</span>
-        </div>
-        <div class="progress">
-          <i id="progressBar"></i>
-        </div>
-      </div>
-
-      <div id="toast" class="toast hidden"></div>
-
-      <div id="dialogue" class="dialogue hidden" role="dialog" aria-modal="true">
-        <div class="dialogue-head">
-          <span id="speakerIcon">👩‍🏫</span>
-          <div>
-            <small>CONVERSA</small>
-            <b id="speaker">Professora Helena</b>
-          </div>
-          <button id="closeDialogue" aria-label="Fechar diálogo">×</button>
-        </div>
-        <p id="dialogueText"></p>
-        <div id="dialogueChoices" class="choices"></div>
-        <button id="nextDialogue" class="primary">Continuar →</button>
-      </div>
-
-      <div id="intro" class="cover">
-        <div class="cover-card">
-          <div class="big-dna">🧬</div>
-          <p class="eyebrow">MOSTRA MUV · CIÊNCIA DELAS</p>
-          <h1>Código da <em>Vida</em></h1>
-          <p>Uma aventura 2D para descobrir a história de Jaqueline Góes de Jesus, explorar a ciência dos genomas e entender por que a pesquisa é feita em equipe.</p>
-          <label>Nome do personagem
-            <input id="playerName" maxlength="18" placeholder="Seu nome" value="Pesquisador(a)">
-          </label>
-          <button id="startBtn" class="primary">Começar aventura</button>
-          <small>Use ← → ou A/D para andar · E ou Espaço para interagir</small>
-        </div>
-      </div>
-
-      <div id="journal" class="cover hidden">
-        <div class="cover-card journal-card">
-          <button class="x-close" id="closeJournal">×</button>
-          <p class="eyebrow">REGISTRO DE DESCOBERTAS</p>
-          <h2>Diário científico</h2>
-          <div id="journalEntries"></div>
-          <label>Minha reflexão
-            <textarea id="reflection" placeholder="O que você aprendeu nesta etapa?"></textarea>
-          </label>
-          <button id="saveReflection" class="primary">Salvar reflexão</button>
-        </div>
-      </div>
-
-      <div id="help" class="cover hidden">
-        <div class="cover-card">
-          <button class="x-close" id="closeHelp">×</button>
-          <p class="eyebrow">GUIA RÁPIDO</p>
-          <h2>Como jogar</h2>
-          <ul>
-            <li><b>← →</b> ou <b>A / D</b>: andar pelo cenário.</li>
-            <li><b>E</b> ou <b>Espaço</b>: conversar, investigar ou usar uma passagem.</li>
-            <li>No celular, use os botões na parte inferior.</li>
-            <li>Procure personagens e objetos com um brilho amarelo.</li>
-            <li>Registre as descobertas no diário para avançar.</li>
-          </ul>
-          <button class="primary" id="gotIt">Entendi!</button>
-        </div>
-      </div>
-    </section>
-
-    <nav class="touch-controls">
-      <button id="leftBtn" aria-label="Andar para esquerda">◀</button>
-      <button id="interactBtn">INTERAGIR</button>
-      <button id="rightBtn" aria-label="Andar para direita">▶</button>
-    </nav>
-
-    <footer>
-      <span>Explore</span>
-      <span>✦</span>
-      <span>Converse</span>
-      <span>✦</span>
-      <span>Descubra</span>
-      <span class="save" id="saveStatus">Progresso salvo neste aparelho</span>
-    </footer>
-  </main>
-
-  <script>
-    const canvas = document.getElementById('scene');
-    const ctx = canvas.getContext('2d');
-
-    const state = {
-      playerName: 'Pesquisador(a)',
-      area: 'school',
-      playerX: 120,
-      dir: 1,
-      walking: false,
-      interactable: null,
-      journal: [],
-      reflection: '',
-      progress: 10,
-      keys: {},
-      dialogueQueue: [],
-      currentDialogue: null,
-      dialogueIndex: 0
-    };
-
-    const AREAS = {
-      school: {
-        title: 'ESCOLA',
-        bg: '#79d0dc',
-        ground: '#4da867',
-        missionTitle: 'Uma cientista para conhecer',
-        missionText: 'Converse com a professora Helena.',
-        nextArea: 'center',
-        entities: [
-          {
-            id: 'helena',
-            x: 280,
-            icon: '👩‍🏫',
-            name: 'Professora Helena',
-            interactLabel: 'Conversar com Prof. Helena',
-            dialogues: [
-              {
-                text: 'Olá! Você sabia que durante a pandemia de COVID-19, cientistas brasileiras sequenciaram o vírus em tempo recorde?',
-                choices: [
-                  { text: 'Sério? Quem fez isso?', next: 1 },
-                  { text: 'O que significa sequenciar?', next: 2 }
+        const casesData = [
+            {
+                client: "Dra. Helena (Chefe de Equipa)",
+                avatar: "👩‍⚕️",
+                prompt: "Alerta no laboratório! Uma nova estirpe viral misteriosa começou a circular e os hospitais estão preocupados. O que deves solicitar primeiro para iniciar a investigação?",
+                correct: ["Recebimento de Amostras Biológicas", "EPIs e Biossegurança"],
+                tray: [
+                    "Recebimento de Amostras Biológicas", 
+                    "EPIs e Biossegurança", 
+                    "Aparelho de som para festas", 
+                    "Livro de culinária italiana"
                 ]
-              },
-              {
-                text: 'A Dra. Jaqueline Góes de Jesus liderou a equipe que mapeou o genoma em apenas 48 horas!',
-                addClue: 'Jaqueline Góes liderou o sequenciamento do coronavírus no Brasil em 48h.',
-                next: 3
-              },
-              {
-                text: 'Sequenciar é ler a receita genética (DNA ou RNA) de um ser vivo para entender como ele funciona!',
-                addClue: 'Sequenciamento genômico é como ler o livro de instruções genéticas.',
-                next: 3
-              },
-              {
-                text: 'Vá até o Centro de Pesquisa à direita para saber mais!',
-                unlockDoor: true
-              }
-            ]
-          },
-          {
-            id: 'poster',
-            x: 620,
-            icon: '📜',
-            name: 'Mural Científico',
-            interactLabel: 'Examinar mural',
-            dialogues: [
-              {
-                text: 'O mural destaca: "Mulheres na Ciência - Jaqueline Góes graduou-se em Biomedicina e inspirou uma geração de jovens pesquisadoras."',
-                addClue: 'Jaqueline Góes é biomédica e inspiração nas ciências biológicas.'
-              }
-            ]
-          },
-          {
-            id: 'door1',
-            x: 860,
-            icon: '🚪',
-            name: 'Saída para o Centro de Pesquisa',
-            isDoor: true,
-            targetArea: 'center',
-            targetX: 100
-          }
-        ]
-      },
-      center: {
-        title: 'CENTRO DE PESQUISA',
-        bg: '#54a3be',
-        ground: '#518b96',
-        missionTitle: 'Trabalho em Equipe',
-        missionText: 'Fale com o pesquisador Lucas no laboratório.',
-        nextArea: 'lab',
-        entities: [
-          {
-            id: 'door_back1',
-            x: 60,
-            icon: '🚪',
-            name: 'Voltar para a Escola',
-            isDoor: true,
-            targetArea: 'school',
-            targetX: 800
-          },
-          {
-            id: 'lucas',
-            x: 400,
-            icon: '👨‍🔬',
-            name: 'Pesquisador Lucas',
-            interactLabel: 'Conversar com Lucas',
-            dialogues: [
-              {
-                text: 'A ciência nunca é feita por uma pessoa só. A Dra. Jaqueline trabalhou junto com o Instituto Adolfo Lutz e a Universidade de Oxford!',
-                addClue: 'A pesquisa científica rápida foi fruto de colaboração nacional e internacional.',
-                next: 1
-              },
-              {
-                text: 'Entre no laboratório genômico para testar a montagem de uma sequência genômica!',
-                unlockDoor: true
-              }
-            ]
-          },
-          {
-            id: 'door2',
-            x: 860,
-            icon: '🔬',
-            name: 'Entrar no Laboratório Genômico',
-            isDoor: true,
-            targetArea: 'lab',
-            targetX: 100
-          }
-        ]
-      },
-      lab: {
-        title: 'LABORATÓRIO GENÔMICO',
-        bg: '#33627d',
-        ground: '#3e5c6b',
-        missionTitle: 'Desafio do DNA',
-        missionText: 'Examine o computador de sequenciamento.',
-        nextArea: 'fair',
-        entities: [
-          {
-            id: 'door_back2',
-            x: 60,
-            icon: '🚪',
-            name: 'Voltar ao Centro',
-            isDoor: true,
-            targetArea: 'center',
-            targetX: 800
-          },
-          {
-            id: 'sequencer',
-            x: 500,
-            icon: '💻',
-            name: 'Sequenciador DNA/RNA',
-            interactLabel: 'Usar sequenciador',
-            dialogues: [
-              {
-                text: 'Mochila de Sequenciamento MinION! Ele identifica bases nitrogenadas: A (Adenina), T (Timina), C (Citosina), G (Guanina).',
-                addClue: 'O sequenciamento em tempo real permitiu identificar mutações do vírus rapidamente.'
-              }
-            ]
-          },
-          {
-            id: 'door3',
-            x: 860,
-            icon: '🏛️',
-            name: 'Ir para a Feira de Ciências',
-            isDoor: true,
-            targetArea: 'fair',
-            targetX: 100
-          }
-        ]
-      },
-      fair: {
-        title: 'FEIRA DE CIÊNCIAS',
-        bg: '#2b4d66',
-        ground: '#826952',
-        missionTitle: 'Conclusão',
-        missionText: 'Registre sua reflexão final no Diário!',
-        entities: [
-          {
-            id: 'door_back3',
-            x: 60,
-            icon: '🚪',
-            name: 'Voltar ao Laboratório',
-            isDoor: true,
-            targetArea: 'lab',
-            targetX: 800
-          },
-          {
-            id: 'stand',
-            x: 480,
-            icon: '🏆',
-            name: 'Estande da Ciência Delas',
-            interactLabel: 'Ver homenagem',
-            dialogues: [
-              {
-                text: 'Parabéns por explorar a história da Dra. Jaqueline Góes de Jesus! Abra seu Diário Científico para salvar sua reflexão final.'
-              }
-            ]
-          }
-        ]
-      }
-    };
+            },
+            {
+                client: "Carlos (Jornalista Investigativo)",
+                avatar: "📰",
+                prompt: "Olá! A população quer saber: quanto tempo temos para decifrar este vírus e qual a tecnologia que a equipa de Jaqueline usou para mapear o primeiro caso no Brasil?",
+                correct: ["Sequenciamento Genético em 48h", "Análise do Genoma do SARS-CoV-2"],
+                tray: [
+                    "Sequenciamento Genético em 48h", 
+                    "Análise do Genoma do SARS-CoV-2", 
+                    "Previsão do horóscopo semanal", 
+                    "Filtro de café avançado"
+                ]
+            },
+            {
+                client: "Dr. Roberto (Infectologista)",
+                avatar: "👨‍⚕️",
+                prompt: "A situação exige precisão técnica e histórica! Quais foram as bases científicas que permitiram à Jaqueline agir tão rápido nesta crise?",
+                correct: ["Experiência prévia no Projeto ZIBRA (vírus zika/dengue)", "Anos de Doutorado em Patologia e Mestrado em Biotecnologia"],
+                tray: [
+                    "Experiência prévia no Projeto ZIBRA (vírus zika/dengue)", 
+                    "Anos de Doutorado em Patologia e Mestrado em Biotecnologia", 
+                    "Curso rápido de culinária", 
+                    "Treinamento de jardinagem"
+                ]
+            },
+            {
+                client: "Mariana (Estudante de Ciências)",
+                avatar: "🧪",
+                prompt: "Para fechar o protocolo e divulgar o sucesso à sociedade: qual foi o verdadeiro segredo desta conquista e o legado deixado para as novas gerações?",
+                correct: ["Trabalho colaborativo em equipa", "Representatividade e incentivo a jovens cientistas"],
+                tray: [
+                    "Trabalho colaborativo em equipa", 
+                    "Representatividade e incentivo a jovens cientistas", 
+                    "Trabalhar completamente sozinho", 
+                    "Esconder os resultados do público"
+                ]
+            }
+        ];
 
-    function init() {
-      loadProgress();
-      bindEvents();
-      gameLoop();
-    }
-
-    function bindEvents() {
-      document.getElementById('startBtn').onclick = () => {
-        const nameInput = document.getElementById('playerName').value.trim();
-        if (nameInput) state.playerName = nameInput;
-        document.getElementById('intro').classList.add('hidden');
-        showToast('Bem-vindo(a), ' + state.playerName + '!');
-      };
-
-      document.getElementById('journalBtn').onclick = openJournal;
-      document.getElementById('closeJournal').onclick = () => document.getElementById('journal').classList.add('hidden');
-      document.getElementBdocument.getElementById('saveReflection').onclick = saveReflection;
-
-      document.getElementById('helpBtn').onclick = () => document.getElementById('help').classList.remove('hidden');
-      document.getElementById('closeHelp').onclick = () => document.getElementById('help').classList.add('hidden');
-      document.getElementById('gotIt').onclick = () => document.getElementById('help').classList.add('hidden');
-
-      document.getElementById('closeDialogue').onclick = closeDialogue;
-      document.getElementById('nextDialogue').onclick = advanceDialogue;
-
-      window.addEventListener('keydown', e => {
-        state.keys[e.key] = true;
-        if (['KeyE', 'Space', 'e', ' '].includes(e.key)) {
-          interact();
+        function startGame() {
+            document.getElementById('cover').classList.add('hidden');
+            loadCase();
         }
-      });
 
-      window.addEventListener('keyup', e => {
-        state.keys[e.key] = false;
-      });
+        function loadCase() {
+            const data = casesData[currentCase];
+            document.getElementById('clientName').textContent = data.client;
+            document.getElementById('clientAvatar').textContent = data.avatar;
+            document.getElementById('clientText').innerHTML = data.prompt;
+            document.getElementById('caseProgress').textContent = currentCase + 1;
 
-      const leftBtn = document.getElementById('leftBtn');
-      const rightBtn = document.getElementById('rightBtn');
-      const interactBtn = document.getElementById('interactBtn');
+            const tray = document.getElementById('trayContainer');
+            tray.innerHTML = '';
+            
+            let shuffledTray = [...data.tray].sort(() => Math.random() - 0.5);
 
-      const setKey = (key, val) => { state.keys[key] = val; };
-      leftBtn.addEventListener('touchstart', e => { e.preventDefault(); setKey('ArrowLeft', true); });
-      leftBtn.addEventListener('touchend', e => { e.preventDefault(); setKey('ArrowLeft', false); });
-      rightBtn.addEventListener('touchstart', e => { e.preventDefault(); setKey('ArrowRight', true); });
-      rightBtn.addEventListener('touchend', e => { e.preventDefault(); setKey('ArrowRight', false); });
-      interactBtn.addEventListener('click', () => interact());
-    }
+            shuffledTray.forEach(tool => {
+                const btn = document.createElement('button');
+                btn.className = 'tool-btn';
+                btn.textContent = `🔍 ${tool}`;
+                btn.onclick = () => addTool(tool);
+                tray.appendChild(btn);
+            });
 
-    function update() {
-      let speed = 4;
-      state.walking = false;
-
-      if (!document.getElementById('intro').classList.contains('hidden') ||
-          !document.getElementById('journal').classList.contains('hidden') ||
-          !document.getElementById('help').classList.contains('hidden') ||
-          !document.getElementById('dialogue').classList.contains('hidden')) {
-        return;
-      }
-
-      if (state.keys['ArrowLeft'] || state.keys['a'] || state.keys['A']) {
-        state.playerX -= speed;
-        state.dir = -1;
-        state.walking = true;
-      }
-      if (state.keys['ArrowRight'] || state.keys['d'] || state.keys['D']) {
-        state.playerX += speed;
-        state.dir = 1;
-        state.walking = true;
-      }
-
-      state.playerX = Math.max(40, Math.min(920, state.playerX));
-
-      const currentArea = AREAS[state.area];
-      state.interactable = null;
-
-      currentArea.entities.forEach(ent => {
-        if (Math.abs(ent.x - state.playerX) < 45) {
-          state.interactable = ent;
+            selectedTools = [];
+            updateAssemblyBox();
         }
-      });
-    }
 
-    function interact() {
-      if (!state.interactable) return;
-
-      const ent = state.interactable;
-      if (ent.isDoor) {
-        state.area = ent.targetArea;
-        state.playerX = ent.targetX || 100;
-        updateUI();
-        showToast('Você entrou em: ' + AREAS[state.area].title);
-        saveProgress();
-      } else if (ent.dialogues) {
-        startDialogue(ent);
-      }
-    }
-
-    function startDialogue(entity) {
-      state.currentDialogueEntity = entity;
-      state.dialogueIndex = 0;
-      showDialogueStep(entity.dialogues[0]);
-      document.getElementById('dialogue').classList.remove('hidden');
-    }
-
-    function showDialogueStep(step) {
-      state.currentStep = step;
-      document.getElementById('speakerIcon').innerText = state.currentDialogueEntity.icon;
-      document.getElementById('speaker').innerText = state.currentDialogueEntity.name;
-      document.getElementById('dialogueText').innerText = step.text;
-
-      const choicesContainer = document.getElementById('dialogueChoices');
-      const nextBtn = document.getElementById('nextDialogue');
-
-      choicesContainer.innerHTML = '';
-
-      if (step.addClue && !state.journal.includes(step.addClue)) {
-        state.journal.push(step.addClue);
-        updateUI();
-        showToast('Nova descoberta registrada!');
-      }
-
-      if (step.choices) {
-        nextBtn.classList.add('hidden');
-        step.choices.forEach(ch => {
-          const btn = document.createElement('button');
-          btn.innerText = ch.text;
-          btn.onclick = () => {
-            showDialogueStep(state.currentDialogueEntity.dialogues[ch.next]);
-          };
-          choicesContainer.appendChild(btn);
-        });
-      } else {
-        nextBtn.classList.remove('hidden');
-      }
-    }
-
-    function advanceDialogue() {
-      const step = state.currentStep;
-      if (step && step.next !== undefined) {
-        showDialogueStep(state.currentDialogueEntity.dialogues[step.next]);
-      } else {
-        closeDialogue();
-      }
-    }
-
-    function closeDialogue() {
-      document.getElementById('dialogue').classList.add('hidden');
-    }
-
-    function openJournal() {
-      const list = document.getElementById('journalEntries');
-      list.innerHTML = '';
-      if (state.journal.length === 0) {
-        list.innerHTML = '<p class="journal-entry">Nenhuma descoberta registrada ainda. Explore os cenários e converse com as pessoas!</p>';
-      } else {
-        state.journal.forEach((item, i) => {
-          const div = document.createElement('div');
-          div.className = 'journal-entry';
-          div.innerHTML = `<b>Descoberta #${i + 1}</b>${item}`;
-          list.appendChild(div);
-        });
-      }
-      document.getElementById('reflection').value = state.reflection || '';
-      document.getElementById('journal').classList.remove('hidden');
-    }
-
-    function saveReflection() {
-      state.reflection = document.getElementById('reflection').value;
-      saveProgress();
-      showToast('Reflexão salva com sucesso!');
-      document.getElementById('journal').classList.add('hidden');
-    }
-
-    function updateUI() {
-      const cur = AREAS[state.area];
-      document.getElementById('areaTag').innerText = cur.title;
-      document.getElementById('missionTitle').innerText = cur.missionTitle;
-      document.getElementById('missionText').innerText = cur.missionText;
-      document.getElementById('clueCount').innerText = state.journal.length + '/4';
-
-      let prog = (state.journal.length / 4) * 100;
-      document.getElementById('progressBar').style.width = Math.min(100, Math.max(10, prog)) + '%';
-    }
-
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.innerText = msg;
-      t.classList.remove('hidden');
-      setTimeout(() => t.classList.add('hidden'), 3000);
-    }
-
-    function saveProgress() {
-      const data = {
-        playerName: state.playerName,
-        area: state.area,
-        journal: state.journal,
-        reflection: state.reflection
-      };
-      localStorage.setItem('codigo_da_vida_save', JSON.stringify(data));
-      document.getElementById('saveStatus').innerText = 'Progresso salvo!';
-    }
-
-    function loadProgress() {
-      const saved = localStorage.getItem('codigo_da_vida_save');
-      if (saved) {
-        try {
-          const parsed = JSON.parse(saved);
-          state.playerName = parsed.playerName || 'Pesquisador(a)';
-          state.area = parsed.area || 'school';
-          state.journal = parsed.journal || [];
-          state.reflection = parsed.reflection || '';
-          document.getElementById('playerName').value = state.playerName;
-        } catch (e) {}
-      }
-      updateUI();
-    }
-
-    function render() {
-      const curArea = AREAS[state.area];
-
-      ctx.fillStyle = curArea.bg;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = '#ffffff22';
-      ctx.fillRect(0, 0, canvas.width, 180);
-
-      ctx.fillStyle = curArea.ground;
-      ctx.fillRect(0, 380, canvas.width, 140);
-
-      ctx.fillStyle = '#ffffff44';
-      ctx.fillRect(0, 375, canvas.width, 5);
-
-      curArea.entities.forEach(ent => {
-        ctx.font = '42px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText(ent.icon, ent.x, 370);
-
-        ctx.fillStyle = '#ffffffd0';
-        ctx.fillRect(ent.x - 50, 310, 100, 20);
-        ctx.fillStyle = '#17354a';
-        ctx.font = 'bold 10px Nunito, sans-serif';
-        ctx.fillText(ent.name, ent.x, 324);
-
-        if (state.interactable === ent) {
-          ctx.strokeStyle = '#fada5e';
-          ctx.lineWidth = 3;
-          ctx.beginPath();
-          ctx.arc(ent.x, 350, 32, 0, Math.PI * 2);
-          ctx.stroke();
-
-          ctx.fillStyle = '#fff7dc';
-          ctx.fillRect(ent.x - 65, 275, 130, 24);
-          ctx.fillStyle = '#0d6677';
-          ctx.font = 'bold 11px Nunito, sans-serif';
-          ctx.fillText('Pressione E', ent.x, 291);
+        function addTool(name) {
+            if(selectedTools.includes(name)) return;
+            selectedTools.push(name);
+            updateAssemblyBox();
         }
-      });
 
-      ctx.save();
-      ctx.translate(state.playerX, 370);
-      if (state.dir === -1) {
-        ctx.scale(-1, 1);
-      }
+        function updateAssemblyBox() {
+            const box = document.getElementById('assemblyBox');
+            box.innerHTML = '<span class="slot-tag">Protocolo escolhido:</span>';
+            selectedTools.forEach((item, index) => {
+                const tag = document.createElement('span');
+                tag.style.background = '#d7f16a';
+                tag.style.border = '2px solid #234c50';
+                tag.style.padding = '3px 8px';
+                tag.style.borderRadius = '8px';
+                tag.style.fontSize = '11px';
+                tag.style.fontWeight = '800';
+                tag.textContent = `${index + 1}. ${item}`;
+                box.appendChild(tag);
+            });
+        }
 
-      ctx.font = '48px sans-serif';
-      ctx.textAlign = 'center';
-      let bounce = state.walking ? Math.sin(Date.now() / 100) * 4 : 0;
-      ctx.fillText('🧑‍🔬', 0, Math.round(bounce));
+        function resetBench() {
+            selectedTools = [];
+            updateAssemblyBox();
+        }
 
-      ctx.restore();
+        function submitInvestigation() {
+            const currentData = casesData[currentCase];
+            
+            const correctSet = new Set(currentData.correct);
+            const userSet = new Set(selectedTools);
 
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(state.playerX - 40, 310, 80, 16);
-      ctx.fillStyle = '#17354a';
-      ctx.font = 'bold 9px Nunito, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(state.playerName, state.playerX, 321);
-    }
+            const isCorrect = userSet.size === correctSet.size && [...userSet].every(item => correctSet.has(item));
 
-    function gameLoop() {
-      update();
-      render();
-      requestAnimationFrame(gameLoop);
-    }
+            const cover = document.getElementById('cover');
+            const card = cover.querySelector('.cover-card');
+            cover.classList.remove('hidden');
 
-    window.onload = init;</script>
+            if(isCorrect) {
+                currentCase++;
+                if(currentCase < casesData.length) {
+                    card.innerHTML = `
+                        <span style="font-size:36px">🎉</span>
+                        <h1>Análise Bem-Sucedida!</h1>
+                        <p>O procedimento foi validado com sucesso pela equipa técnica. O laboratório deu mais um passo fundamental na contenção do surto!</p>
+                        <button class="btn btn-primary" style="width:100%" onclick="nextClient()">Atender Próximo Caso</button>
+                    `;
+                } else {
+                    card.innerHTML = `
+                        <span style="font-size:36px">🏆</span>
+                        <h1>Surtos Controlados com Sucesso!</h1>
+                        <p>Parabéns! Concluíste todas as investigações do laboratório com o rigor de Jaqueline Góes de Jesus. O teu trabalho salvou vidas e demonstrou a força da ciência brasileira para o mundo!</p>
+                        <button class="btn btn-primary" style="width:100%" onclick="restartGame()">Reiniciar Plantão</button>
+                    `;
+                }
+            } else {
+                card.innerHTML = `
+                    <span style="font-size:36px">💡</span>
+                    <h1>Atenção ao Protocolo!</h1>
+                    <p>A seleção de ferramentas ou dados científicos não corresponde às exigências desta emergência sanitária. Vamos rever as pistas e tentar novamente?</p>
+                    <button class="btn btn-primary" style="width:100%" onclick="retryClient()">Tentar Novamente</button>
+                `;
+            }
+        }
+
+        function nextClient() {
+            document.getElementById('cover').classList.add('hidden');
+            loadCase();
+        }
+
+        function retryClient() {
+            document.getElementById('cover').classList.add('hidden');
+            selectedTools = [];
+            updateAssemblyBox();
+        }
+
+        function restartGame() {
+            currentCase = 0;
+            document.getElementById('cover').classList.add('hidden');
+            loadCase();
+        }
+    </script>
 </body>
 </html>
