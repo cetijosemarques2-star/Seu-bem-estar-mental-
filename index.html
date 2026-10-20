@@ -1,367 +1,222 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="theme-color" content="#65c3d0">
-    <title>Código da Vida — A Trajetória de Jaqueline Goes</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#123d4a">
+    <title>Código da Vida — Estilo Estação Científica</title>
     <style>
-        * { box-sizing: border-box; }
-        html, body { margin: 0; min-height: 100%; font-family: Trebuchet MS, Arial, sans-serif; background: #e8f8f5; color: #12333b; }
-        body { display: flex; justify-content: center; align-items: center; padding: 12px; }
-        .app { width: min(100%, 430px); }
-        header { display: flex; justify-content: space-between; align-items: center; padding: 10px 4px 12px; }
-        .logo { font-weight: 900; font-size: 14px; letter-spacing: 1px; color: #126477; }
-        .scorebox { background: #fff; border: 3px solid #234e50; border-radius: 10px; padding: 6px 11px; font-size: 10px; font-weight: 900; box-shadow: 0 3px 0 #234e50; }
-        .scorebox b { font-size: 19px; margin-left: 7px; }
-        .game-wrap { position: relative; width: 100%; border: 4px solid #234e50; border-radius: 8px; overflow: hidden; box-shadow: 0 7px 0 #234e50; background: #70c9d4; }
-        canvas { display: block; width: 100%; height: auto; aspect-ratio: 390/690; touch-action: manipulation; }
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+        :root{--ink:#17354a;--teal:#0d6677;--lime:#a7d94c;--cream:#fff9e4;--coral:#ff815f;--dark:#123d4a}
+        *{box-sizing:border-box}
+        body{margin:0;background:#102830;color:var(--ink);font-family:Nunito,system-ui,sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:10px}
+        .app{width:min(100%, 750px);background:#e9f6f4;border:5px solid #234c50;border-radius:20px;overflow:hidden;box-shadow:0 10px 0 #081d24}
+        header{background:var(--dark);color:#fff;padding:12px 18px;display:flex;justify-content:space-between;align-items:center}
+        .brand{display:flex;align-items:center;gap:10px}
+        .dna-icon{font-size:26px}
+        .brand b{font-size:16px;letter-spacing:1px}
+        .brand small{display:block;font-size:10px;color:#8abdc2}
+        .stats{background:#1b4f5c;padding:6px 12px;border-radius:10px;font-size:12px;font-weight:900;color:#d9f0b0}
         
-        .overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 18px; background: rgba(21, 63, 72, 0.5); z-index: 10; }
-        .overlay.hidden { display: none; }
-        .card { width: 100%; text-align: center; background: #fff9df; border: 4px solid #234e50; border-radius: 15px; padding: 20px 15px; box-shadow: 0 7px 0 #234e50; max-height: 90vh; overflow-y: auto; }
-        .badge { display: inline-block; background: #d7f16a; border: 2px solid #234e50; padding: 4px 8px; border-radius: 5px; font-size: 10px; font-weight: 900; letter-spacing: 1px; }
-        h1 { font-size: 28px; line-height: 1; margin: 12px 0; color: #183e48; text-shadow: 2px 2px #d7f16a; }
-        h1 span { color: #36a84e; }
-        p { font-size: 13px; line-height: 1.4; margin: 0 auto 15px; max-width: 280px; }
-        
-        .btn-main { border: 3px solid #234e50; border-radius: 8px; background: #8ee34d; color: #183e48; font-size: 15px; font-weight: 900; padding: 12px 20px; box-shadow: 0 4px 0 #234e50; cursor: pointer; width: 100%; }
-        .btn-main:active { transform: translateY(3px); box-shadow: 0 1px 0 #234e50; }
-        
-        .options-grid { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
-        .btn-option { border: 2px solid #234e50; border-radius: 8px; background: #ffffff; color: #183e48; font-size: 12px; font-weight: 700; padding: 10px; box-shadow: 0 3px 0 #234e50; cursor: pointer; text-align: left; transition: background 0.2s; }
-        .btn-option:hover { background: #eaf8ff; }
-        .btn-option:active { transform: translateY(2px); box-shadow: 0 1px 0 #234e50; }
+        /* Área Estilo balcão / Good Pizza */
+        .game-stage{position:relative;background:#79d0dc;height:380px;border-bottom:5px solid #234c50;display:flex;flex-direction:column;justify-content:space-between;padding:15px;overflow:hidden}
+        .customer-area{display:flex;align-items:center;gap:15px;background:#fffef0;border:3px solid #234c50;border-radius:15px;padding:12px 16px;box-shadow:0 4px 0 #234c5040;max-width:90%}
+        .customer-avatar{font-size:38px;background:#e5f5c9;padding:6px 10px;border-radius:12px;border:2px solid #234c50}
+        .customer-dialogue b{font-size:13px;display:block;color:#0d6677}
+        .customer-dialogue p{font-size:13px;margin:4px 0 0;line-height:1.4}
 
-        .avatar-box { font-size: 36px; margin-bottom: 2px; }
-        small { display: block; font-size: 10px; margin-top: 12px; color: #45666b; }
-        footer { display: flex; justify-content: center; gap: 10px; padding: 15px; font-size: 11px; font-weight: 900; letter-spacing: 1px; color: #267786; text-transform: uppercase; }
+        /* Bancada de montagem de DNA (estilo pizza toppings) */
+        .bench{background:#fff9e4;border-top:5px solid #234c50;padding:14px;display:flex;flex-direction:column;gap:10px}
+        .bench-header{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:900;color:#234c50}
+        .dna-tray{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+        .dna-item{background:#fff;border:3px solid #234c50;border-radius:12px;padding:8px 12px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 0 #234c50;transition:all 0.1s;display:flex;align-items:center;gap:6px}
+        .dna-item:hover{background:#eaf8ff}
+        .dna-item:active{transform:translateY(2px);box-shadow:0 1px 0 #234c50}
+        
+        .assembly-box{background:#e5f5c9;border:2px dashed #234c50;border-radius:12px;padding:10px;min-height:55px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+        .slot-tag{font-size:11px;font-weight:900;color:#526c75}
+        
+        .actions-bar{display:flex;gap:10px;margin-top:4px}
+        .btn{border:3px solid #234c50;border-radius:10px;padding:10px 16px;font:900 13px Nunito;cursor:pointer;box-shadow:0 4px 0 #234c50}
+        .btn-primary{background:var(--lime);color:var(--ink);flex:1}
+        .btn-danger{background:#ff9b9b;color:var(--ink)}
+        .btn:active{transform:translateY(3px);box-shadow:0 1px 0 #234c50}
+
+        /* Modais / Capa */
+        .cover{position:absolute;inset:0;background:#102830f0;z-index:10;display:flex;align-items:center;justify-content:center;padding:20px;text-align:center}
+        .cover-card{background:#fff9e4;border:4px solid #fff;border-radius:20px;padding:24px;max-width:440px;box-shadow:0 8px 0 #0d6677}
+        .cover-card h1{font-size:32px;margin:10px 0;color:#123d4a}
+        .cover-card h1 span{color:#138395}
+        .cover-card p{font-size:13px;line-height:1.5;margin-bottom:18px}
+        .hidden{display:none!important}
     </style>
 </head>
 <body>
     <main class="app">
         <header>
-            <div class="logo">🧬 <span>JAQUELINE GOES</span></div>
-            <div class="scorebox">PONTOS <b id="score">0</b></div>
-        </header>
-        <section class="game-wrap">
-            <canvas id="game" width="390" height="690" aria-label="Jogo de trajetória científica"></canvas>
-            
-            <div class="overlay" id="overlay">
-                <div class="card" id="card-content">
-                    <div class="badge">MISSÃO CIENTÍFICA</div>
-                    <h1 id="overlay-title">A Jornada de<br><span>Jaqueline Goes</span></h1>
-                    <p id="overlay-text">Ajude a cientista baiana a avançar na pesquisa, desviar dos obstáculos e sequenciar o genoma viral!</p>
-                    <button class="btn-main" id="start">INICIAR JORNADA</button>
-                    <small>Toque na tela ou aperte espaço para guiar a cientista</small>
+            <div class="brand">
+                <span class="dna-icon">🧬</span>
+                <div>
+                    <b>ESTAÇÃO DE GENÓMICA</b>
+                    <small>Inspiração: Trajetória de Jaqueline Goes</small>
                 </div>
             </div>
+            <div class="stats" id="scoreBox">DNA Recolhido: <b id="dnaCount">0</b>/7</div>
+        </header>
+
+        <!-- Área Estilo Atendimento (Good Pizza) -->
+        <section class="game-stage">
+            <div class="customer-area" id="customerArea">
+                <div class="customer-avatar" id="customerAvatar">👩‍🔬</div>
+                <div class="customer-dialogue">
+                    <b id="customerName">Dra. Helena (Supervisora)</b>
+                    <p id="customerText">Olá, pesquisador(a)! Precisamos de montar a sequência correta com 7 amostras de DNA e definir a atitude certa de uma cientista resiliente. Vamos começar?</p>
+                </div>
+            </div>
+            
+            <div style="text-align:center; color:#fff; font-weight:900; text-shadow:1px 1px #123d4a; font-size:13px;" id="stageStatus">
+                Atendimento em andamento na bancada laboratorial...
+            </div>
         </section>
-        <footer>
-            <span>Estudo</span><span>•</span><span>Ciência</span><span>•</span><span>Superação</span>
-        </footer>
+
+        <!-- Bancada de Trabalho -->
+        <section class="bench">
+            <div class="bench-header">
+                <span>SELECIONE AS MOLÉCULAS DE DNA PARA A AMOSTRA:</span>
+                <span id="targetDesc">Meta: 7 itens corretos</span>
+            </div>
+            
+            <div class="assembly-box" id="assemblyBox">
+                <span class="slot-tag">Amostra atual montada:</span>
+            </div>
+
+            <div class="dna-tray" id="dnaTray">
+                <button class="dna-item" onclick="addDNA('Adenina (A)', true)">🧬 Adenina (A)</button>
+                <button class="dna-item" onclick="addDNA('Timina (T)', true)">🧬 Timina (T)</button>
+                <button class="dna-item" onclick="addDNA('Citosina (C)', true)">🧬 Citosina (C)</button>
+                <button class="dna-item" onclick="addDNA('Guanina (G)', true)">🧬 Guanina (G)</button>
+                <button class="dna-item" onclick="addDNA('Desistência', false)">⚠️ Desistência rápida</button>
+                <button class="dna-item" onclick="addDNA('Individualismo', false)">⚠️ Trabalhar só</button>
+                <button class="dna-item" onclick="addDNA('Rigor Científico', true)">🔬 Rigor Científico</button>
+                <button class="dna-item" onclick="addDNA('Persistência', true)">⭐ Persistência</button>
+                <button class="dna-item" onclick="addDNA('Trabalho em Equipa', true)">🤝 Trabalho em Equipa</button>
+            </div>
+
+            <div class="actions-bar">
+                <button class="btn btn-danger" onclick="resetBench()">Limpar Bancada</button>
+                <button class="btn btn-primary" onclick="submitSample()">Entregar Sequência ao Laboratório</button>
+            </div>
+        </section>
+
+        <!-- Ecrã de Introdução / Vitória -->
+        <div id="cover" class="cover">
+            <div class="cover-card">
+                <span style="font-size:36px">🧬</span>
+                <h1>Código da Vida <span>Lab</span></h1>
+                <p>Bem-vindo(a) ao simulador de laboratório inspirado em Jaqueline Goes! Atenda aos pedidos dos cientistas, recolha exatamente <b>7 DNAs e valores fundamentais</b> e aprenda como agir com persistência, rigor e união na ciência.</p>
+                <button class="btn btn-primary" style="width:100%" onclick="startGame()">Entrar no Laboratório</button>
+            </div>
+        </div>
     </main>
 
     <script>
-        const canvas = document.getElementById('game');
-        const ctx = canvas.getContext('2d');
-        const scoreEl = document.getElementById('score');
-        const overlay = document.getElementById('overlay');
-        const startBtn = document.getElementById('start');
-        const overlayTitle = document.getElementById('overlay-title');
-        const overlayText = document.getElementById('overlay-text');
-        const cardContent = document.getElementById('card-content');
+        let currentDNA = [];
+        let totalCollected = 0;
+        const targetGoal = 7;
 
-        let score = 0;
-        let gameState = 'START'; // START, PLAYING, DIALOGUE, GAMEOVER
-        let hasShield = false;
-        let lastDialogueScore = 0;
-
-        // Perguntas baseadas na biografia e trajetória de Jaqueline Goes de Jesus
-        const quizData = [
-            {
-                speaker: "Dra. Jaqueline Goes",
-                avatar: "👩‍🔬",
-                dialogue: "Minha trajetória começou em Salvador, na Bahia, onde me formoni em Biomedicina. Qual foi o foco principal da nossa equipe no início de 2020?",
-                options: [
-                    { text: "A) Sequenciar o genoma do SARS-CoV-2 em tempo recorde", correct: true },
-                    { text: "B) Estudar apenas bactérias resistentes a antibióticos", correct: false },
-                    { text: "C) Desenvolver vacinas contra a gripe aviária", correct: false }
-                ]
-            },
-            {
-                speaker: "Dra. Jaqueline Goes",
-                avatar: "🧬",
-                dialogue: "Em 2016, participei do projeto ZIBRA investigando vírus transmitidos por mosquitos. Qual técnica aprendida lá foi vital para a COVID-19?",
-                options: [
-                    { text: "A) Sequenciamento genético", correct: true },
-                    { text: "B) Radiografia de tórax de alta resolução", correct: false },
-                    { text: "C) Culturas de tecidos vegetais", correct: false }
-                ]
-            },
-            {
-                speaker: "Dra. Jaqueline Goes",
-                avatar: "🌟",
-                dialogue: "Em 2021, recebi uma homenagem marcante da Mattel que inspirou meninas e jovens negras na ciência. O que ganhei?",
-                options: [
-                    { text: "A) Uma boneca Barbie inspirada na minha trajetória", correct: true },
-                    { text: "B) Um selo postal comemorativo nacional", correct: false },
-                    { text: "C) Uma estátua em praça pública em Salvador", correct: false }
-                ]
-            }
+        const customerDialogueList = [
+            { name: "Dra. Helena (Pesquisa)", avatar: "👩‍🔬", text: "Precisamos de base sólida para o sequenciamento! Traga-nos elementos de rigor e bases nitrogenadas essenciais." },
+            { name: "Pesquisador Carlos", avatar: "👨‍🔬", text: "O desafio é enorme e o tempo é curto (48h). Como devemos agir? Com foco coletivo e persistência!" },
+            { name: "Estudante Ana", avatar: "👩‍🎓", text: "Estou a aprender sobre a sua história. O que nunca deve faltar a uma cientista de sucesso?" }
         ];
 
-        let quizIndex = 0;
-
-        const player = {
-            x: 80,
-            y: 250,
-            radius: 16,
-            gravity: 0.45,
-            lift: -7.5,
-            velocity: 0
-        };
-
-        let pipes = [];
-        let molecules = [];
-        let frameCount = 0;
-
-        function resetGame() {
-            player.y = 250;
-            player.velocity = 0;
-            pipes = [];
-            molecules = [];
-            score = 0;
-            frameCount = 0;
-            quizIndex = 0;
-            lastDialogueScore = 0;
-            hasShield = false;
-            scoreEl.textContent = score;
-        }
-
-        function jump() {
-            if (gameState === 'PLAYING') {
-                player.velocity = player.lift;
-            }
-        }
-
-        window.addEventListener('keydown', e => {
-            if ((e.code === 'Space' || e.code === 'ArrowUp') && gameState === 'PLAYING') {
-                e.preventDefault();
-                jump();
-            }
-        });
-
-        canvas.addEventListener('click', () => { if(gameState === 'PLAYING') jump(); });
-        canvas.addEventListener('touchstart', (e) => {
-            if(gameState === 'PLAYING') {
-                e.preventDefault();
-                jump();
-            }
-        }, { passive: false });
-
-        startBtn.addEventListener('click', startGame);
-
         function startGame() {
-            resetGame();
-            gameState = 'PLAYING';
-            overlay.classList.add('hidden');
+            document.getElementById('cover').classList.add('hidden');
+            loadNextCustomer();
         }
 
-        function spawnPipe() {
-            const gap = 175;
-            const minHeight = 60;
-            const maxHeight = canvas.height - gap - 60;
-            const height = Math.floor(Math.random() * (maxHeight - minHeight + 1)) + minHeight;
+        function loadNextCustomer() {
+            const rand = customerDialogueList[Math.floor(Math.random() * customerDialogueList.length)];
+            document.getElementById('customerName').textContent = rand.name;
+            document.getElementById('customerAvatar').textContent = rand.avatar;
+            document.getElementById('customerText').textContent = rand.text;
+        }
 
-            pipes.push({
-                x: canvas.width,
-                top: height,
-                bottom: canvas.height - height - gap,
-                passed: false
-            });
-
-            if (Math.random() > 0.4) {
-                molecules.push({
-                    x: canvas.width + 25,
-                    y: height + gap / 2,
-                    collected: false
-                });
+        function addDNA(name, isValid) {
+            if(currentDNA.length >= targetGoal) {
+                alert("A bancada já atingiu o limite de 7 itens! Clique em 'Entregar Sequência'.");
+                return;
             }
+            currentDNA.push({ name, isValid });
+            updateAssemblyBox();
         }
 
-        function triggerDialogue() {
-            gameState = 'DIALOGUE';
-            const currentQuiz = quizData[quizIndex % quizData.length];
-
-            cardContent.innerHTML = `
-                <div class="badge">MARCO DA PESQUISA</div>
-                <div class="avatar-box">${currentQuiz.avatar}</div>
-                <h3 style="margin: 5px 0; color: #183e48;">${currentQuiz.speaker}</h3>
-                <p style="margin-bottom: 10px;">"${currentQuiz.dialogue}"</p>
-                <div class="options-grid">
-                    ${currentQuiz.options.map((opt) => `
-                        <button class="btn-option" onclick="handleAnswer(${opt.correct})">${opt.text}</button>
-                    `).join('')}
-                </div>
-            `;
-            overlay.classList.remove('hidden');
+        function updateAssemblyBox() {
+            const box = document.getElementById('assemblyBox');
+            box.innerHTML = '<span class="slot-tag">Amostra atual:</span>';
+            currentDNA.forEach((item, index) => {
+                const tag = document.createElement('span');
+                tag.style.background = item.isValid ? '#d7f16a' : '#ffbaba';
+                tag.style.border = '2px solid #234c50';
+                tag.style.padding = '3px 8px';
+                tag.style.borderRadius = '8px';
+                tag.style.fontSize = '11px';
+                tag.style.fontWeight = '800';
+                tag.textContent = `${index + 1}. ${item.name}`;
+                box.appendChild(tag);
+            });
         }
 
-        window.handleAnswer = function(isCorrect) {
-            quizIndex++;
-            if (isCorrect) {
-                score += 3;
-                hasShield = true;
-                scoreEl.textContent = score;
-                cardContent.innerHTML = `
-                    <div class="badge" style="background:#8ee34d;">RESPOSTA CORRETA!</div>
-                    <h1>🧬 Excelente!</h1>
-                    <p>Avanço histórico confirmado! Ganhou <b>+3 pontos</b> e um <b>Escudo de Proteção</b> para o laboratório.</p>
-                    <button class="btn-main" onclick="resumeGame()">CONTINUAR PESQUISA</button>
+        function resetBench() {
+            currentDNA = [];
+            updateAssemblyBox();
+        }
+
+        function submitSample() {
+            if(currentDNA.length < targetGoal) {
+                alert(`Ainda faltam amostras! Precisa de selecionar exatamente ${targetGoal} itens na bancada (Tens ${currentDNA.length}/7).`);
+                return;
+            }
+
+            // Verificar se há itens inválidos
+            const hasError = currentDNA.some(item => !item.isValid);
+
+            const cover = document.getElementById('cover');
+            const card = cover.querySelector('.cover-card');
+
+            cover.classList.remove('hidden');
+
+            if(hasError) {
+                card.innerHTML = `
+                    <span style="font-size:36px">⚠️</span>
+                    <h1>Atenção ao Método!</h1>
+                    <p>A sua sequência continha atitudes ou elementos inadequados (como desistência ou isolamento). Como Jaqueline nos ensina, a ciência exige <b>trabalho em equipa, rigor e persistência</b>.</p>
+                    <button class="btn btn-primary" style="width:100%" onclick="retryGame()">Tentar Novamente</button>
                 `;
             } else {
-                cardContent.innerHTML = `
-                    <div class="badge" style="background:#ff9b9b;">CONTINUE TENTANDO</div>
-                    <h1>🔬 A ciência exige persistência!</h1>
-                    <p>O importante é a dedicação contínua aos estudos. Vamos voltar à missão!</p>
-                    <button class="btn-main" onclick="resumeGame()">RETOMAR JORNADA</button>
+                totalCollected += 7;
+                document.getElementById('dnaCount').textContent = totalCollected;
+                card.innerHTML = `
+                    <span style="font-size:36px">🌟</span>
+                    <h1>Sequenciamento Perfeito!</h1>
+                    <p>Parabéns! Entregou com sucesso os 7 elementos essenciais. Agir como Jaqueline Góes de Jesus significa manter o rigor científico, colaborar em equipa e nunca desistir diante dos grandes desafios da saúde pública.</p>
+                    <button class="btn btn-primary" style="width:100%" onclick="nextLevel()">Continuar Atendimento</button>
                 `;
             }
-        };
-
-        window.resumeGame = function() {
-            overlay.classList.add('hidden');
-            gameState = 'PLAYING';
-            player.velocity = 0;
-        };
-
-        function update() {
-            if (gameState !== 'PLAYING') return;
-
-            player.velocity += player.gravity;
-            player.y += player.velocity;
-
-            if (player.y + player.radius >= canvas.height || player.y - player.radius <= 0) {
-                handleCollision();
-            }
-
-            if (frameCount % 110 === 0) {
-                spawnPipe();
-            }
-
-            for (let i = molecules.length - 1; i >= 0; i--) {
-                let m = molecules[i];
-                m.x -= 2.8;
-
-                const dist = Math.hypot(player.x - m.x, player.y - m.y);
-                if (!m.collected && dist < player.radius + 12) {
-                    m.collected = true;
-                    score += 1;
-                    scoreEl.textContent = score;
-                }
-
-                if (m.x < -20) molecules.splice(i, 1);
-            }
-
-            for (let i = pipes.length - 1; i >= 0; i--) {
-                pipes[i].x -= 2.8;
-
-                if (
-                    player.x + player.radius > pipes[i].x &&
-                    player.x - player.radius < pipes[i].x + 60 &&
-                    (player.y - player.radius < pipes[i].top || player.y + player.radius > canvas.height - pipes[i].bottom)
-                ) {
-                    handleCollision();
-                }
-
-                if (!pipes[i].passed && pipes[i].x + 60 < player.x) {
-                    score++;
-                    scoreEl.textContent = score;
-                    pipes[i].passed = true;
-
-                    if (score > 0 && score - lastDialogueScore >= 5) {
-                        lastDialogueScore = score;
-                        triggerDialogue();
-                    }
-                }
-
-                if (pipes[i].x + 60 < 0) {
-                    pipes.splice(i, 1);
-                }
-            }
-
-            frameCount++;
         }
 
-        function handleCollision() {
-            if (hasShield) {
-                hasShield = false;
-                player.y = 250;
-                player.velocity = -4;
-            } else {
-                gameOver();
-            }
+        function retryGame() {
+            currentDNA = [];
+            updateAssemblyBox();
+            document.getElementById('cover').classList.add('hidden');
         }
 
-        function gameOver() {
-            gameState = 'GAMEOVER';
-            cardContent.innerHTML = `
-                <div class="badge">FIM DA EXPEDIÇÃO</div>
-                <h1>Pontuação:<br><span>${score} pts</span></h1>
-                <p>O legado de dedicação e ciência de Jaqueline Goes continua a inspirar gerações!</p>
-                <button class="btn-main" onclick="startGame()">TENTAR NOVAMENTE</button>
-            `;
-            overlay.classList.remove('hidden');
+        function nextLevel() {
+            currentDNA = [];
+            updateAssemblyBox();
+            document.getElementById('cover').classList.add('hidden');
+            loadNextCustomer();
         }
-
-        function draw() {
-            ctx.fillStyle = '#70c9d4';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = '#2d8a56';
-            ctx.strokeStyle = '#234e50';
-            ctx.lineWidth = 3;
-
-            pipes.forEach(pipe => {
-                ctx.fillRect(pipe.x, 0, 60, pipe.top);
-                ctx.strokeRect(pipe.x, 0, 60, pipe.top);
-
-                ctx.fillRect(pipe.x, canvas.height - pipe.bottom, 60, pipe.bottom);
-                ctx.strokeRect(pipe.x, canvas.height - pipe.bottom, 60, pipe.bottom);
-            });
-
-            molecules.forEach(m => {
-                if (!m.collected) {
-                    ctx.font = '18px Arial';
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-                    ctx.fillText('🧬', m.x, m.y);
-                }
-            });
-
-            ctx.beginPath();
-            ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
-            ctx.fillStyle = hasShield ? '#d7f16a' : '#fff9df';
-            ctx.fill();
-            ctx.lineWidth = hasShield ? 4 : 3;
-            ctx.strokeStyle = hasShield ? '#36a84e' : '#234e50';
-            ctx.stroke();
-            ctx.closePath();
-
-            ctx.font = '14px Arial';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(hasShield ? '🛡️' : '👩‍🔬', player.x, player.y);
-        }
-
-        function loop() {
-            update();
-            draw();
-            requestAnimationFrame(loop);
-        }
-
-        loop();
     </script>
 </body>
 </html>
