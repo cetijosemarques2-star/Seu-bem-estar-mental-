@@ -8,74 +8,69 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
         :root{--ink:#17354a;--teal:#0d6677;--lime:#a7d94c;--cream:#fff9e4;--dark:#123d4a;--wood:#8b5a2b}
-        *{box-sizing:event-box;box-sizing:border-box}
+        *{box-sizing:border-box}
         body{margin:0;background:#0b1d22;color:var(--ink);font-family:Nunito,system-ui,sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;overflow:hidden}
 
-        /* Aviso de rotação para celular na vertical */
+        /* Aviso de rotação para telemóvel na vertical */
         #rotateWarning{position:fixed;inset:0;background:#102830;color:#fff;z-index:9999;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px}
         #rotateWarning span{font-size:50px;margin-bottom:15px;animation:bounce 1.5s infinite}
         @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 
-        /* Estrutura principal otimizada para 16:9 (horizontal) */
+        /* Estrutura 16:9 (horizontal) */
         .app{width:100vw;height:100vh;max-width:960px;max-height:540px;background:#e9f6f4;border:4px solid #234c50;display:flex;flex-direction:column;position:relative;box-shadow:0 10px 0 #051014;overflow:hidden}
         
-        /* Cabeçalho do laboratório */
-        header{background:var(--dark);color:#fff;padding:8px 16px;display:flex;justify-content:space-between;align-items:center;height:45px;border-bottom:3px solid #234c50}
+        /* Cabeçalho */
+        header{background:var(--dark);color:#fff;padding:8px 16px;display:flex;justify-content:space-between;align-items:center;height:42px;border-bottom:3px solid #234c50}
         .brand{display:flex;align-items:center;gap:8px}
         .brand b{font-size:13px;letter-spacing:1px}
         .brand small{display:block;font-size:9px;color:#8abdc2}
         .stats{background:#1b4f5c;padding:4px 10px;border-radius:8px;font-size:11px;font-weight:900;color:#d9f0b0}
 
-        /* Parte Superior: Cenário 2D e Atendimento (Estilo balcão) */
-        .lab-stage{position:relative;flex:1;background:linear-gradient(to bottom, #5bb2bd 65%, #3d8892 65%);display:flex;flex-direction:column;justify-content:flex-end;padding:12px;border-bottom:4px solid #234c50;overflow:hidden}
+        /* Área Superior/Central: Cenário do Laboratório e Diálogo Estilo Good Pizza */
+        .lab-stage{position:relative;flex:1;background:linear-gradient(to bottom, #62b3bd 65%, #3d8892 65%);display:flex;flex-direction:column;justify-content:space-between;padding:14px;border-bottom:4px solid #234c50;overflow:hidden}
         
-        /* Decoração de fundo do laboratório (janela, prateleiras, microscópio) */
-        .lab-bg-decor{position:absolute;top:10px;left:20px;right:20px;display:flex;justify-content:space-between;opacity:0.35;pointer-events:none}
-        .shelf{width:120px;height:12px;background:#123d4a;border-radius:6px;position:relative}
-        .shelf::after{content:'🧪 🧬 🔬';position:absolute;top:-18px;left:10px;font-size:16px}
+        /* Decoração de fundo do laboratório */
+        .lab-bg-decor{position:absolute;top:10px;left:20px;right:20px;display:flex;justify-content:space-between;opacity:0.3;pointer-events:none}
+        .shelf{width:130px;height:10px;background:#123d4a;border-radius:5px;position:relative}
+        .shelf::after{content:'🧪 🧬 🔬 💻';position:absolute;top:-18px;left:8px;font-size:15px}
 
-        .client-container{display:flex;align-items:flex-end;gap:12px;z-index:2;margin-bottom:5px}
-        .client-avatar{font-size:36px;background:#fffef0;padding:6px 10px;border-radius:12px;border:3px solid #234c50;box-shadow:0 3px 0 #234c50}
-        .client-bubble{background:#fffef0;border:3px solid #234c50;border-radius:14px;padding:8px 14px;box-shadow:0 3px 0 #234c5040;max-width:70%}
-        .client-bubble b{font-size:11px;display:block;color:#0d6677;letter-spacing:.5px}
-        .client-bubble p{font-size:12px;margin:2px 0 0;line-height:1.35}
+        /* Personagem à esquerda e Balão de diálogo */
+        .client-area{display:flex;align-items:flex-end;gap:14px;z-index:2;max-width:85%}
+        .client-avatar{font-size:46px;background:#fffef0;padding:6px 12px;border-radius:14px;border:3px solid #234c50;box-shadow:0 4px 0 #234c50;flex-shrink:0}
+        
+        .client-bubble{background:#fffef0;border:3px solid #234c50;border-radius:16px;padding:10px 16px;box-shadow:0 4px 0 #234c5040;position:relative}
+        .client-bubble b{font-size:11px;display:block;color:#0d6677;letter-spacing:.5px;margin-bottom:2px}
+        .client-bubble p{font-size:12px;margin:0;line-height:1.4}
 
-        /* Bancada inferior interativa de ferramentas */
-        .bench{background:#fff9e4;height:175px;padding:10px 14px;display:flex;flex-direction:column;justify-content:space-between}
-        .bench-top{display:flex;justify-content:space-between;align-items:center}
-        .bench-top span{font-size:10px;font-weight:900;color:#234c50;letter-spacing:1px}
+        /* Balcão de madeira na parte inferior da cena */
+        .counter-wood{position:absolute;bottom:0;left:0;right:0;height:40px;background:#8b5a2b;border-top:4px solid #5a3818}
 
-        .assembly-area{background:#e5f5c9;border:2px dashed #234c50;border-radius:10px;padding:6px 10px;min-height:38px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-        .slot-tag{font-size:10px;font-weight:900;color:#526c75}
-        .protocol-badge{background:#d7f16a;border:2px solid #234c50;padding:2px 6px;border-radius:6px;font-size:10px;font-weight:800}
-
-        .tools-tray{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
-        .tool-card{background:#fff;border:3px solid #234c50;border-radius:10px;padding:6px 10px;font-size:11px;font-weight:800;cursor:pointer;box-shadow:0 3px 0 #234c50;white-space:nowrap;transition:all 0.1s;flex-shrink:0}
-        .tool-card:hover{background:#eaf8ff}
-        .tool-card:active{transform:translateY(2px);box-shadow:0 1px 0 #234c50}
-
-        .bench-actions{display:flex;gap:8px}
-        .btn{border:3px solid #234c50;border-radius:8px;padding:8px 14px;font:900 11px Nunito;cursor:pointer;box-shadow:0 3px 0 #234c50}
-        .btn-primary{background:var(--lime);color:var(--ink);flex:1}
-        .btn-danger{background:#ff9b9b;color:var(--ink)}
-        .btn:active{transform:translateY(2px);box-shadow:0 1px 0 #234c50}
+        /* Área Inferior: Opções de Resposta em Centralizadas (Estilo Good Pizza) */
+        .choices-panel{background:#fff9e4;height:140px;padding:12px 18px;display:flex;flex-direction:column;justify-content:center;gap:10px}
+        .choices-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+        
+        .choice-btn{background:#ffffff;border:3px solid #234c50;border-radius:12px;padding:12px 16px;font:800 12px Nunito;color:var(--ink);cursor:pointer;box-shadow:0 4px 0 #234c50;text-align:center;transition:all 0.1s;display:flex;align-items:center;justify-content:center;line-height:1.3}
+        .choice-btn:hover{background:#eaf8ff;border-color:#0d6677}
+        .choice-btn:active{transform:translateY(2px);box-shadow:0 2px 0 #234c50}
 
         /* Ecrã de Capa / Relatórios */
         .cover{position:absolute;inset:0;background:#102830f2;z-index:10;display:flex;align-items:center;justify-content:center;padding:15px;text-align:center}
-        .cover-card{background:#fff9e4;border:4px solid #fff;border-radius:18px;padding:20px;max-width:400px;box-shadow:0 6px 0 #0d6677}
-        .cover-card h1{font-size:24px;margin:8px 0;color:#123d4a}
+        .cover-card{background:#fff9e4;border:4px solid #fff;border-radius:18px;padding:22px;max-width:420px;box-shadow:0 6px 0 #0d6677}
+        .cover-card h1{font-size:26px;margin:8px 0;color:#123d4a}
         .cover-card h1 span{color:#138395}
-        .cover-card p{font-size:12px;line-height:1.45;margin-bottom:14px}
+        .cover-card p{font-size:12px;line-height:1.45;margin-bottom:16px}
         .hidden{display:none!important}
+        .btn-main{background:var(--lime);border:3px solid #234c50;border-radius:10px;padding:10px 20px;font:900 13px Nunito;color:var(--ink);cursor:pointer;box-shadow:0 4px 0 #234c50;width:100%}
+        .btn-main:active{transform:translateY(2px);box-shadow:0 2px 0 #234c50}
     </style>
 </head>
 <body>
 
-    <!-- Aviso para girar o telemóvel se estiver na vertical -->
+    <!-- Aviso para virar o telemóvel -->
     <div id="rotateWarning">
         <span>📱🔄</span>
         <h2>Por favor, vire o telemóvel na horizontal!</h2>
-        <p>Este laboratório foi desenhado no formato 16:9 para uma melhor experiência de jogo.</p>
+        <p>Este laboratório foi desenhado no formato 16:9 para garantir a experiência visual de Good Pizza, Great Pizza.</p>
     </div>
 
     <main class="app">
@@ -83,61 +78,50 @@
             <div class="brand">
                 <span style="font-size:18px">🔬</span>
                 <div>
-                    <b>LABORATÓRIO DE VIGILÂNCIA GENÓMICA</b>
-                    <small>Inspiração: Protocolo de Jaqueline Góes</small>
+                    <b>CÓDIGO DA VIDA — LABORATÓRIO</b>
+                    <small>Inspiração: A trajetória de Jaqueline Góes</small>
                 </div>
             </div>
             <div class="stats" id="scoreBox">Caso: <b id="caseProgress">1</b>/4</div>
         </header>
 
-        <!-- Parte Superior: Cenário 2D e Atendimento do Cliente -->
+        <!-- Parte Superior: Cenário 2D e Atendimento -->
         <section class="lab-stage">
             <div class="lab-bg-decor">
                 <div class="shelf"></div>
                 <div class="shelf"></div>
             </div>
 
-            <div class="client-container">
+            <div class="client-area">
                 <div class="client-avatar" id="clientAvatar">👩‍⚕️</div>
                 <div class="client-bubble">
                     <b id="clientName">Dra. Helena (Chefe de Equipa)</b>
-                    <p id="clientText">Alerta no laboratório! Uma nova estirpe viral misteriosa começou a circular. O que deves solicitar primeiro na bancada?</p>
+                    <p id="clientText">Alerta no laboratório! Uma nova estirpe viral misteriosa começou a circular. Qual deve ser o nosso primeiro passo na bancada?</p>
                 </div>
             </div>
+
+            <div class="counter-wood"></div>
         </section>
 
-        <!-- Parte Inferior: Bancada de Ferramentas Interativa -->
-        <section class="bench">
-            <div class="bench-top">
-                <span>SELECIONE OS PROCEDIMENTOS DE BANCADA:</span>
-                <span style="color:#526c75;" id="hintText">Arraste ou clique nos itens</span>
-            </div>
-            
-            <div class="assembly-area" id="assemblyBox">
-                <span class="slot-tag">Protocolo escolhido:</span>
-            </div>
-
-            <div class="tools-tray" id="trayContainer"></div>
-
-            <div class="bench-actions">
-                <button class="btn btn-danger" onclick="resetBench()">Limpar Protocolo</button>
-                <button class="btn btn-primary" onclick="submitInvestigation()">Executar Análise de Bancada</button>
+        <!-- Parte Inferior: Duas Grandes Opções de Resposta (Estilo Good Pizza) -->
+        <section class="choices-panel">
+            <div class="choices-grid" id="choicesGrid">
+                <!-- Os botões de escolha serão injetados aqui -->
             </div>
         </section>
 
         <!-- Ecrã Inicial / Transição -->
         <div id="cover" class="cover">
             <div class="cover-card">
-                <span style="font-size:30px">🧬</span>
+                <span style="font-size:32px">🧬</span>
                 <h1>Plantão de <span>Emergência Viral</span></h1>
-                <p>Assume o comando da estação de análises genómicas no formato horizontal! Pessoas, médicos e repórteres chegam ao balcão com crises de saúde pública. Segue os passos de <b>Jaqueline Góes de Jesus</b> para investigar pistas e resolver surtos em tempo recorde.</p>
-                <button class="btn btn-primary" style="width:100%; padding:10px; font-size:12px;" onclick="startGame()">Entrar no Laboratório</button>
+                <p>Assume o comando da estação de análises genómicas em modo horizontal! Pessoas, médicos e repórteres chegam ao balcão com crises de saúde pública. Segue os passos de <b>Jaqueline Góes de Jesus</b>, lê os diálogos e escolhe as decisões corretas para resolver os casos em tempo recorde.</p>
+                <button class="btn-main" onclick="startGame()">Entrar no Laboratório</button>
             </div>
         </div>
     </main>
 
     <script>
-        // Detetar orientação do ecrã para aviso em dispositivos móveis
         function checkOrientation() {
             const warning = document.getElementById('rotateWarning');
             if (window.innerHeight > window.innerWidth && window.innerWidth < 768) {
@@ -150,55 +134,42 @@
         window.addEventListener('load', checkOrientation);
 
         let currentCase = 0;
-        let selectedTools = [];
 
         const casesData = [
             {
                 client: "Dra. Helena (Chefe de Equipa)",
                 avatar: "👩‍⚕️",
-                prompt: "Alerta no laboratório! Uma nova estirpe viral misteriosa começou a circular e os hospitais estão preocupados. O que deves solicitar primeiro para iniciar a investigação?",
-                correct: ["Recebimento de Amostras Biológicas", "EPIs e Biossegurança"],
-                tray: [
-                    "Recebimento de Amostras Biológicas", 
-                    "EPIs e Biossegurança", 
-                    "Aparelho de som para festas", 
-                    "Livro de culinária italiana"
+                prompt: "Alerta no laboratório! Uma nova estirpe viral misteriosa começou a circular e os hospitais estão preocupados. Qual deve ser o nosso primeiro passo na bancada?",
+                options: [
+                    { text: "Solicitar Recebimento de Amostras e Garantir EPIs", correct: true },
+                    { text: "Ignorar o alerta e organizar uma festa no salão", correct: false }
                 ]
             },
             {
                 client: "Carlos (Jornalista Investigativo)",
                 avatar: "📰",
-                prompt: "Olá! A população quer saber: quanto tempo temos para decifrar este vírus e qual a tecnologia que a equipa de Jaqueline usou para mapear o primeiro caso no Brasil?",
-                correct: ["Sequenciamento Genético em 48h", "Análise do Genoma do SARS-CoV-2"],
-                tray: [
-                    "Sequenciamento Genético em 48h", 
-                    "Análise do Genoma do SARS-CoV-2", 
-                    "Previsão do horóscopo semanal", 
-                    "Filtro de café avançado"
+                prompt: "Olá! A população quer saber: qual foi o feito histórico da equipa de Jaqueline em 2020 e quanto tempo demorou?",
+                options: [
+                    { text: "Sequenciamento do genoma da COVID-19 em apenas 48h", correct: true },
+                    { text: "Escrever um livro de ficção científica em 1 ano", correct: false }
                 ]
             },
             {
                 client: "Dr. Roberto (Infectologista)",
                 avatar: "👨‍⚕️",
-                prompt: "A situação exige precisão técnica e histórica! Quais foram as bases científicas que permitiram à Jaqueline agir tão rápido nesta crise?",
-                correct: ["Experiência prévia no Projeto ZIBRA (vírus zika/dengue)", "Anos de Doutorado em Patologia e Mestrado em Biotecnologia"],
-                tray: [
-                    "Experiência prévia no Projeto ZIBRA (vírus zika/dengue)", 
-                    "Anos de Doutorado em Patologia e Mestrado em Biotecnologia", 
-                    "Curso rápido de culinária", 
-                    "Treinamento de jardinagem"
+                prompt: "A situação exige precisão técnica. Quais foram as bases científicas que permitiram à Jaqueline agir com tanta rapidez?",
+                options: [
+                    { text: "Experiência prévia no Projeto ZIBRA e Doutorado em Patologia", correct: true },
+                    { text: "Fazer apenas um curso rápido de culinária online", correct: false }
                 ]
             },
             {
                 client: "Mariana (Estudante de Ciências)",
                 avatar: "🧪",
-                prompt: "Para fechar o protocolo e divulgar o sucesso à sociedade: qual foi o verdadeiro segredo desta conquista e o legado deixado para as novas gerações?",
-                correct: ["Trabalho colaborativo em equipa", "Representatividade e incentivo a jovens cientistas"],
-                tray: [
-                    "Trabalho colaborativo em equipa", 
-                    "Representatividade e incentivo a jovens cientistas", 
-                    "Trabalhar completamente sozinho", 
-                    "Esconder os resultados do público"
+                prompt: "Para fechar o protocolo e divulgar o sucesso à sociedade: qual foi o verdadeiro segredo desta conquista e o seu legado?",
+                options: [
+                    { text: "Trabalho colaborativo em equipa e representatividade", correct: true },
+                    { text: "Trabalhar isolado e esconder os resultados de todos", correct: false }
                 ]
             }
         ];
@@ -215,80 +186,49 @@
             document.getElementById('clientText').innerHTML = data.prompt;
             document.getElementById('caseProgress').textContent = currentCase + 1;
 
-            const tray = document.getElementById('trayContainer');
-            tray.innerHTML = '';
-            
-            let shuffledTray = [...data.tray].sort(() => Math.random() - 0.5);
+            const grid = document.getElementById('choicesGrid');
+            grid.innerHTML = '';
 
-            shuffledTray.forEach(tool => {
+            // Embaralhar as duas opções para testar o jogador
+            let shuffledOptions = [...data.options].sort(() => Math.random() - 0.5);
+
+            shuffledOptions.forEach(opt => {
                 const btn = document.createElement('button');
-                btn.className = 'tool-card';
-                btn.textContent = `🔍 ${tool}`;
-                btn.onclick = () => addTool(tool);
-                tray.appendChild(btn);
-            });
-
-            selectedTools = [];
-            updateAssemblyBox();
-        }
-
-        function addTool(name) {
-            if(selectedTools.includes(name)) return;
-            selectedTools.push(name);
-            updateAssemblyBox();
-        }
-
-        function updateAssemblyBox() {
-            const box = document.getElementById('assemblyBox');
-            box.innerHTML = '<span class="slot-tag">Protocolo escolhido:</span>';
-            selectedTools.forEach((item, index) => {
-                const tag = document.createElement('span');
-                tag.className = 'protocol-badge';
-                tag.textContent = `${index + 1}. ${item}`;
-                box.appendChild(tag);
+                btn.className = 'choice-btn';
+                btn.textContent = opt.text;
+                btn.onclick = () => handleChoice(opt.correct);
+                grid.appendChild(btn);
             });
         }
 
-        function resetBench() {
-            selectedTools = [];
-            updateAssemblyBox();
-        }
-
-        function submitInvestigation() {
-            const currentData = casesData[currentCase];
-            
-            const correctSet = new Set(currentData.correct);
-            const userSet = new Set(selectedTools);
-
-            const isCorrect = userSet.size === correctSet.size && [...userSet].every(item => correctSet.has(item));
-
+        function handleChoice(isCorrect) {
             const cover = document.getElementById('cover');
             const card = cover.querySelector('.cover-card');
             cover.classList.remove('hidden');
 
-            if(isCorrect) {
+            if (isCorrect) {
                 currentCase++;
-                if(currentCase < casesData.length) {
+                if (currentCase < casesData.length) {
                     card.innerHTML = `
                         <span style="font-size:30px">🎉</span>
                         <h1>Análise Bem-Sucedida!</h1>
-                        <p>O procedimento foi validado com sucesso pela equipa técnica. O laboratório deu mais um passo fundamental na contenção do surto!</p>
-                        <button class="btn btn-primary" style="width:100%; padding:10px; font-size:12px;" onclick="nextClient()">Atender Próximo Caso</button>
+                        <p>Decisão validada com sucesso pela equipa técnica. O laboratório deu mais um passo fundamental na contenção do surto!</p>
+                        <button class="btn-main" onclick="nextClient()">Atender Próximo Caso</button>
                     `;
                 } else {
                     card.innerHTML = `
                         <span style="font-size:30px">🏆</span>
                         <h1>Surtos Controlados com Sucesso!</h1>
-                        <p>Parabéns! Concluíste todas as investigações do laboratório com o rigor de Jaqueline Góes de Jesus. O teu trabalho salvou vidas e demonstrou a força da ciência brasileira para o mundo!</p>
-                        <button class="btn btn-primary" style="width:100%; padding:10px; font-size:12px;" onclick="restartGame()">Reiniciar Plantão</button>
+                        <p>Parabéns! Concluíste todas as investigações do laboratório com o rigor de Jaqueline Góes de Jesus. O teu trabalho salvou vidas e demonstrou a força da ciência!</p>
+                        <button class="btn-main" onclick="restartGame()">Reiniciar Plantão</button>
                     `;
                 }
             } else {
                 card.innerHTML = `
                     <span style="font-size:30px">💡</span>
-                    <h1>Atenção ao Protocolo!</h1>
-                    <p>A seleção de ferramentas ou dados científicos não corresponde às exigências desta emergência sanitária. Vamos rever as pistas e tentar novamente?</p>
-                    <button class="btn btn-primary" style="width:100%; padding:10px; font-size:12px;" onclick="retryClient()">Tentar Novamente</button>
+                    <h1>Decisão Inadequada!</h1>
+                    <p>Esta escolha não atende aos rigorosos protocolos de vigilância genómica. Vamos rever o caso e tentar novamente?</p>
+                    <button class="btn-main" onclick="retryClient()">Tentar Novamente</button>
                 `;
             }
         }
@@ -300,8 +240,6 @@
 
         function retryClient() {
             document.getElementById('cover').classList.add('hidden');
-            selectedTools = [];
-            updateAssemblyBox();
         }
 
         function restartGame() {
