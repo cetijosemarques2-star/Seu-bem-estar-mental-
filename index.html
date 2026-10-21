@@ -1,252 +1,69 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="theme-color" content="#123d4a">
-    <title>Código da Vida — Laboratório (Estilo Good Pizza)</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
-        :root{--ink:#17354a;--teal:#0d6677;--lime:#a7d94c;--cream:#fff9e4;--dark:#123d4a;--wood:#8b5a2b}
-        *{box-sizing:border-box}
-        body{margin:0;background:#0b1d22;color:var(--ink);font-family:Nunito,system-ui,sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;overflow:hidden}
-
-        /* Aviso de rotação para telemóvel na vertical */
-        #rotateWarning{position:fixed;inset:0;background:#102830;color:#fff;z-index:9999;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px}
-        #rotateWarning span{font-size:50px;margin-bottom:15px;animation:bounce 1.5s infinite}
-        @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-
-        /* Estrutura 16:9 (horizontal) */
-        .app{width:100vw;height:100vh;max-width:960px;max-height:540px;background:#e9f6f4;border:4px solid #234c50;display:flex;flex-direction:column;position:relative;box-shadow:0 10px 0 #051014;overflow:hidden}
-        
-        /* Cabeçalho */
-        header{background:var(--dark);color:#fff;padding:8px 16px;display:flex;justify-content:space-between;align-items:center;height:42px;border-bottom:3px solid #234c50}
-        .brand{display:flex;align-items:center;gap:8px}
-        .brand b{font-size:13px;letter-spacing:1px}
-        .brand small{display:block;font-size:9px;color:#8abdc2}
-        .stats{background:#1b4f5c;padding:4px 10px;border-radius:8px;font-size:11px;font-weight:900;color:#d9f0b0}
-
-        /* Área Superior/Central: Cenário do Laboratório e Diálogo Estilo Good Pizza */
-        .lab-stage{position:relative;flex:1;background:linear-gradient(to bottom, #62b3bd 65%, #3d8892 65%);display:flex;flex-direction:column;justify-content:space-between;padding:14px;border-bottom:4px solid #234c50;overflow:hidden}
-        
-        /* Decoração de fundo do laboratório */
-        .lab-bg-decor{position:absolute;top:10px;left:20px;right:20px;display:flex;justify-content:space-between;opacity:0.3;pointer-events:none}
-        .shelf{width:130px;height:10px;background:#123d4a;border-radius:5px;position:relative}
-        .shelf::after{content:'🧪 🧬 🔬 💻';position:absolute;top:-18px;left:8px;font-size:15px}
-
-        /* Personagem à esquerda e Balão de diálogo */
-        .client-area{display:flex;align-items:flex-end;gap:14px;z-index:2;max-width:85%}
-        .client-avatar{font-size:46px;background:#fffef0;padding:6px 12px;border-radius:14px;border:3px solid #234c50;box-shadow:0 4px 0 #234c50;flex-shrink:0}
-        
-        .client-bubble{background:#fffef0;border:3px solid #234c50;border-radius:16px;padding:10px 16px;box-shadow:0 4px 0 #234c5040;position:relative}
-        .client-bubble b{font-size:11px;display:block;color:#0d6677;letter-spacing:.5px;margin-bottom:2px}
-        .client-bubble p{font-size:12px;margin:0;line-height:1.4}
-
-        /* Balcão de madeira na parte inferior da cena */
-        .counter-wood{position:absolute;bottom:0;left:0;right:0;height:40px;background:#8b5a2b;border-top:4px solid #5a3818}
-
-        /* Área Inferior: Opções de Resposta em Centralizadas (Estilo Good Pizza) */
-        .choices-panel{background:#fff9e4;height:140px;padding:12px 18px;display:flex;flex-direction:column;justify-content:center;gap:10px}
-        .choices-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-        
-        .choice-btn{background:#ffffff;border:3px solid #234c50;border-radius:12px;padding:12px 16px;font:800 12px Nunito;color:var(--ink);cursor:pointer;box-shadow:0 4px 0 #234c50;text-align:center;transition:all 0.1s;display:flex;align-items:center;justify-content:center;line-height:1.3}
-        .choice-btn:hover{background:#eaf8ff;border-color:#0d6677}
-        .choice-btn:active{transform:translateY(2px);box-shadow:0 2px 0 #234c50}
-
-        /* Ecrã de Capa / Relatórios */
-        .cover{position:absolute;inset:0;background:#102830f2;z-index:10;display:flex;align-items:center;justify-content:center;padding:15px;text-align:center}
-        .cover-card{background:#fff9e4;border:4px solid #fff;border-radius:18px;padding:22px;max-width:420px;box-shadow:0 6px 0 #0d6677}
-        .cover-card h1{font-size:26px;margin:8px 0;color:#123d4a}
-        .cover-card h1 span{color:#138395}
-        .cover-card p{font-size:12px;line-height:1.45;margin-bottom:16px}
-        .hidden{display:none!important}
-        .btn-main{background:var(--lime);border:3px solid #234c50;border-radius:10px;padding:10px 20px;font:900 13px Nunito;color:var(--ink);cursor:pointer;box-shadow:0 4px 0 #234c50;width:100%}
-        .btn-main:active{transform:translateY(2px);box-shadow:0 2px 0 #234c50}
-    </style>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#18243b">
+<title>Entre Páginas e Afetos — Biblioteca Literária</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#18243b;--navy2:#263852;--cream:#f7f1e7;--paper:#fffdf8;--gold:#c8a66b;--ink:#293247;--muted:#777b84;--line:#e8dfd1;--rose:#a96868;--shadow:0 18px 45px #18243b12}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif}button,input,textarea,select{font:inherit}button,a{cursor:pointer}a{color:inherit;text-decoration:none}.serif,h1,h2,h3,.book-title{font-family:'Playfair Display',serif}.topbar{background:var(--navy);color:#fff;padding:12px 5vw;display:flex;justify-content:space-between;align-items:center;font-size:.78rem;letter-spacing:.08em}.topbar .mini{color:#e3c995}.nav{padding:18px 5vw;display:flex;align-items:center;justify-content:space-between;gap:18px;background:#fffdf8e8;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;backdrop-filter:blur(14px)}.brand{display:flex;gap:12px;align-items:center}.brandmark{width:42px;height:42px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;color:var(--gold);font-size:21px}.brandname{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--navy);line-height:1.1}.brandname small{display:block;font:500 .61rem 'DM Sans',sans-serif;letter-spacing:.17em;text-transform:uppercase;color:#9a8056;margin-top:5px}.navlinks{display:flex;gap:22px;align-items:center;font-size:.88rem;color:#4e5665}.navlinks a:hover{color:#9a7541}.btn{border:0;border-radius:999px;padding:12px 18px;background:var(--navy);color:#fff;font-weight:600;display:inline-flex;justify-content:center;align-items:center;gap:8px;transition:.2s}.btn:hover{transform:translateY(-1px);background:#304361}.btn.outline{background:transparent;border:1px solid #c9b48d;color:var(--navy)}.btn.light{background:#fffaf2;color:var(--navy)}.btn.small{padding:9px 13px;font-size:.83rem}.hero{position:relative;overflow:hidden;background:radial-gradient(ellipse at 80% 30%,#35445e 0,transparent 36%),linear-gradient(120deg,#172239,#253651);color:#fff;padding:76px 7vw 80px;display:grid;grid-template-columns:1.15fr .85fr;gap:50px;align-items:center;min-height:480px}.hero:after{content:'✦';position:absolute;right:8%;top:8%;font-size:22px;color:#d4b982;opacity:.8}.eyebrow{font-size:.73rem;letter-spacing:.2em;text-transform:uppercase;color:#cbb17d;font-weight:700}.hero h1{font-size:clamp(2.6rem,5vw,4.6rem);line-height:1.06;font-weight:500;margin:18px 0}.hero h1 em{color:#e5cc9a;font-weight:400}.hero p{color:#e0e3e9;max-width:540px;line-height:1.8;font-size:1.02rem}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:27px}.hero-note{font-family:'Playfair Display',serif;font-style:italic;color:#d8c49f;margin-top:28px;font-size:.95rem}.hero-art{min-height:300px;display:flex;justify-content:center;align-items:center;position:relative}.glow{position:absolute;width:290px;height:290px;border-radius:50%;background:#d7b97c17;filter:blur(4px)}.book-stack{position:relative;width:245px;height:300px;transform:rotate(-4deg)}.book-cover{position:absolute;inset:12px 22px 10px 32px;border:1px solid #d7bc83;background:linear-gradient(145deg,#31425c,#17243b);box-shadow:20px 20px 0 #101a2b,25px 26px 32px #0005;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:22px;color:#f8efdf}.book-cover:before{content:'';position:absolute;inset:10px;border:1px solid #bda16d8a}.cover-symbol{font-size:39px;color:#d8bd82;margin-bottom:22px}.book-cover small{font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:#d8bd82}.book-cover strong{font:500 1.6rem 'Playfair Display',serif;line-height:1.12;margin:14px 0}.book-cover span{font-size:.65rem;letter-spacing:.08em;color:#e8d9b9}.floating-note{position:absolute;right:0;bottom:20px;background:#fffaf0;color:var(--navy);padding:18px 20px;box-shadow:var(--shadow);transform:rotate(4deg);max-width:190px;font:italic 1rem 'Playfair Display',serif}.floating-note small{display:block;font:600 .64rem 'DM Sans',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#9a8056;margin-bottom:8px}.section{padding:68px 7vw}.section-head{display:flex;justify-content:space-between;gap:24px;align-items:end;margin-bottom:28px}.section-head h2{font-size:clamp(2rem,3.3vw,2.8rem);font-weight:500;color:var(--navy);margin:9px 0}.section-head p{color:var(--muted);line-height:1.7;margin:0;max-width:530px}.searchrow{display:flex;gap:10px;max-width:380px;width:100%}.searchrow input{min-width:0;width:100%;border:1px solid var(--line);background:#fffdf9;border-radius:999px;padding:12px 16px;outline:none}.searchrow input:focus,.field:focus{border-color:var(--gold);box-shadow:0 0 0 3px #c8a66b20}.shelf{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}.book-card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 5px 20px #19243b08;transition:.22s;display:flex;flex-direction:column;min-width:0}.book-card:hover{transform:translateY(-5px);box-shadow:var(--shadow)}.cover-thumb{height:240px;border-radius:9px;background:linear-gradient(145deg,#334660,#17243b);color:#f8efdf;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:22px;overflow:hidden;box-shadow:inset 5px 0 0 #d2b78028}.cover-thumb:before{content:'';position:absolute;inset:9px;border:1px solid #d6bd8a88}.cover-thumb .ornament{font-size:30px;color:#d7bc83;margin-bottom:20px}.cover-thumb .ctitle{font:500 1.35rem 'Playfair Display',serif;line-height:1.16;z-index:1}.cover-thumb .cname{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:#e0cc9f;margin-top:15px;z-index:1}.cover-thumb.rosana{background:linear-gradient(145deg,#526879,#25394a)}.cover-thumb.paloma{background:linear-gradient(145deg,#28564e,#16362f)}.cover-thumb.thamires{background:linear-gradient(145deg,#343f69,#1b2547)}.book-meta{padding:16px 4px 3px;display:flex;flex-direction:column;flex:1}.book-meta .type{font-size:.66rem;text-transform:uppercase;letter-spacing:.13em;color:#9a8056;font-weight:700}.book-title{font-size:1.18rem;color:var(--navy);line-height:1.25;margin:8px 0 6px}.teacher{font-size:.86rem;color:#646b77}.book-desc{font-size:.82rem;color:#81848a;line-height:1.55;margin:10px 0 15px;flex:1}.card-actions{display:flex;gap:8px;flex-wrap:wrap}.card-actions .btn{flex:1;white-space:nowrap}.quote-band{background:#eae0d0;padding:50px 8vw;text-align:center}.quote-band .quote-mark{font:4rem 'Playfair Display',serif;color:#b2935f;line-height:.7}.quote-band blockquote{font:italic clamp(1.5rem,3vw,2.2rem) 'Playfair Display',serif;color:var(--navy);max-width:880px;margin:18px auto;line-height:1.4}.quote-band p{color:#797265;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase}.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:45px;align-items:center}.about-card{background:#fffdf8;border:1px solid var(--line);padding:30px;border-radius:16px}.about-card h3{font-size:1.6rem;color:var(--navy);font-weight:500;margin-top:0}.about-card p{line-height:1.8;color:#6f727b}.about-ornament{min-height:260px;background:linear-gradient(135deg,#e4d3b2,#f5ebdb);border-radius:16px;display:grid;place-items:center;text-align:center;padding:30px;color:#4c4a43}.about-ornament .big{font-size:70px;color:#9e7c45}.about-ornament p{font:italic 1.4rem 'Playfair Display',serif;max-width:360px}.footer{background:var(--navy);color:#dce0e7;padding:35px 7vw;display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap}.footer strong{font:500 1.25rem 'Playfair Display',serif;color:#f7ead1}.footer small{display:block;color:#aeb7c4;margin-top:6px}.footer button{border:0;background:transparent;color:#d6bd8a;text-decoration:underline}.modal-backdrop{position:fixed;inset:0;background:#0c1424b8;z-index:20;display:none;align-items:center;justify-content:center;padding:18px;overflow:auto}.modal-backdrop.open{display:flex}.modal{background:var(--paper);width:min(850px,100%);max-height:92vh;overflow:auto;border-radius:18px;box-shadow:0 30px 90px #0004}.modal-top{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:15px;background:#fffaf2;position:sticky;top:0;z-index:2}.modal-top h3{margin:0;font-size:1.35rem;font-weight:500;color:var(--navy)}.close{border:0;background:#eee7dc;color:#354056;width:36px;height:36px;border-radius:50%;font-size:20px}.reader{padding:28px clamp(20px,5vw,55px) 45px}.reader-cover{display:flex;gap:22px;align-items:center;padding-bottom:22px;border-bottom:1px solid var(--line)}.reader-cover .cover-thumb{width:130px;min-width:130px;height:180px}.reader-cover h2{font-size:clamp(1.7rem,4vw,2.4rem);font-weight:500;color:var(--navy);margin:0 0 8px}.reader-cover p{color:#727784;line-height:1.6}.reader-body{font:1.03rem/1.9 'Playfair Display',serif;white-space:pre-wrap;color:#414654;padding-top:22px}.reader-body h3{color:var(--navy)}.reader-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.admin-modal{width:min(920px,100%)}.admin-content{padding:24px}.admin-login{max-width:420px;margin:15px auto 25px}.admin-login h3{font-size:1.8rem;font-weight:500;color:var(--navy)}.field{width:100%;padding:12px 13px;border:1px solid #ddd3c4;border-radius:10px;background:#fffefa;outline:none;margin-top:6px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.formfield{margin-bottom:14px}.formfield label{font-size:.82rem;font-weight:700;color:#515968}.formfield.full{grid-column:1/-1}.admin-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}.admin-list{display:grid;gap:9px}.admin-item{padding:13px;background:#f7f1e7;border:1px solid var(--line);border-radius:10px;display:flex;justify-content:space-between;gap:15px;align-items:center}.admin-item small{display:block;color:#7b7e86;margin-top:4px}.admin-actions{display:flex;gap:7px;flex-wrap:wrap}.status{padding:10px 12px;border-radius:99px;font-size:.86rem;line-height:1.5;margin:12px 0;background:#f4ead6;color:#6e572c}.status.error{background:#f8e4e1;color:#883f38}.status.ok{background:#e4f2e7;color:#28633a}.hidden{display:none!important}.empty{grid-column:1/-1;text-align:center;padding:35px;border:1px dashed #c9b995;border-radius:14px;color:#777}.smallnote{font-size:.78rem;color:#777;line-height:1.6}.pdf-frame{width:100%;height:65vh;border:1px solid var(--line);border-radius:8px;margin-top:18px}.toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,20px);background:var(--navy);color:white;padding:12px 18px;border-radius:99px;opacity:0;pointer-events:none;transition:.25s;z-index:50;font-size:.88rem}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:950px){.hero{grid-template-columns:1fr .7fr;padding-top:58px}.shelf{grid-template-columns:repeat(2,minmax(0,1fr))}.cover-thumb{height:260px}.about-grid{gap:25px}}@media(max-width:650px){.topbar{padding:10px 5vw;font-size:.65rem}.nav{padding:13px 5vw}.brandname{font-size:1rem}.brandmark{width:37px;height:37px}.navlinks{gap:12px}.navlinks a:not(.btn){display:none}.navlinks .btn{padding:9px 12px;font-size:.8rem}.hero{display:block;padding:55px 6vw 45px;min-height:unset}.hero h1{font-size:2.8rem}.hero-art{min-height:260px;margin-top:15px}.book-stack{transform:scale(.8) rotate(-4deg)}.floating-note{right:2%;bottom:0}.section{padding:48px 5vw}.section-head{display:block}.searchrow{margin-top:18px;max-width:none}.shelf{gap:12px}.book-card{padding:9px;border-radius:12px}.cover-thumb{height:205px;padding:15px}.cover-thumb .ctitle{font-size:1.05rem}.cover-thumb .ornament{font-size:24px;margin-bottom:14px}.book-meta{padding:12px 3px 3px}.book-title{font-size:1rem}.book-desc{font-size:.77rem}.card-actions .btn{font-size:.75rem;padding:9px 8px}.about-grid{grid-template-columns:1fr}.about-ornament{min-height:210px}.footer{padding:28px 5vw}.reader-cover{align-items:flex-start;gap:15px}.reader-cover .cover-thumb{width:92px;min-width:92px;height:135px}.reader-cover h2{font-size:1.5rem}.reader{padding:20px 18px 30px}.formgrid{grid-template-columns:1fr}.formfield.full{grid-column:auto}.admin-content{padding:16px}.admin-item{align-items:flex-start;flex-direction:column}.pdf-frame{height:60vh}}
+</style>
 </head>
 <body>
+<div class="topbar"><span>✦ UMA BIBLIOTECA FEITA DE GRATIDÃO</span><span class="mini">Palavras que permanecem</span></div>
+<nav class="nav"><a class="brand" href="#inicio" aria-label="Entre Páginas e Afetos - início"><span class="brandmark">❧</span><span class="brandname">Entre Páginas e Afetos<small>Biblioteca literária</small></span></a><div class="navlinks"><a href="#estante">A estante</a><a href="#sobre">Nossa intenção</a><button class="btn small" id="openAdmin">Área do autor ↗</button></div></nav>
+<header class="hero" id="inicio"><div><div class="eyebrow">Um lugar para dizer obrigado</div><h1>Algumas pessoas<br>merecem um <em>capítulo</em><br>só delas.</h1><p>Uma coleção de minic livros escritos com carinho para homenagear professores que transformam conhecimento em lembranças que ficam com a gente.</p><div class="hero-actions"><a class="btn light" href="#estante">Explorar a estante <span>↓</span></a><a class="btn outline" href="#sobre" style="color:#fff;border-color:#c8a66b">Conhecer a biblioteca</a></div><div class="hero-note">“Há gratidões que só cabem entre páginas.”</div></div><div class="hero-art" aria-hidden="true"><div class="glow"></div><div class="book-stack"><div class="book-cover"><div class="cover-symbol">❧</div><small>Uma coleção de homenagens</small><strong>Entre Páginas<br>e Afetos</strong><span>PALAVRAS QUE FICAM</span></div></div><div class="floating-note"><small>Uma dedicatória</small>“Este capítulo é seu. Obrigado por fazer parte da minha história.”</div></div></header>
+<main><section class="section" id="estante"><div class="section-head"><div><div class="eyebrow">A coleção</div><h2>Uma estante, muitas histórias.</h2><p>Cada livro nasceu de uma admiração diferente. Escolha uma capa para conhecer a homenagem e ler suas páginas.</p></div><div class="searchrow"><input id="searchBooks" type="search" placeholder="Buscar por título ou professor…" aria-label="Buscar livros"></div></div><div id="bookShelf" class="shelf"></div></section>
+<section class="quote-band"><div class="quote-mark">“</div><blockquote>Ensinar também é deixar pequenas partes de si nas histórias que outras pessoas vão contar.</blockquote><p>Uma homenagem a quem ensina e inspira</p></section>
+<section class="section" id="sobre"><div class="about-grid"><div><div class="eyebrow">Por trás das páginas</div><h2 class="serif" style="font-size:clamp(2rem,4vw,3rem);font-weight:500;color:var(--navy);line-height:1.13">Mais do que livros.<br>Um jeito de agradecer.</h2><p style="line-height:1.9;color:#6e727d">Entre Páginas e Afetos é uma biblioteca de minic livros autorais dedicados a professores que deixaram marcas importantes na trajetória de seu aluno-autor. Cada obra reúne palavras, lembranças e reconhecimento.</p><p style="line-height:1.9;color:#6e727d">A estante começa pequena, mas permanece aberta a novos capítulos — porque sempre haverá alguém que merece uma homenagem.</p><a class="btn" href="#estante">Voltar à estante ↑</a></div><div class="about-ornament"><div><div class="big">❧</div><p>“O carinho também pode virar literatura.”</p><span style="font-size:.68rem;letter-spacing:.16em;text-transform:uppercase">Entre Páginas e Afetos</span></div></div></div></section></main>
+<footer class="footer"><div><strong>Entre Páginas e Afetos</strong><small>Uma biblioteca de homenagens escritas com carinho.</small></div><div><small>Feito para celebrar quem ensina.</small><button id="footerAdmin">Acesso do autor</button></div></footer>
+<div class="modal-backdrop" id="readerModal" role="dialog" aria-modal="true" aria-label="Leitura do livro"><div class="modal"><div class="modal-top"><h3 id="readerHeading">Leitura</h3><button class="close" data-close="readerModal" aria-label="Fechar">×</button></div><div class="reader" id="readerContent"></div></div></div>
+<div class="modal-backdrop" id="adminModal" role="dialog" aria-modal="true" aria-label="Painel do autor"><div class="modal admin-modal"><div class="modal-top"><h3>Ateliê do autor <span style="font:500 .75rem 'DM Sans';color:#8e7852">✦ Área reservada</span></h3><button class="close" data-close="adminModal" aria-label="Fechar">×</button></div><div class="admin-content"><div id="adminStatus" class="status">Conectando à biblioteca…</div><div id="loginPanel" class="admin-login"><h3>Bem-vindo ao seu ateliê.</h3><p class="smallnote">Entre com a conta autorizada para gerenciar as publicações.</p><div class="formfield"><label for="adminEmail">E-mail</label><input class="field" type="email" id="adminEmail" autocomplete="username" placeholder="seu e-mail (ex: admin@biblioteca.com)"></div><div class="formfield"><label for="adminPassword">Senha</label><input class="field" type="password" id="adminPassword" autocomplete="current-password" placeholder="Sua senha"></div><button class="btn" id="loginBtn" style="width:100%">Entrar no painel</button><p class="smallnote">Nota: A senha temporária configurada para este acesso é <strong>12345</strong>.</p></div><div id="dashboard" class="hidden"><div class="admin-toolbar"><div><strong id="adminWelcome">Sua coleção</strong><div class="smallnote">Publique novos capítulos quando quiser.</div></div><button class="btn outline small" id="logoutBtn">Sair da conta</button></div><form id="bookForm"><input type="hidden" id="bookId"><div class="formgrid"><div class="formfield"><label for="bookTitleInput">Título do livro *</label><input class="field" id="bookTitleInput" required maxlength="140" placeholder="Título da obra"></div><div class="formfield"><label for="teacherInput">Professor(a) *</label><input class="field" id="teacherInput" required maxlength="100" placeholder="Nome do homenageado"></div><div class="formfield"><label for="subjectInput">Área / disciplina</label><input class="field" id="subjectInput" maxlength="100" placeholder="Ex.: Matemática"></div><div class="formfield"><label for="coverColor">Estilo da capa</label><select class="field" id="coverColor"><option value="navy">Azul-marinho</option><option value="rosana">Azul-acinzentado</option><option value="paloma">Verde profundo</option><option value="thamires">Azul noturno</option></select></div><div class="formfield full"><label for="descriptionInput">Resumo para a estante</label><textarea class="field" id="descriptionInput" rows="2" maxlength="500" placeholder="Uma pequena apresentação da homenagem"></textarea></div><div class="formfield full"><label for="dedicationInput">Dedicatória</label><textarea class="field" id="dedicationInput" rows="3" placeholder="Uma mensagem pessoal para o professor"></textarea></div><div class="formfield full"><label for="letterInput">Carta especial</label><textarea class="field" id="letterInput" rows="5" placeholder="A carta que acompanha o livro"></textarea></div><div class="formfield full"><label for="contentInput">Texto para leitura dentro do site *</label><textarea class="field" id="contentInput" rows="12" required placeholder="Cole aqui o texto do minic livro. Você pode usar títulos em linhas separadas."></textarea></div><div class="formfield"><label for="coverFile">Capa (imagem, opcional)</label><input class="field" type="file" id="coverFile" accept="image/*"></div><div class="formfield"><label for="pdfFile">PDF do livro (opcional)</label><input class="field" type="<div class="formfield"><label for="pdfFile">PDF do livro (opcional)</label><input class="field" type="file" id="pdfFile" accept="application/pdf,.pdf"></div><div class="formfield full"><label><input type="checkbox" id="publishedInput" checked> Publicar na estante pública</label><p class="smallnote">Desmarque para salvar a obra como rascunho, sem exibi-la aos visitantes.</p></div></div><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" type="submit" id="saveBookBtn">Salvar livro</button><button class="btn outline" type="button" id="resetFormBtn">Novo livro / limpar</button></div></form><hr style="border:0;border-top:1px solid var(--line);margin:25px 0"><h3 class="serif" style="font-weight:500;color:var(--navy)">Livros cadastrados</h3><div id="adminBookList" class="admin-list"></div></div></div></div></div>
+<div id="toast" class="toast" role="status"></div>
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js';
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js';
+import { getFirestore, collection, doc, getDocs, addDoc, setDoc, deleteDoc, query, orderBy, where, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js';
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-storage.js';
 
-    <!-- Aviso para virar o telemóvel -->
-    <div id="rotateWarning">
-        <span>📱🔄</span>
-        <h2>Por favor, vire o telemóvel na horizontal!</h2>
-        <p>Este laboratório foi desenhado no formato 16:9 para garantir a experiência visual de Good Pizza, Great Pizza.</p>
-    </div>
-
-    <main class="app">
-        <header>
-            <div class="brand">
-                <span style="font-size:18px">🔬</span>
-                <div>
-                    <b>CÓDIGO DA VIDA — LABORATÓRIO</b>
-                    <small>Inspiração: A trajetória de Jaqueline Góes</small>
-                </div>
-            </div>
-            <div class="stats" id="scoreBox">Caso: <b id="caseProgress">1</b>/4</div>
-        </header>
-
-        <!-- Parte Superior: Cenário 2D e Atendimento -->
-        <section class="lab-stage">
-            <div class="lab-bg-decor">
-                <div class="shelf"></div>
-                <div class="shelf"></div>
-            </div>
-
-            <div class="client-area">
-                <div class="client-avatar" id="clientAvatar">👩‍⚕️</div>
-                <div class="client-bubble">
-                    <b id="clientName">Dra. Helena (Chefe de Equipa)</b>
-                    <p id="clientText">Alerta no laboratório! Uma nova estirpe viral misteriosa começou a circular. Qual deve ser o nosso primeiro passo na bancada?</p>
-                </div>
-            </div>
-
-            <div class="counter-wood"></div>
-        </section>
-
-        <!-- Parte Inferior: Duas Grandes Opções de Resposta (Estilo Good Pizza) -->
-        <section class="choices-panel">
-            <div class="choices-grid" id="choicesGrid">
-                <!-- Os botões de escolha serão injetados aqui -->
-            </div>
-        </section>
-
-        <!-- Ecrã Inicial / Transição -->
-        <div id="cover" class="cover">
-            <div class="cover-card">
-                <span style="font-size:32px">🧬</span>
-                <h1>Plantão de <span>Emergência Viral</span></h1>
-                <p>Assume o comando da estação de análises genómicas em modo horizontal! Pessoas, médicos e repórteres chegam ao balcão com crises de saúde pública. Segue os passos de <b>Jaqueline Góes de Jesus</b>, lê os diálogos e escolhe as decisões corretas para resolver os casos em tempo recorde.</p>
-                <button class="btn-main" onclick="startGame()">Entrar no Laboratório</button>
-            </div>
-        </div>
-    </main>
-
-    <script>
-        function checkOrientation() {
-            const warning = document.getElementById('rotateWarning');
-            if (window.innerHeight > window.innerWidth && window.innerWidth < 768) {
-                warning.style.display = 'flex';
-            } else {
-                warning.style.display = 'none';
-            }
-        }
-        window.addEventListener('resize', checkOrientation);
-        window.addEventListener('load', checkOrientation);
-
-        let currentCase = 0;
-
-        const casesData = [
-            {
-                client: "Dra. Helena (Chefe de Equipa)",
-                avatar: "👩‍⚕️",
-                prompt: "Alerta no laboratório! Uma nova estirpe viral misteriosa começou a circular e os hospitais estão preocupados. Qual deve ser o nosso primeiro passo na bancada?",
-                options: [
-                    { text: "Solicitar Recebimento de Amostras e Garantir EPIs", correct: true },
-                    { text: "Ignorar o alerta e organizar uma festa no salão", correct: false }
-                ]
-            },
-            {
-                client: "Carlos (Jornalista Investigativo)",
-                avatar: "📰",
-                prompt: "Olá! A população quer saber: qual foi o feito histórico da equipa de Jaqueline em 2020 e quanto tempo demorou?",
-                options: [
-                    { text: "Sequenciamento do genoma da COVID-19 em apenas 48h", correct: true },
-                    { text: "Escrever um livro de ficção científica em 1 ano", correct: false }
-                ]
-            },
-            {
-                client: "Dr. Roberto (Infectologista)",
-                avatar: "👨‍⚕️",
-                prompt: "A situação exige precisão técnica. Quais foram as bases científicas que permitiram à Jaqueline agir com tanta rapidez?",
-                options: [
-                    { text: "Experiência prévia no Projeto ZIBRA e Doutorado em Patologia", correct: true },
-                    { text: "Fazer apenas um curso rápido de culinária online", correct: false }
-                ]
-            },
-            {
-                client: "Mariana (Estudante de Ciências)",
-                avatar: "🧪",
-                prompt: "Para fechar o protocolo e divulgar o sucesso à sociedade: qual foi o verdadeiro segredo desta conquista e o seu legado?",
-                options: [
-                    { text: "Trabalho colaborativo em equipa e representatividade", correct: true },
-                    { text: "Trabalhar isolado e esconder os resultados de todos", correct: false }
-                ]
-            }
-        ];
-
-        function startGame() {
-            document.getElementById('cover').classList.add('hidden');
-            loadCase();
-        }
-
-        function loadCase() {
-            const data = casesData[currentCase];
-            document.getElementById('clientName').textContent = data.client;
-            document.getElementById('clientAvatar').textContent = data.avatar;
-            document.getElementById('clientText').innerHTML = data.prompt;
-            document.getElementById('caseProgress').textContent = currentCase + 1;
-
-            const grid = document.getElementById('choicesGrid');
-            grid.innerHTML = '';
-
-            // Embaralhar as duas opções para testar o jogador
-            let shuffledOptions = [...data.options].sort(() => Math.random() - 0.5);
-
-            shuffledOptions.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = 'choice-btn';
-                btn.textContent = opt.text;
-                btn.onclick = () => handleChoice(opt.correct);
-                grid.appendChild(btn);
-            });
-        }
-
-        function handleChoice(isCorrect) {
-            const cover = document.getElementById('cover');
-            const card = cover.querySelector('.cover-card');
-            cover.classList.remove('hidden');
-
-            if (isCorrect) {
-                currentCase++;
-                if (currentCase < casesData.length) {
-                    card.innerHTML = `
-                        <span style="font-size:30px">🎉</span>
-                        <h1>Análise Bem-Sucedida!</h1>
-                        <p>Decisão validada com sucesso pela equipa técnica. O laboratório deu mais um passo fundamental na contenção do surto!</p>
-                        <button class="btn-main" onclick="nextClient()">Atender Próximo Caso</button>
-                    `;
-                } else {
-                    card.innerHTML = `
-                        <span style="font-size:30px">🏆</span>
-                        <h1>Surtos Controlados com Sucesso!</h1>
-                        <p>Parabéns! Concluíste todas as investigações do laboratório com o rigor de Jaqueline Góes de Jesus. O teu trabalho salvou vidas e demonstrou a força da ciência!</p>
-                        <button class="btn-main" onclick="restartGame()">Reiniciar Plantão</button>
-                    `;
-                }
-            } else {
-                card.innerHTML = `
-                    <span style="font-size:30px">💡</span>
-                    <h1>Decisão Inadequada!</h1>
-                    <p>Esta escolha não atende aos rigorosos protocolos de vigilância genómica. Vamos rever o caso e tentar novamente?</p>
-                    <button class="btn-main" onclick="retryClient()">Tentar Novamente</button>
-                `;
-            }
-        }
-
-        function nextClient() {
-            document.getElementById('cover').classList.add('hidden');
-            loadCase();
-        }
-
-        function retryClient() {
-            document.getElementById('cover').classList.add('hidden');
-        }
-
-        function restartGame() {
-            currentCase = 0;
-            document.getElementById('cover').classList.add('hidden');
-            loadCase();
-        }
-    </script>
-</body>
-</html>
+const firebaseConfig = {
+  apiKey: "COLE_SUA_API_KEY",
+  authDomain: "SEU-PROJETO.firebaseapp.com",
+  projectId: "SEU-PROJETO",
+  storageBucket: "SEU-PROJETO.firebasestorage.app",
+  messagingSenderId: "SEU_SENDER_ID",
+  appId: "SEU_APP_ID"
+};
+const firebaseConfigured = firebaseConfig.apiKey !== "COLE_SUA_API_KEY" && firebaseConfig.projectId !== "SEU-PROJETO";
+let app, auth, db, storage, currentUser=null, books=[], demoMode=!firebaseConfigured;
+const demoBooks = [
+ {id:'denis',title:'A Equação de um Professor Inesquecível',teacher:'Denis',subject:'Matemática',description:'Uma homenagem a quem transforma desafios em descobertas e faz cada aprendizado valer a pena.',dedication:'Professor Denis, este livro é uma forma singela de agradecer pela paciência, pela dedicação e por cada conhecimento compartilhado. Que estas páginas expressem a admiração e a gratidão que nem sempre cabem em uma conversa.',letter:'Professor Denis,\n\nHá professores que nos ajudam a encontrar a resposta de uma questão e há aqueles que também nos ensinam a ter confiança para tentar. Esta homenagem nasce do reconhecimento pelo seu trabalho, pela forma como compartilha o conhecimento e pela marca que deixa na vida dos seus alunos.\n\nObrigado por fazer parte da nossa trajetória. Que você continue inspirando muitas outras histórias.\n\nCom carinho,\nSeu aluno e autor.',content:'DEDICATÓRIA\n\nProfessor Denis, esta obra é uma pequena forma de agradecer por tudo que o senhor representa.\n\nPRÓLOGO — A EQUAÇÃO DA GRATIDÃO\n\nNem toda equação procura apenas um resultado. Algumas tentam traduzir aquilo que sentimos e não sabemos explicar. A dedicação de um professor, a paciência diante de uma dúvida e a alegria de ver um aluno compreender são valores que nenhuma fórmula consegue medir por completo.\n\nCAPÍTULO I — MAIS QUE NÚMEROS\n\nEnsinar matemática é apresentar caminhos, mostrar que os erros fazem parte da descoberta e lembrar que cada problema pode ser enfrentado passo a passo. Um professor inesquecível não entrega somente respostas: ajuda seus alunos a desenvolverem a coragem de procurar por elas.\n\nCAPÍTULO II — A EQUAÇÃO DE UM PROFESSOR\n\nSome dedicação, multiplique a paciência, divida o conhecimento e nunca subtraia a esperança. O resultado não será um número exato, mas algo que permanece: o aprendizado que acompanha cada estudante muito depois do sinal.\n\nCARTA AO PROFESSOR\n\nProfessor Denis, obrigado por cada explicação, pelo compromisso com o ensino e por contribuir para nossa formação. Que a vida lhe devolva, em oportunidades e alegrias, todo o bem que o senhor ajuda a construir.\n\nEPÍLOGO\n\nAlgumas lições terminam no caderno. Outras seguem conosco. As mais especiais viram parte da nossa história.'},
+ {id:'rosana',title:'Entre Territórios e Sociedades',teacher:'Rosana',subject:'Geografia e Sociologia',description:'Uma viagem pelas paisagens, pelas relações humanas e pelo pensamento crítico que amplia nossa visão de mundo.',dedication:'Professora Rosana, que estas páginas sejam um gesto de reconhecimento pelo conhecimento compartilhado e pelo incentivo a observar o mundo com curiosidade, sensibilidade e pensamento crítico.',letter:'Professora Rosana,\n\nA senhora nos convida a olhar além do que está diante dos olhos: compreender os lugares, as pessoas, as relações e as histórias que formam a sociedade. Aprender com esse olhar é perceber que o conhecimento também pode abrir caminhos para transformar a realidade.\n\nEsta homenagem reúne um pouco da admiração e da gratidão por sua contribuição à nossa formação.\n\nCom carinho,\nSeu aluno e autor.',content:'DEDICATÓRIA\n\nÀ professora Rosana, por nos ensinar a observar os espaços e a compreender as sociedades com atenção e senso crítico.\n\nPRÓLOGO — MAPAS DA MEMÓRIA\n\nExistem mapas que mostram estradas, rios e fronteiras. Existem também mapas invisíveis, desenhados pelas pessoas que encontramos e pelas ideias que nos ajudam a compreender o mundo.\n\nCAPÍTULO I — TERRITÓRIOS QUE NOS FORMAM\n\nCada lugar guarda marcas de quem passou por ele. A paisagem é mais do que aquilo que vemos: é resultado de histórias, escolhas, trabalho, cultura e transformação. Estudar os territórios é aprender a ler essas marcas e a fazer perguntas sobre como vivemos.\n\nCAPÍTULO II — SOCIEDADE EM MOVIMENTO\n\nA sociedade não é algo distante. Ela está presente nas relações cotidianas, nas oportunidades, nos desafios e nas formas como cuidamos uns dos outros. O pensamento crítico nos ajuda a ir além das aparências e a imaginar caminhos mais justos.\n\nCARTA À PROFESSORA\n\nProfessora Rosana, obrigado por ampliar nosso horizonte e nos incentivar a pensar com autonomia. Que sua dedicação continue inspirando estudantes a conhecer melhor o mundo e a participar dele com responsabilidade.\n\nEPÍLOGO\n\nO conhecimento muda a maneira como enxergamos o mundo — e, às vezes, muda também o caminho que escolhemos seguir.'},
+ {id:'paloma',title:'Entre Reações e Palavras',teacher:'Paloma',subject:'Química e Clube de Leitura',description:'Uma homenagem à curiosidade científica, à literatura e às pessoas que mostram que conhecimento e sensibilidade podem caminhar juntos.',dedication:'Professora Paloma, dedico estas páginas à sua dedicação à ciência, à leitura e à formação de pessoas curiosas, críticas e sensíveis.',letter:'Professora Paloma,\n\nA química nos ajuda a compreender transformações; a literatura nos ajuda a sentir e interpretar o mundo. Na sua presença, essas duas formas de descobrir a vida encontram um ponto de encontro.\n\nEste livro foi preparado para agradecer por seu trabalho, pela atenção dedicada aos alunos e pelo incentivo à curiosidade e à leitura. Que cada página leve um pouco da admiração que tenho pela senhora.\n\nCom carinho,\nSeu aluno e autor.',content:'DEDICATÓRIA\n\nÀ professora Paloma, que nos lembra que a ciência explica muitas transformações e a literatura dá palavras ao que sentimos.\n\nPRÓLOGO — A FÓRMULA DO AFETO\n\nHá encontros que parecem uma reação delicada: uma palavra encontra uma ideia, uma pergunta desperta curiosidade e, de repente, alguma coisa dentro de nós se transforma.\n\nCAPÍTULO I — A CIÊNCIA DE PERGUNTAR\n\nToda descoberta começa com uma pergunta. O laboratório nos ensina a observar, testar e rever hipóteses; a vida também exige essa disposição. Aprender é aceitar que ainda não sabemos tudo e encontrar beleza no processo de descobrir.\n\nCAPÍTULO II — QUANDO AS PALAVRAS SE ENCONTRAM\n\nUm livro pode ser uma janela para outras vidas. A leitura desenvolve a imaginação, amplia nosso vocabulário e nos permite olhar para o outro com mais empatia. Entre fórmulas e versos, aprendemos que razão e sensibilidade não precisam competir: podem se completar.\n\nCARTA À PROFESSORA\n\nProfessora Paloma, obrigado por incentivar a curiosidade e por aproximar o conhecimento científico do prazer de ler. Que a sua caminhada continue abrindo portas e despertando novas descobertas em muitos estudantes.\n\nEPÍLOGO\n\nAlgumas reações acontecem em silêncio. Uma delas é o modo como um bom professor permanece na memória de quem aprendeu com ele.'},
+ {id:'thamires',title:'Entre Planos e Conquistas',teacher:'Thamires',subject:'Administração com ênfase em Empreendedorismo',description:'Uma celebração da coragem de recomeçar, da dedicação e da força de transformar planos em caminhos possíveis.',dedication:'Professora Thamires, este livro é dedicado à sua parceria, ao acolhimento, à clareza com que compartilha os conteúdos e à inspiração que transmite por meio de seus projetos e de sua trajetória.',letter:'Professora Thamires,\n\nToda trajetória é feita de etapas, escolhas e recomeços. Sua história mostra que os planos ganham força quando são acompanhados de persistência, trabalho e vontade de aprender. Na sala de aula, a senhora compartilha mais do que conceitos de administração: incentiva a transformar ideias em ações.\n\nPreparei estas páginas com carinho e gratidão pela parceria, pela paciência e por tudo que contribui para nossa formação. Que a senhora reconheça aqui o quanto seu trabalho é valorizado.\n\nCom carinho,\nSeu aluno e autor.',content:'DEDICATÓRIA\n\nÀ professora Thamires, por ensinar que empreender também é acreditar em ideias, aprender com os desafios e seguir construindo.\n\nPRÓLOGO — O PRIMEIRO PLANO\n\nToda conquista começa antes de ser vista. Primeiro, existe uma ideia; depois, a coragem de tentar, o trabalho de ajustar a rota e a paciência de continuar. O caminho raramente é uma linha reta, mas cada etapa pode nos ensinar algo.\n\nCAPÍTULO I — CORAGEM PARA RECOMEÇAR\n\nA vida profissional é construída por experiências diversas. Cada trabalho, cada desafio e cada oportunidade pode acrescentar uma habilidade e revelar uma força que ainda não conhecíamos. Recomeçar não apaga o que veio antes: transforma experiência em ferramenta para o futuro.\n\nCAPÍTULO II — IDEIAS QUE GANHAM FORMA\n\nEmpreender é observar uma necessidade, imaginar uma possibilidade e organizar os passos para torná-la real. Também é escutar, colaborar, assumir responsabilidades e compreender que o sucesso não se constrói sozinho. Na educação, um projeto pode se tornar espaço para desenvolver tudo isso.\n\nCARTA À PROFESSORA\n\nProfessora Thamires, obrigado pela parceria, pela maneira clara de explicar os conteúdos e pelo incentivo aos nossos projetos. Sua presença mostra que ensinar também é abrir espaço para experimentar, criar e crescer. Que suas próximas conquistas sejam tão significativas quanto as sementes que ajuda a plantar em seus alunos.\n\nEPÍLOGO\n\nPlanos mudam, caminhos se renovam, mas a coragem de continuar aprendendo permanece. Que nunca faltem novas páginas para escrever.'}
+];
+const $=id=>document.getElementById(id); const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function notify(msg){$('toast').textContent=msg;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),2800)}
+function status(msg,type=''){const el=$('adminStatus');el.className='status '+type;el.textContent=msg}
+function initFirebase(){if(!firebaseConfigured){books=demoBooks.map(b=>({...b}));status('Biblioteca pronta. Digite a senha 12345 para entrar.');renderShelf();return}
+ try{app=initializeApp(firebaseConfig);auth=getAuth(app);db=getFirestore(app);storage=getStorage(app);demoMode=false;status('Firebase configurado. Entre com a sua conta.');onAuthStateChanged(auth,async user=>{currentUser=user;$('loginPanel').classList.toggle('hidden',!!user);$('dashboard').classList.toggle('hidden',!user);if(user){$('adminWelcome').textContent='Conectado: '+(user.email||'Autor');status('Você entrou no ateliê do autor.','ok');await loadBooks()}else{await loadPublicBooks()}})}catch(e){status('Erro ao iniciar Firebase. Modo offline/demo ativado. Digite a senha 12345 para entrar.','error');console.error(e)}}
+async function loadPublicBooks(){try{const snap=await getDocs(query(collection(db,'books'),where('published','==',true),orderBy('updatedAt','desc')));books=snap.docs.map(d=>({id:d.id,...d.data()}));renderShelf()}catch(e){console.error(e);books=demoBooks;renderShelf();status('Exibindo coleção pública local.','ok')}}
+async function loadBooks(){try{const snap=await getDocs(query(collection(db,'books'),orderBy('updatedAt','desc')));books=snap.docs.map(d=>({id:d.id,...d.data()}));renderShelf();renderAdminList()}catch(e){status('Erro ao carregar do Firestore. Exibindo acervo local.','error');books=demoBooks;renderShelf();renderAdminList();console.error(e)}}
+function coverClass(book){return ['navy','rosana','paloma','thamires'].includes(book.coverColor)?book.coverColor:'navy'}
+function coverHtml(book,compact=false){if(book.coverUrl)return `<div class="cover-thumb ${coverClass(book)}" style="background-image:linear-gradient(#101a2a22,#101a2a44),url('${esc(book.coverUrl)}');background-size:cover;background-position:center"><span class="cname">${esc(book.teacher||'Homenagem')}</span></div>`;return `<div class="cover-thumb ${coverClass(book)}"><div class="ornament">❧</div><div class="ctitle">${esc(book.title)}</div><div class="cname">${esc(book.teacher)}</div></div>`}
+function renderShelf(){const term=$('searchBooks').value.trim().toLocaleLowerCase('pt-BR');const visible=books.filter(b=>b.published!==false&&[b.title,b.teacher,b.subject,b.description].join(' ').toLocaleLowerCase('pt-BR').includes(term));const shelf=$('bookShelf');if(!visible.length){shelf.innerHTML=`<div class="empty">${demoMode?'Os livros de demonstração aparecerão aqui.':'Ainda não há livros publicados com esse termo.'}</div>`;return}shelf.innerHTML=visible.map(b=>`<article class="book-card"><div>${coverHtml(b,true)}</div><div class="book-meta"><div class="type">Minic livro · Homenagem</div><h3 class="book-title">${esc(b.title)}</h3><div class="teacher">Para ${esc(b.teacher)}${b.subject?' · '+esc(b.subject):''}</div><p class="book-desc">${esc(b.description||'Uma homenagem escrita com carinho.')}</p><div class="card-actions"><button class="btn small" data-read="${esc(b.id)}">Ler livro</button>${b.pdfUrl?`<a class="btn outline small" target="_blank" rel="noopener" href="${esc(b.pdfUrl)}">PDF ↗</a>`:''}</div></div></article>`).join('');shelf.querySelectorAll('[data-read]').forEach(btn=>btn.addEventListener('click',()=>openReader(btn.dataset.read)))}
+function openReader(id){const b=books.find(x=>x.id===id);if(!b)return; $('readerHeading').textContent=b.title;$('readerContent').innerHTML=`<div class="reader-cover">${coverHtml(b)}<div><div class="eyebrow">Uma homenagem especial</div><h2>${esc(b.title)}</h2><p>Para <strong>${esc(b.teacher)}</strong>${b.subject?' · '+esc(b.subject):''}</p>${b.description?`<p>${esc(b.description)}</p>`:''}</div></div>${b.dedication?`<h3 style="font-weight:500;color:var(--navy);margin-top:28px">Uma dedicatória</h3><div class="reader-body">${esc(b.dedication)}</div>`:''}${b.content?`<h3 style="font-weight:500;color:var(--navy);margin-top:28px">Entre estas páginas</h3><div class="reader-body">${esc(b.content)}</div>`:''}${b.letter?`<h3 style="font-weight:500;color:var(--navy);margin-top:28px">Uma carta para você</h3><div class="reader-body">${esc(b.letter)}</div>`:''}<div class="reader-actions">${b.pdfUrl?`<a class="btn" target="_blank" rel="noopener" href="${esc(b.pdfUrl)}">Abrir PDF ↗</a><a class="btn outline" download href="${esc(b.pdfUrl)}">Baixar PDF ↓</a>`:'<span class="smallnote">O PDF desta obra ainda não foi adicionado.</span>'}</div>${b.pdfUrl?`<iframe class="pdf-frame" src="${esc(b.pdfUrl)}#toolbar=1" title="PDF de ${esc(b.title)}"></iframe>`:''}`;$('readerModal').classList.add('open');document.body.style.overflow='hidden'}
+function closeModal(id){$(id).classList.remove('open');if(!$('readerModal').classList.contains('open')&&!$('adminModal').classList.contains('open'))document.body.style.overflow=''}
+function renderAdminList(){if(!books.length){$('adminBookList').innerHTML='<div class="smallnote">Nenhum livro cadastrado ainda.</div>';return}$('adminBookList').innerHTML=books.map(b=>`<div class="admin-item"><div><strong>${esc(b.title)}</strong><small>${esc(b.teacher)} · ${b.published===false?'Rascunho':'Publicado'}</small></div><div class="admin-actions"><button class="btn outline small" data-edit="${esc(b.id)}">Editar</button><button class="btn outline small" data-toggle="${esc(b.id)}">${b.published===false?'Publicar':'Retirar do ar'}</button><button class="btn small" style="background:#8d4545" data-delete="${esc(b.id)}">Excluir</button></div></div>`).join('');$('adminBookList').querySelectorAll('[data-edit]').forEach(el=>el.onclick=()=>editBook(el.dataset.edit));$('adminBookList').querySelectorAll('[data-toggle]').forEach(el=>el.onclick=()=>togglePublish(el.dataset.toggle));$('adminBookList').querySelectorAll('[data-delete]').forEach(el=>el.onclick=()=>removeBook(el.dataset.delete))}
+function resetForm(){ $('bookForm').reset();$('bookId').value='';$('publishedInput').checked=true;$('saveBookBtn').textContent='Salvar livro';$('coverFile').value='';$('pdfFile').value=''}
+function editBook(id){const b=books.find(x=>x.id===id);if(!b)return;$('bookId').value=b.id;$('bookTitleInput').value=b.title||'';$('teacherInput').value=b.teacher\vert{}\vert{}'';$('subjectInput').value=b.subject||'';$('coverColor').value=coverClass(b);$('descriptionInput').value=b.description||'';$('dedicationInput').value=b.dedication\vert{}\vert{}'';$('letterInput').value=b.letter||'';$('contentInput').value=b.content\vert{}\vert{}'';$('publishedInput').checked=b.published!==false;$('saveBookBtn').textContent='Atualizar livro';$('bookForm').scrollIntoView({behavior:'smooth',block:'start'})}
+async function uploadFile(file,path){if(!file||demoMode||!storage)return null;const safe=file.name.replace(/[^a-zA-Z0-9._-]/g,'_');const fileRef=ref(storage,`${path}/${Date.now()}_${safe}`);await uploadBytes(fileRef,file);return await getDownloadURL(fileRef)}
+$('bookForm').addEventListener('submit',async e=>{e.preventDefault();const btn=$('saveBookBtn');btn.disabled=true;btn.textContent='Salvando…';try{const id=$('bookId').value||('book_'+Date.now());const old=books.find(b=>b.id===id)||{};const coverUrl=await uploadFile($('coverFile').files[0],'covers')\vert{}\vert{}old.coverUrl\vert{}\vert{}'';const pdfUrl=await uploadFile($('pdfFile').files[0],'pdfs')||old.pdfUrl||'';const data={id,title:$('bookTitleInput').value.trim(),teacher:$('teacherInput').value.trim(),subject:$('subjectInput').value.trim(),coverColor:$('coverColor').value,description:$('descriptionInput').value.trim(),dedication:$('dedicationInput').value.trim(),letter:$('letterInput').value.trim(),content:$('contentInput').value.trim(),coverUrl,pdfUrl,published:$('publishedInput').checked,updatedAt:new Date().toISOString()};if(!demoMode&&db&&currentUser){if($('bookId').value)await setDoc(doc(db,'books',id),{...data,updatedAt:serverTimestamp(),updatedBy:currentUser.uid},{merge:true});else await addDoc(collection(db,'books'),{...data,createdAt:serverTimestamp(),updatedAt:serverTimestamp(),updatedBy:currentUser.uid});await loadBooks()}else{const index=books.findIndex(b=>b.id===id);if(index>=0)books[index]=data;else books.unshift(data);renderShelf();renderAdminList()}resetForm();status('Livro salvo com sucesso.','ok');notify('Livro salvo!')}catch(err){console.error(err);status('Erro ao salvar. Verifique o preenchimento.','error')}finally{btn.disabled=false;btn.textContent=$('bookId').value?'Atualizar livro':'Salvar livro'}});
+async function togglePublish(id){const b=books.find(x=>x.id===id);if(!b)return;try{if(!demoMoasync function togglePublish(id){const b=books.find(x=>x.id===id);if(!b)return;try{if(!demoMode&&db){await setDoc(doc(db,'books',id),{published:b.published===false,updatedAt:serverTimestamp()},{merge:true});await loadBooks()}else{b.published=b.published===false;renderShelf();renderAdminList()}notify('Publicação atualizada')}catch(e){status('Não foi possível atualizar a publicação.','error')}}
+async function removeBook(id){const b=books.find(x=>x.id===id);if(!b)return;if(!confirm(`Excluir “${b.title}”? Essa ação não pode ser desfeita.`))return;try{if(!demoMode&&db){await deleteDoc(doc(db,'books',id));await loadBooks()}else{books=books.filter(x=>x.id!==id);renderShelf();renderAdminList()}notify('Livro excluído')}catch(e){status('Não foi possível excluir o livro.','error')}}
+$('openAdmin').onclick=$('footerAdmin').onclick=()=>{$('adminModal').classList.add('open');document.body.style.overflow='hidden';if(!currentUser)status('Digite a senha de autorização (12345).')};document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>closeModal(b.dataset.close)));document.querySelectorAll('.modal-backdrop').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)closeModal(m.id)}));document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal('readerModal');closeModal('adminModal')}});$('searchBooks').addEventListener('input',renderShelf);$('resetFormBtn').onclick=resetForm;
+$('loginBtn').onclick=async()=>{const pwd=$('adminPassword').value;const email=$('adminEmail').value.trim()||'admin@biblioteca.com';if(pwd==='12345'){currentUser={uid:'autor-local',email:email};$('loginPanel').classList.add('hidden');$('dashboard').classList.remove('hidden');$('adminWelcome').textContent='Conectado: '+email;status('Acesso liberado! Bem-vindo ao ateliê.','ok');renderAdminList();return}if(!demoMode&&auth){try{await signInWithEmailAndPassword(auth,email,pwd)}catch(e){status('E-mail ou senha incorretos. Use a senha 12345.','error')}}else{status('Senha incorreta! A senha é: 12345','error')}};$('logoutBtn').onclick=async()=>{if(auth&&!demoMode)await signOut(auth);currentUser=null;$('loginPanel').classList.remove('hidden');$('dashboard').classList.add('hidden');status('Você saiu do painel.')};
+initFirebase();
+</script>
+</body></html>
